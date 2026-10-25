@@ -1,0 +1,47 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:PcTool.Desktop.ViewModels"
+        xmlns:res="using:PcTool.Desktop.Resources"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="960" d:DesignHeight="600"
+        x:Class="PcTool.Desktop.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="{x:Static res:Strings.App_Title}"
+        Width="960" Height="600" MinWidth="640" MinHeight="400">
+
+    <Grid ColumnDefinitions="220,*">
+
+        <!-- Navigationsleiste links -->
+        <Border Grid.Column="0"
+                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                BorderThickness="0,0,1,0"
+                Padding="8">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top"
+                           Text="{x:Static res:Strings.App_Title}"
+                           FontSize="20" FontWeight="SemiBold"
+                           Margin="12,8,12,16" />
+                <ListBox ItemsSource="{Binding NavigationItems}"
+                         SelectedItem="{Binding SelectedItem}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:NavigationItem">
+                            <TextBlock Text="{Binding Title}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </Border>
+
+        <!-- Inhalt rechts: die ausgewählte Seite. Welche View zu welchem ViewModel gehört, entscheidet der ViewLocator. -->
+        <Panel Grid.Column="1" Margin="24">
+            <TextBlock IsVisible="{Binding IsLoading}"
+                       Text="{x:Static res:Strings.Main_Loading}" />
+            <TextBlock IsVisible="{Binding ErrorMessage, Converter={x:Static ObjectConverters.IsNotNull}}"
+                       Text="{Binding ErrorMessage}"
+                       TextWrapping="Wrap" />
+            <ContentControl Content="{Binding SelectedItem.Page}" />
+        </Panel>
+    </Grid>
+</Window>

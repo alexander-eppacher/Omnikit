@@ -1,0 +1,13 @@
+<Project>
+  <!-- Gemeinsame Einstellungen für alle Projekte der Solution -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Abnahmekriterium "baut ohne Warnungen": jede Warnung bricht den Build ab -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <Authors>Alexander Eppacher</Authors>
+    <Copyright>Copyright (c) 2026 Alexander Eppacher</Copyright>
+  </PropertyGroup>
+</Project>

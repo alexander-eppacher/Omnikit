@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Alle Texte des Health-Moduls. {0}, {1} ... werden durch Werte ersetzt. -->
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <!-- Allgemein -->
+  <data name="ModuleName" xml:space="preserve"><value>Gerätezustand</value></data>
+  <data name="Category_Disks" xml:space="preserve"><value>Laufwerke</value></data>
+  <data name="Category_Storage" xml:space="preserve"><value>Speicherplatz</value></data>
+  <data name="Category_Battery" xml:space="preserve"><value>Akku</value></data>
+  <data name="Category_Windows" xml:space="preserve"><value>Windows</value></data>
+  <data name="Category_Load" xml:space="preserve"><value>Auslastung</value></data>
+  <data name="Common_NotWindows" xml:space="preserve"><value>Nur unter Windows verfügbar.</value></data>
+  <data name="Common_NotAvailableTitle" xml:space="preserve"><value>Nicht verfügbar</value></data>
+
+  <!-- Laufwerke -->
+  <data name="Disk_Health_Title" xml:space="preserve"><value>{0}: Zustand laut Windows</value></data>
+  <data name="Disk_Health_Healthy" xml:space="preserve"><value>Windows meldet keine Probleme mit diesem Laufwerk.</value></data>
+  <data name="Disk_Health_Warning" xml:space="preserve"><value>Windows meldet eine Warnung für dieses Laufwerk. Sichere wichtige Daten.</value></data>
+  <data name="Disk_Health_Unhealthy" xml:space="preserve"><value>Windows meldet dieses Laufwerk als fehlerhaft. Sichere sofort deine Daten und tausche das Laufwerk aus.</value></data>
+  <data name="Disk_Health_Unknown" xml:space="preserve"><value>Windows kann den Zustand dieses Laufwerks nicht bestimmen.</value></data>
+  <data name="Disk_Wear_Title" xml:space="preserve"><value>{0}: Lebensdauer</value></data>
+  <data name="Disk_Wear_Ok" xml:space="preserve"><value>Die SSD hat noch ca. {0} % ihrer geschätzten Lebensdauer.</value></data>
+  <data name="Disk_Wear_Warning" xml:space="preserve"><value>Die SSD hat nur noch ca. {0} % ihrer geschätzten Lebensdauer. Plane einen Austausch ein und sichere regelmäßig deine Daten.</value></data>
+  <data name="Disk_Wear_Critical" xml:space="preserve"><value>Die SSD ist fast verbraucht (noch ca. {0} %). Sichere sofort deine Daten und tausche sie bald aus.</value></data>
+  <data name="Disk_Temp_Title" xml:space="preserve"><value>{0}: Temperatur</value></data>
+  <data name="Disk_Temp_Ok" xml:space="preserve"><value>{0} °C – normaler Bereich.</value></data>
+  <data name="Disk_Temp_Warning" xml:space="preserve"><value>{0} °C – recht warm. Achte auf gute Belüftung.</value></data>
+  <data name="Disk_Temp_Critical" xml:space="preserve"><value>{0} °C – zu heiß. Hohe Temperaturen verkürzen die Lebensdauer.</value></data>
+  <data name="Disk_Errors_Title" xml:space="preserve"><value>{0}: Lese- und Schreibfehler</value></data>
+  <data name="Disk_Errors_None" xml:space="preserve"><value>Keine Fehler gezählt.</value></data>
+  <data name="Disk_Errors_Some" xml:space="preserve"><value>{0} Fehler gezählt. Das kann ein frühes Zeichen für einen Defekt sein – sichere deine Daten.</value></data>
+  <data name="Disk_PowerOn_Title" xml:space="preserve"><value>{0}: Betriebsstunden</value></data>
+  <data name="Disk_PowerOn_Text" xml:space="preserve"><value>{0} Stunden in Betrieb (ca. {1} Tage).</value></data>
+  <data name="Disk_DetailsNeedAdmin_Title" xml:space="preserve"><value>Laufwerksdetails</value></data>
+  <data name="Disk_DetailsNeedAdmin_Text" xml:space="preserve"><value>Verschleiß, Temperatur und Fehlerzähler sind nur mit Adminrechten verfügbar. Über „Erweiterte Laufwerksdaten laden“ kannst du sie abrufen.</value></data>
+  <data name="Disk_Vm" xml:space="preserve"><value>In einer virtuellen Maschine sind keine echten Laufwerksdaten verfügbar.</value></data>
+  <data name="Disk_ReadFailed" xml:space="preserve"><value>Die Laufwerksdaten konnten nicht gelesen werden. Details stehen in der Log-Datei.</value></data>
+
+  <!-- Speicherplatz -->
+  <data name="Storage_Title" xml:space="preserve"><value>Laufwerk {0}</value></data>
+  <data name="Storage_Ok" xml:space="preserve"><value>{0} von {1} frei ({2} %).</value></data>
+  <data name="Storage_Warning" xml:space="preserve"><value>Nur noch {0} von {1} frei ({2} %). Lösche nicht benötigte Dateien oder Programme.</value></data>
+  <data name="Storage_Critical" xml:space="preserve"><value>Fast voll: nur noch {0} von {1} frei ({2} %). Windows und Programme können dadurch Fehler machen.</value></data>
+
+  <!-- Akku -->
+  <data name="Battery_Capacity_Title" xml:space="preserve"><value>Akku-Kapazität</value></data>
+  <data name="Battery_Capacity_Ok" xml:space="preserve"><value>Der Akku hat noch {0} % seiner ursprünglichen Kapazität ({1} von {2} mWh).</value></data>
+  <data name="Battery_Capacity_Warning" xml:space="preserve"><value>Der Akku hat noch {0} % seiner ursprünglichen Kapazität ({1} von {2} mWh). Die Laufzeit ist spürbar kürzer als neu.</value></data>
+  <data name="Battery_Capacity_Critical" xml:space="preserve"><value>Der Akku hat nur noch {0} % seiner ursprünglichen Kapazität ({1} von {2} mWh). Ein Austausch ist empfehlenswert.</value></data>
+  <data name="Battery_Cycles_Title" xml:space="preserve"><value>Ladezyklen</value></data>
+  <data name="Battery_Cycles_Text" xml:space="preserve"><value>Der Akku wurde {0}-mal vollständig geladen (Ladezyklen).</value></data>
+  <data name="Battery_Vm" xml:space="preserve"><value>In einer virtuellen Maschine sind keine Akkudaten verfügbar.</value></data>
+  <data name="Battery_ReadFailed" xml:space="preserve"><value>Die Akkudaten konnten nicht gelesen werden.</value></data>
+
+  <!-- Windows -->
+  <data name="Uptime_Title" xml:space="preserve"><value>Letzter Neustart</value></data>
+  <data name="Uptime_Ok" xml:space="preserve"><value>Vor {0} Tagen.</value></data>
+  <data name="Uptime_Today" xml:space="preserve"><value>Heute.</value></data>
+  <data name="Uptime_Yesterday" xml:space="preserve"><value>Gestern.</value></data>
+  <data name="Uptime_Info" xml:space="preserve"><value>Vor {0} Tagen. Ein gelegentlicher Neustart hält Windows stabil.</value></data>
+  <data name="Uptime_Warning" xml:space="preserve"><value>Vor {0} Tagen. Starte den PC neu, damit Updates abgeschlossen werden und Windows stabil bleibt.</value></data>
+  <data name="Uptime_Unknown" xml:space="preserve"><value>Der Zeitpunkt des letzten Neustarts konnte nicht ermittelt werden.</value></data>
+  <data name="RebootPending_Title" xml:space="preserve"><value>Neustart ausstehend</value></data>
+  <data name="RebootPending_Text" xml:space="preserve"><value>Windows wartet auf einen Neustart, um Updates abzuschließen.</value></data>
+  <data name="Activation_Title" xml:space="preserve"><value>Windows-Aktivierung</value></data>
+  <data name="Activation_Ok" xml:space="preserve"><value>Windows ist aktiviert.</value></data>
+  <data name="Activation_Warning" xml:space="preserve"><value>Windows ist nicht aktiviert. Manche Funktionen, z. B. Personalisierung, sind eingeschränkt.</value></data>
+  <data name="Activation_Unknown" xml:space="preserve"><value>Der Aktivierungsstatus konnte nicht ermittelt werden.</value></data>
+  <data name="Updates_Title" xml:space="preserve"><value>Windows-Updates</value></data>
+  <data name="Updates_Ok" xml:space="preserve"><value>Keine ausstehenden Updates.</value></data>
+  <data name="Updates_Info" xml:space="preserve"><value>Verfügbare Updates: {0}. Installiere sie bei Gelegenheit über Windows Update.</value></data>
+  <data name="Updates_Warning" xml:space="preserve"><value>Verfügbare Updates: {0}, davon Sicherheitsupdates: {1}. Installiere sie bald über Windows Update.</value></data>
+  <data name="Updates_Unknown" xml:space="preserve"><value>Updates konnten nicht geprüft werden (z. B. keine Internetverbindung oder Zeitüberschreitung).</value></data>
+
+  <!-- Auslastung -->
+  <data name="Cpu_Title" xml:space="preserve"><value>Prozessor</value></data>
+  <data name="Cpu_Text" xml:space="preserve"><value>{0} % ausgelastet (Momentaufnahme).</value></data>
+  <data name="Memory_Title" xml:space="preserve"><value>Arbeitsspeicher</value></data>
+  <data name="Memory_Ok" xml:space="preserve"><value>{0} % belegt ({1} von {2} nutzbar).</value></data>
+  <data name="Memory_Reserved" xml:space="preserve"><value>Eingebaut sind {0}; ein Teil davon ist für die Grafik oder das System reserviert.</value></data>
+  <data name="Memory_High" xml:space="preserve"><value>{0} % belegt ({1} von {2} nutzbar). Viele offene Programme können den PC verlangsamen.</value></data>
+
+  <!-- Aktion: erweiterte Laufwerksdaten mit Adminrechten -->
+  <data name="Action_LoadDiskDetails" xml:space="preserve"><value>Erweiterte Laufwerksdaten laden</value></data>
+  <data name="Action_Confirm_Title" xml:space="preserve"><value>Adminrechte benötigt</value></data>
+  <data name="Action_Confirm_AdminAccount" xml:space="preserve"><value>Für Verschleiß, Temperatur und Fehlerzähler der Laufwerke braucht PcTool kurz Adminrechte.
+
+Gleich fragt Windows: „Möchten Sie zulassen, dass diese App Änderungen an Ihrem Gerät vornimmt?“ → Klicke auf „Ja“.
+
+PcTool liest nur Daten aus und verändert nichts.</value></data>
+  <data name="Action_Confirm_StandardAccount" xml:space="preserve"><value>Für Verschleiß, Temperatur und Fehlerzähler der Laufwerke braucht PcTool kurz Adminrechte.
+
+⚠ Dein Konto hat keine Adminrechte. Windows fragt gleich nach Benutzername und Passwort eines Administrator-Kontos, z. B. von Eltern, Lehrkraft oder IT-Betreuung.
+
+Hast du diese Daten nicht? Kein Problem: Klicke auf „Abbrechen“. Alle anderen Werte funktionieren trotzdem.
+
+PcTool liest nur Daten aus und verändert nichts.</value></data>
+  <data name="Action_Confirm_UnknownAccount" xml:space="preserve"><value>Für Verschleiß, Temperatur und Fehlerzähler der Laufwerke braucht PcTool kurz Adminrechte.
+
+Gleich fragt Windows nach Adminrechten. Falls dein Konto keine hat, brauchst du Benutzername und Passwort eines Administrator-Kontos.
+
+PcTool liest nur Daten aus und verändert nichts.</value></data>
+  <data name="Action_Success" xml:space="preserve"><value>Die erweiterten Laufwerksdaten wurden geladen.</value></data>
+  <data name="Action_Cancelled" xml:space="preserve"><value>Adminrechte wurden nicht erteilt. Alle anderen Werte funktionieren trotzdem – du kannst es jederzeit erneut versuchen.</value></data>
+  <data name="Action_Failed" xml:space="preserve"><value>Die erweiterten Laufwerksdaten konnten nicht gelesen werden. Details stehen in der Log-Datei.</value></data>
+  <data name="Action_Unknown" xml:space="preserve"><value>Unbekannte Aktion.</value></data>
+</root>

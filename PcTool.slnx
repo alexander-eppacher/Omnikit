@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/PcTool.Core/PcTool.Core.csproj" />
+    <Project Path="src/PcTool.Desktop/PcTool.Desktop.csproj" />
+    <Project Path="src/PcTool.Modules.Health/PcTool.Modules.Health.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/PcTool.Core.Tests/PcTool.Core.Tests.csproj" />
+    <Project Path="tests/PcTool.Modules.Health.Tests/PcTool.Modules.Health.Tests.csproj" />
+  </Folder>
+</Solution>

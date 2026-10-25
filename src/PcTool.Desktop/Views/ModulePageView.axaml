@@ -1,0 +1,79 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:PcTool.Desktop.ViewModels"
+             xmlns:res="using:PcTool.Desktop.Resources"
+             xmlns:conv="using:PcTool.Desktop.Converters"
+             xmlns:modules="using:PcTool.Core.Modules"
+             x:Class="PcTool.Desktop.Views.ModulePageView"
+             x:DataType="vm:ModulePageViewModel">
+
+    <DockPanel>
+        <!-- Kopf: Titel, Gesamtampel, Knöpfe -->
+        <StackPanel DockPanel.Dock="Top" Spacing="12" Margin="0,0,0,16">
+            <TextBlock Text="{Binding Title}" FontSize="24" FontWeight="SemiBold" />
+
+            <StackPanel Orientation="Horizontal" Spacing="10"
+                        IsVisible="{Binding OverallSeverity, Converter={x:Static ObjectConverters.IsNotNull}}">
+                <Ellipse Width="16" Height="16" VerticalAlignment="Center"
+                         Fill="{Binding OverallSeverity, Converter={x:Static conv:SeverityConverters.ToBrush}}" />
+                <TextBlock VerticalAlignment="Center" FontWeight="SemiBold">
+                    <Run Text="{x:Static res:Strings.ModulePage_Overall}" />
+                    <Run Text="{Binding OverallSeverity, Converter={x:Static conv:SeverityConverters.ToText}}" />
+                </TextBlock>
+            </StackPanel>
+
+            <WrapPanel Orientation="Horizontal">
+                <Button Content="{x:Static res:Strings.ModulePage_Refresh}" Command="{Binding RefreshCommand}" Margin="0,0,8,8" />
+                <Button Content="{x:Static res:Strings.ModulePage_Export}" Command="{Binding ExportCommand}" Margin="0,0,8,8" />
+                <ItemsControl ItemsSource="{Binding Actions}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:ActionViewModel">
+                            <Button Content="{Binding DisplayName}" Command="{Binding Command}" Classes="accent" Margin="0,0,8,8" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </WrapPanel>
+
+            <StackPanel Orientation="Horizontal" Spacing="8" IsVisible="{Binding IsBusy}">
+                <ProgressBar IsIndeterminate="True" Width="120" VerticalAlignment="Center" />
+                <TextBlock Text="{x:Static res:Strings.ModulePage_Checking}" VerticalAlignment="Center" Opacity="0.8" />
+            </StackPanel>
+
+            <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap"
+                       IsVisible="{Binding StatusMessage, Converter={x:Static ObjectConverters.IsNotNull}}" />
+        </StackPanel>
+
+        <!-- Befunde, nach Bereich gruppiert -->
+        <ScrollViewer>
+            <ItemsControl ItemsSource="{Binding Groups}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FindingGroupViewModel">
+                        <StackPanel Spacing="6" Margin="0,0,0,20">
+                            <TextBlock Text="{Binding Title}" IsVisible="{Binding HasTitle}" FontSize="17" FontWeight="SemiBold" />
+                            <ItemsControl ItemsSource="{Binding Findings}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="modules:Finding">
+                                        <Grid ColumnDefinitions="Auto,*" Margin="0,4">
+                                            <Ellipse Grid.Column="0" Width="12" Height="12" Margin="0,4,12,0" VerticalAlignment="Top"
+                                                     Fill="{Binding Severity, Converter={x:Static conv:SeverityConverters.ToBrush}}"
+                                                     ToolTip.Tip="{Binding Severity, Converter={x:Static conv:SeverityConverters.ToText}}" />
+                                            <StackPanel Grid.Column="1" Spacing="2">
+                                                <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextWrapping="Wrap" />
+                                                <SelectableTextBlock Text="{Binding Explanation}" TextWrapping="Wrap" Opacity="0.85" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>
