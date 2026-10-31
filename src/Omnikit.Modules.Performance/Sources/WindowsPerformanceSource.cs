@@ -18,7 +18,7 @@ public sealed class WindowsPerformanceSource : IPerformanceSource
     private readonly ILogger<WindowsPerformanceSource> _logger;
     private readonly Dictionary<string, (long Sent, long Received, long Timestamp)> _lastNetwork = [];
     private readonly HashSet<string> _knownInterfaceIds = new(StringComparer.OrdinalIgnoreCase);
-    private HashSet<string>? _visibleAdapterIds;
+    private Dictionary<string, bool?>? _visibleAdapters;
     private Counters? _counters;
 
     public WindowsPerformanceSource(ILogger<WindowsPerformanceSource> logger)
@@ -74,7 +74,7 @@ public sealed class WindowsPerformanceSource : IPerformanceSource
         _counters = null;
         _lastNetwork.Clear();
         _knownInterfaceIds.Clear();
-        _visibleAdapterIds = null;
+        _visibleAdapters = null;
     }
 
     [SupportedOSPlatform("windows")]
@@ -157,13 +157,15 @@ public sealed class WindowsPerformanceSource : IPerformanceSource
         var newInterfaces = interfaces.Count(adapter => _knownInterfaceIds.Add(adapter.Id));
         if (newInterfaces > 0)
         {
-            _visibleAdapterIds = ReadVisibleAdapterIds();
+            _visibleAdapters = ReadVisibleAdapters();
         }
 
         foreach (var adapter in interfaces)
         {
+            // "Nicht vorhanden" = Treiber installiert, Gerät fehlt (z. B. VPN-Adapter eines deinstallierten Programms)
             if (adapter.NetworkInterfaceType is NetworkInterfaceType.Loopback or NetworkInterfaceType.Tunnel
-                || !NetworkAdapterFilter.IsRealAdapter(adapter.Id, _visibleAdapterIds))
+                || adapter.OperationalStatus == OperationalStatus.NotPresent
+                || !NetworkAdapterFilter.IsRealAdapter(adapter.Id, _visibleAdapters))
             {
                 continue;
             }
@@ -187,18 +189,20 @@ public sealed class WindowsPerformanceSource : IPerformanceSource
                 }
 
                 _lastNetwork[adapter.Id] = (sent, received, now);
+                var isConnected = adapter.OperationalStatus == OperationalStatus.Up;
+                var isHardware = _visibleAdapters?.GetValueOrDefault(adapter.Id);
 
                 result.Add(new NetworkSample(
                     adapter.Id,
                     adapter.Name,
                     adapter.Description,
-                    adapter.OperationalStatus == OperationalStatus.Up,
+                    isConnected,
                     adapter.NetworkInterfaceType == NetworkInterfaceType.Wireless80211,
-                    NetworkAdapterFilter.IsVirtual(adapter.Description),
+                    NetworkAdapterFilter.IsVirtual(adapter.Description, isHardware),
                     adapter.Speed > 0 ? adapter.Speed : null,
                     sendBits,
                     receiveBits,
-                    ReadAddresses(adapter)));
+                    isConnected ? ReadAddresses(adapter) : []));
             }
             catch (NetworkInformationException ex)
             {
@@ -211,10 +215,10 @@ public sealed class WindowsPerformanceSource : IPerformanceSource
     }
 
     /// <summary>
-    /// GUIDs der Adapter, die Windows anzeigt. MSFT_NetAdapter liefert versteckte Adapter (WAN-Miniports, Kernel-Debugger,
-    /// Filter-Schichten) ohne Zusatzoption nicht. Bei einem Fehler null: dann wird nicht gefiltert.
+    /// GUIDs der Adapter, die Windows anzeigt, und ob Hardware dahintersteckt. MSFT_NetAdapter liefert versteckte Adapter
+    /// (WAN-Miniports, Kernel-Debugger, Filter-Schichten) ohne Zusatzoption nicht. Bei einem Fehler null: dann wird nicht gefiltert.
     /// </summary>
-    private HashSet<string>? ReadVisibleAdapterIds()
+    private Dictionary<string, bool?>? ReadVisibleAdapters()
     {
         if (!OperatingSystem.IsWindows())
         {
@@ -223,10 +227,16 @@ public sealed class WindowsPerformanceSource : IPerformanceSource
 
         try
         {
-            return Wmi.Query(@"root\StandardCimv2", "SELECT DeviceID FROM MSFT_NetAdapter")
-                .Select(row => row["DeviceID"] as string)
-                .OfType<string>()
-                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+            var adapters = new Dictionary<string, bool?>(StringComparer.OrdinalIgnoreCase);
+            foreach (var row in Wmi.Query(@"root\StandardCimv2", "SELECT DeviceID, HardwareInterface FROM MSFT_NetAdapter"))
+            {
+                if (row["DeviceID"] is string id)
+                {
+                    adapters[id] = row["HardwareInterface"] as bool?;
+                }
+            }
+
+            return adapters;
         }
         catch (Exception ex) when (Wmi.IsExpectedError(ex))
         {

@@ -322,7 +322,10 @@ public sealed partial class PerformancePageViewModel : ViewModelBase, IActivatab
             history.Add(total);
 
             card.Title = Format(Texts.Network_Title, adapter.Name);
-            card.Subtitle = !adapter.IsConnected ? Texts.Network_Disconnected : adapter.IsWireless ? Texts.Network_Wireless : Texts.Network_Wired;
+            card.Subtitle = !adapter.IsConnected ? Texts.Network_Disconnected
+                : adapter.IsVirtual ? Texts.Network_Virtual
+                : adapter.IsWireless ? Texts.Network_Wireless
+                : Texts.Network_Wired;
             card.ValueText = BitsPerSecond(total);
             card.Word = null;
             card.DetailText = Format(Texts.Network_Value, BitsPerSecond(adapter.SendBitsPerSecond), BitsPerSecond(adapter.ReceiveBitsPerSecond));
@@ -335,8 +338,7 @@ public sealed partial class PerformancePageViewModel : ViewModelBase, IActivatab
                 (Texts.Expert_LinkSpeed, adapter.LinkSpeedBitsPerSecond is long speed ? BitsPerSecond(speed) : null),
                 (Texts.Expert_Send, BitsPerSecond(adapter.SendBitsPerSecond)),
                 (Texts.Expert_Receive, BitsPerSecond(adapter.ReceiveBitsPerSecond)),
-                (Texts.Expert_IpAddresses, adapter.IpAddresses.Count > 0 ? string.Join(", ", adapter.IpAddresses) : null),
-                (Texts.Expert_Virtual, adapter.IsVirtual ? Texts.Expert_Yes : null)));
+                (Texts.Expert_IpAddresses, adapter.IpAddresses.Count > 0 ? string.Join(", ", adapter.IpAddresses) : null)));
         }
 
         RemoveMissing("net-", _networks.Keys);

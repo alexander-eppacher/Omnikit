@@ -41,6 +41,7 @@
   <data name="Network_Title" xml:space="preserve"><value>Netzwerk: {0}</value></data>
   <data name="Network_Wireless" xml:space="preserve"><value>WLAN</value></data>
   <data name="Network_Wired" xml:space="preserve"><value>Kabel</value></data>
+  <data name="Network_Virtual" xml:space="preserve"><value>virtuell (VPN oder virtuelle Maschine)</value></data>
   <data name="Network_Value" xml:space="preserve"><value>Senden {0}
 Empfangen {1}</value></data>
   <data name="Network_Disconnected" xml:space="preserve"><value>nicht verbunden</value></data>
@@ -82,12 +83,10 @@ Empfangen {1}</value></data>
   <data name="Expert_Send" xml:space="preserve"><value>Senden</value></data>
   <data name="Expert_Receive" xml:space="preserve"><value>Empfangen</value></data>
   <data name="Expert_IpAddresses" xml:space="preserve"><value>IP-Adressen</value></data>
-  <data name="Expert_Virtual" xml:space="preserve"><value>Virtueller Adapter</value></data>
   <data name="Expert_DedicatedMemory" xml:space="preserve"><value>Dedizierter Grafikspeicher</value></data>
   <data name="Expert_SharedMemory" xml:space="preserve"><value>Gemeinsamer Grafikspeicher</value></data>
   <data name="Expert_MemoryUsedOf" xml:space="preserve"><value>{0} von {1}</value></data>
   <data name="Expert_Temperature" xml:space="preserve"><value>Temperatur</value></data>
   <data name="Expert_TemperatureValue" xml:space="preserve"><value>{0:0} °C</value></data>
-  <data name="Expert_Yes" xml:space="preserve"><value>Ja</value></data>
   <data name="Expert_Cores_Title" xml:space="preserve"><value>Auslastung je logischem Prozessor</value></data>
 </root>

@@ -23,6 +23,17 @@ public class NetworkAdapterFilterTests
         Assert.Equal(expected, NetworkAdapterFilter.IsVirtual(description));
     }
 
+    [Theory]
+    [InlineData("FastProtect Tunnel", false, true)]                                         // VPN: Windows meldet keine Hardware
+    [InlineData("Cisco AnyConnect Virtual Miniport Adapter for Windows x64", false, true)]  // Name passt auf keine Liste
+    [InlineData("Red Hat VirtIO Ethernet Adapter", true, false)]                            // Netzwerkkarte einer VM gilt als echt
+    [InlineData("Cisco AnyConnect Virtual Miniport Adapter for Windows x64", null, false)]  // ohne Angabe zählt nur der Name
+    [InlineData("Hyper-V Virtual Ethernet Adapter", null, true)]
+    public void WindowsHardwareFlagDecidesFirst(string description, bool? isHardware, bool expected)
+    {
+        Assert.Equal(expected, NetworkAdapterFilter.IsVirtual(description, isHardware));
+    }
+
     [Fact]
     public void SimpleViewShowsOnlyConnectedRealAdapters()
     {
@@ -34,7 +45,7 @@ public class NetworkAdapterFilterTests
     [Fact]
     public void HiddenInterfacesAreRemovedWhenWindowsListIsKnown()
     {
-        var visible = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "{3D684D69-B7F8-4F1D-BFFD-D89F6865126B}" };
+        var visible = new Dictionary<string, bool?>(StringComparer.OrdinalIgnoreCase) { ["{3D684D69-B7F8-4F1D-BFFD-D89F6865126B}"] = true };
 
         Assert.True(NetworkAdapterFilter.IsRealAdapter("{3d684d69-b7f8-4f1d-bffd-d89f6865126b}", visible));
         Assert.False(NetworkAdapterFilter.IsRealAdapter("{85870F58-6387-4BFD-979F-3916437D2320}", visible)); // Kernel-Debugger

@@ -19,13 +19,20 @@ public static class NetworkAdapterFilter
     public static bool IsVirtual(string description) =>
         VirtualMarkers.Any(marker => description.Contains(marker, StringComparison.OrdinalIgnoreCase));
 
+    /// <summary>
+    /// Windows weiß selbst, ob hinter einem Adapter Hardware steckt (<c>HardwareInterface</c> in MSFT_NetAdapter).
+    /// Das erkennt auch VPN-Adapter, deren Namen keiner kennt. Fehlt die Angabe (<c>null</c>), entscheidet der Gerätename.
+    /// </summary>
+    public static bool IsVirtual(string description, bool? isHardware) =>
+        isHardware == false || IsVirtual(description);
+
     public static bool IsShownInSimpleView(NetworkSample adapter) => adapter.IsConnected && !adapter.IsVirtual;
 
     /// <summary>
     /// .NET liefert unter Windows auch versteckte Schnittstellen, z. B. Filter-Schichten („…-WFP … Filter-0000“) desselben
     /// Adapters mit demselben Datenverkehr. Sichtbar sind nur Adapter, die Windows selbst anzeigt (wie <c>Get-NetAdapter</c>).
-    /// Ist diese Liste nicht verfügbar (<paramref name="visibleIds"/> = null), wird nichts ausgefiltert.
+    /// Ist diese Liste nicht verfügbar (<paramref name="visibleAdapters"/> = null), wird nichts ausgefiltert.
     /// </summary>
-    public static bool IsRealAdapter(string id, IReadOnlySet<string>? visibleIds) =>
-        visibleIds is null || visibleIds.Contains(id);
+    public static bool IsRealAdapter(string id, IReadOnlyDictionary<string, bool?>? visibleAdapters) =>
+        visibleAdapters is null || visibleAdapters.ContainsKey(id);
 }
