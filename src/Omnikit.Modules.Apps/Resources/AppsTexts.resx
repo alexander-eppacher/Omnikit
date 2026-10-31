@@ -93,7 +93,7 @@ Schließe sie vorher, falls sie geöffnet sind. Windows fragt eventuell für ein
   <data name="Outcome_AppInUse" xml:space="preserve"><value>das Programm ist gerade geöffnet – schließen und erneut versuchen</value></data>
   <data name="Outcome_RebootRequiredFirst" xml:space="preserve"><value>Windows muss zuerst neu starten, danach erneut versuchen</value></data>
   <data name="Outcome_Cancelled" xml:space="preserve"><value>abgebrochen, z. B. weil die Windows-Abfrage nach Adminrechten abgelehnt wurde</value></data>
-  <data name="Outcome_BlockedByPolicy" xml:space="preserve"><value>eine Richtlinie deiner Organisation verhindert das</value></data>
+  <data name="Outcome_BlockedByPolicy" xml:space="preserve"><value>Windows hat es nicht erlaubt – meist, weil die Abfrage nach Adminrechten abgelehnt wurde; sonst verhindert eine Richtlinie (z. B. in Schule oder Firma) die Installation</value></data>
   <data name="Outcome_DiskFull" xml:space="preserve"><value>nicht genug Speicherplatz</value></data>
   <data name="Outcome_NotSupportedOnThisPc" xml:space="preserve"><value>gibt es nicht für diesen PC (z. B. andere Windows-Version nötig)</value></data>
   <data name="Outcome_WrongElevation" xml:space="preserve"><value>geht nicht, solange Omnikit mit Adminrechten läuft – Omnikit normal starten</value></data>
