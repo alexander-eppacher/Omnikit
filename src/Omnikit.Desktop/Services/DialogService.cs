@@ -31,9 +31,12 @@ public sealed class DialogService : IDialogService
             return null;
         }
 
+        // Immer in „Dokumente“ starten, nicht im zufälligen Arbeitsordner der App (z. B. C:\Windows\System32).
+        var documents = await owner.StorageProvider.TryGetWellKnownFolderAsync(WellKnownFolder.Documents);
         var file = await owner.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
         {
             SuggestedFileName = suggestedFileName,
+            SuggestedStartLocation = documents,
             DefaultExtension = "json",
             FileTypeChoices = [new FilePickerFileType("JSON") { Patterns = ["*.json"] }],
         });

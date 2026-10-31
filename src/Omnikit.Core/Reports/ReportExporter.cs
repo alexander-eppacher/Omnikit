@@ -1,5 +1,7 @@
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.Unicode;
 using Omnikit.Core.Modules;
 using Omnikit.Core.SystemInfo;
 
@@ -16,6 +18,8 @@ public static class ReportExporter
         WriteIndented = true,
         // Ampelwerte als Text ("Warning") statt als Zahl, damit man die Datei ohne Doku versteht.
         Converters = { new JsonStringEnumConverter() },
+        // Umlaute lesbar als „ü“ statt „\u00FC“. HTML-Sonderzeichen (<, >, &, +) bleiben weiterhin maskiert.
+        Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
     };
 
     public static async Task WriteAsync(

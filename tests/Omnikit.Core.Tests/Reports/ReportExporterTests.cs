@@ -49,6 +49,17 @@ public class ReportExporterTests
     }
 
     [Fact]
+    public async Task UmlautsAreReadableInTheFile()
+    {
+        var report = new ModuleReport("health", [new Finding("Nicht verfügbar", "Größe", Severity.Info, "Laufwerke")]);
+
+        var json = await ExportAsync(report);
+
+        Assert.Contains("Nicht verfügbar", json, StringComparison.Ordinal);
+        Assert.DoesNotContain("\\u00", json, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void FileNameContainsDate()
     {
         Assert.Equal(
