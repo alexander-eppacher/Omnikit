@@ -25,7 +25,7 @@ Programme installieren und aktuell halten, über **winget**, den Paketmanager vo
 ## Voraussetzungen
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
-- Zielsystem: Windows 10 22H2 oder Windows 11. Unter Linux startet die App ebenfalls, zeigt aber Windows-spezifische Werte als „nicht verfügbar“.
+- Zielsystem: Windows 11 (Windows 10 wird nicht mehr unterstützt, siehe Entscheidung 0011). Unter Linux startet die App ebenfalls, zeigt aber Windows-spezifische Werte als „nicht verfügbar“.
 
 ## Bauen, testen, starten
 

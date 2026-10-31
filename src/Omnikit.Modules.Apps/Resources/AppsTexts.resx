@@ -12,7 +12,7 @@
   <data name="NotWindows" xml:space="preserve"><value>Nur unter Windows verfügbar.</value></data>
   <data name="Loading" xml:space="preserve"><value>Suche installierte Programme und Updates …</value></data>
   <data name="Refresh" xml:space="preserve"><value>Erneut suchen</value></data>
-  <data name="WingetMissing" xml:space="preserve"><value>winget fehlt auf diesem PC. Installiere oder aktualisiere im Microsoft Store den „App-Installer“, danach funktioniert diese Seite.</value></data>
+  <data name="WingetMissing" xml:space="preserve"><value>winget fehlt für dieses Benutzerkonto. Bei einem neuen Konto richtet Windows es nach der ersten Anmeldung von selbst ein – das kann einige Minuten dauern. Sonst im Microsoft Store den „App-Installer“ installieren oder aktualisieren. Danach „Erneut suchen“ klicken.</value></data>
   <data name="LoadFailed" xml:space="preserve"><value>Die Programmliste konnte nicht gelesen werden. Details stehen in der Log-Datei.</value></data>
   <data name="LoadFailed_NoNetwork" xml:space="preserve"><value>Keine Verbindung zum Internet. winget braucht eine Verbindung, um Programme und Updates zu finden.</value></data>
 
