@@ -65,6 +65,9 @@
                                             <StackPanel Grid.Column="1" Spacing="2">
                                                 <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextWrapping="Wrap" />
                                                 <SelectableTextBlock Text="{Binding Explanation}" TextWrapping="Wrap" Opacity="0.85" />
+                                                <!-- Rohwerte, nur in der Expertenansicht gefüllt -->
+                                                <SelectableTextBlock Text="{Binding Details}" TextWrapping="Wrap" Opacity="0.6" FontSize="12"
+                                                                     IsVisible="{Binding Details, Converter={x:Static ObjectConverters.IsNotNull}}" />
                                             </StackPanel>
                                         </Grid>
                                     </DataTemplate>

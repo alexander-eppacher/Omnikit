@@ -2,12 +2,12 @@ using System.Management;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
-namespace PcTool.Modules.Health.Sources;
+namespace PcTool.Core.Windows;
 
 /// <summary>
-/// Gemeinsame Helfer für WMI-Abfragen im Health-Modul.
+/// Gemeinsame Helfer für WMI-Abfragen, die alle Module nutzen können.
 /// </summary>
-internal static class Wmi
+public static class Wmi
 {
     /// <summary>Namespace der Windows-Storage-API (MSFT_PhysicalDisk, MSFT_StorageReliabilityCounter).</summary>
     public const string StorageNamespace = @"root\Microsoft\Windows\Storage";

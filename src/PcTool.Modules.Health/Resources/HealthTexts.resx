@@ -12,7 +12,6 @@
   <data name="Category_Storage" xml:space="preserve"><value>Speicherplatz</value></data>
   <data name="Category_Battery" xml:space="preserve"><value>Akku</value></data>
   <data name="Category_Windows" xml:space="preserve"><value>Windows</value></data>
-  <data name="Category_Load" xml:space="preserve"><value>Auslastung</value></data>
   <data name="Common_NotWindows" xml:space="preserve"><value>Nur unter Windows verfügbar.</value></data>
   <data name="Common_NotAvailableTitle" xml:space="preserve"><value>Nicht verfügbar</value></data>
 
@@ -48,9 +47,9 @@
 
   <!-- Akku -->
   <data name="Battery_Capacity_Title" xml:space="preserve"><value>Akku-Kapazität</value></data>
-  <data name="Battery_Capacity_Ok" xml:space="preserve"><value>Der Akku hat noch {0} % seiner ursprünglichen Kapazität ({1} von {2} mWh).</value></data>
-  <data name="Battery_Capacity_Warning" xml:space="preserve"><value>Der Akku hat noch {0} % seiner ursprünglichen Kapazität ({1} von {2} mWh). Die Laufzeit ist spürbar kürzer als neu.</value></data>
-  <data name="Battery_Capacity_Critical" xml:space="preserve"><value>Der Akku hat nur noch {0} % seiner ursprünglichen Kapazität ({1} von {2} mWh). Ein Austausch ist empfehlenswert.</value></data>
+  <data name="Battery_Capacity_Ok" xml:space="preserve"><value>Der Akku hat noch {0} % seiner ursprünglichen Kapazität.</value></data>
+  <data name="Battery_Capacity_Warning" xml:space="preserve"><value>Der Akku hat noch {0} % seiner ursprünglichen Kapazität. Die Laufzeit ist spürbar kürzer als neu.</value></data>
+  <data name="Battery_Capacity_Critical" xml:space="preserve"><value>Der Akku hat nur noch {0} % seiner ursprünglichen Kapazität. Ein Austausch ist empfehlenswert.</value></data>
   <data name="Battery_Cycles_Title" xml:space="preserve"><value>Ladezyklen</value></data>
   <data name="Battery_Cycles_Text" xml:space="preserve"><value>Der Akku wurde {0}-mal vollständig geladen (Ladezyklen).</value></data>
   <data name="Battery_Vm" xml:space="preserve"><value>In einer virtuellen Maschine sind keine Akkudaten verfügbar.</value></data>
@@ -76,13 +75,6 @@
   <data name="Updates_Warning" xml:space="preserve"><value>Verfügbare Updates: {0}, davon Sicherheitsupdates: {1}. Installiere sie bald über Windows Update.</value></data>
   <data name="Updates_Unknown" xml:space="preserve"><value>Updates konnten nicht geprüft werden (z. B. keine Internetverbindung oder Zeitüberschreitung).</value></data>
 
-  <!-- Auslastung -->
-  <data name="Cpu_Title" xml:space="preserve"><value>Prozessor</value></data>
-  <data name="Cpu_Text" xml:space="preserve"><value>{0} % ausgelastet (Momentaufnahme).</value></data>
-  <data name="Memory_Title" xml:space="preserve"><value>Arbeitsspeicher</value></data>
-  <data name="Memory_Ok" xml:space="preserve"><value>{0} % belegt ({1} von {2} nutzbar).</value></data>
-  <data name="Memory_Reserved" xml:space="preserve"><value>Eingebaut sind {0}; ein Teil davon ist für die Grafik oder das System reserviert.</value></data>
-  <data name="Memory_High" xml:space="preserve"><value>{0} % belegt ({1} von {2} nutzbar). Viele offene Programme können den PC verlangsamen.</value></data>
 
   <!-- Aktion: erweiterte Laufwerksdaten mit Adminrechten -->
   <data name="Action_LoadDiskDetails" xml:space="preserve"><value>Erweiterte Laufwerksdaten laden</value></data>
@@ -108,4 +100,20 @@ PcTool liest nur Daten aus und verändert nichts.</value></data>
   <data name="Action_Cancelled" xml:space="preserve"><value>Adminrechte wurden nicht erteilt. Alle anderen Werte funktionieren trotzdem – du kannst es jederzeit erneut versuchen.</value></data>
   <data name="Action_Failed" xml:space="preserve"><value>Die erweiterten Laufwerksdaten konnten nicht gelesen werden. Details stehen in der Log-Datei.</value></data>
   <data name="Action_Unknown" xml:space="preserve"><value>Unbekannte Aktion.</value></data>
+
+  <!-- Rohwerte für die Expertenansicht (werden mit " · " aneinandergereiht) -->
+  <data name="Details_Bus" xml:space="preserve"><value>Anschluss: {0}</value></data>
+  <data name="Details_Type" xml:space="preserve"><value>Typ: {0}</value></data>
+  <data name="Details_Type_Ssd" xml:space="preserve"><value>SSD</value></data>
+  <data name="Details_Type_Hdd" xml:space="preserve"><value>Festplatte (HDD)</value></data>
+  <data name="Details_Size" xml:space="preserve"><value>Größe: {0}</value></data>
+  <data name="Details_Firmware" xml:space="preserve"><value>Firmware: {0}</value></data>
+  <data name="Details_Wear" xml:space="preserve"><value>Verschleiß laut Laufwerk: {0} %</value></data>
+  <data name="Details_TempNow" xml:space="preserve"><value>Aktuell: {0} °C</value></data>
+  <data name="Details_TempMax" xml:space="preserve"><value>TemperatureMax laut Laufwerk: {0} °C</value></data>
+  <data name="Details_ReadErrors" xml:space="preserve"><value>Lesefehler: {0}</value></data>
+  <data name="Details_WriteErrors" xml:space="preserve"><value>Schreibfehler: {0}</value></data>
+  <data name="Details_FileSystem" xml:space="preserve"><value>Dateisystem: {0}</value></data>
+  <data name="Details_DesignCapacity" xml:space="preserve"><value>Auslegungskapazität: {0:N0} mWh</value></data>
+  <data name="Details_FullCapacity" xml:space="preserve"><value>Volle Ladekapazität heute: {0:N0} mWh</value></data>
 </root>

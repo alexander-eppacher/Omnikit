@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 
 namespace PcTool.Core.Settings;
@@ -8,7 +9,12 @@ namespace PcTool.Core.Settings;
 /// </summary>
 public sealed class JsonSettingsStore : ISettingsStore
 {
-    private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        WriteIndented = true,
+        // Auswahlwerte als Text ("Expert") statt als Zahl, damit man die Datei auch von Hand lesen kann.
+        Converters = { new JsonStringEnumConverter() },
+    };
 
     private readonly string _filePath;
     private readonly ILogger<JsonSettingsStore> _logger;

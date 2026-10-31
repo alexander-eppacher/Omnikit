@@ -29,7 +29,8 @@ public static class StorageEvaluator
             Format(HealthTexts.Storage_Title, volume.Name),
             Format(text, Bytes(volume.FreeBytes), Bytes(volume.TotalBytes), freePercent),
             severity,
-            HealthTexts.Category_Storage);
+            HealthTexts.Category_Storage,
+            FormatIf(HealthTexts.Details_FileSystem, volume.FileSystem));
     }
 
     /// <summary>Kritisch unter 5 % ODER unter 5 GB (auch eine große Platte mit 4 GB frei ist praktisch voll).</summary>

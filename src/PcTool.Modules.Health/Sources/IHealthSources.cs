@@ -41,9 +41,3 @@ public interface IUpdateSource
 {
     Task<UpdateStatus?> CheckAsync(CancellationToken cancellationToken);
 }
-
-/// <summary>Momentane Auslastung von CPU und Arbeitsspeicher.</summary>
-public interface ISystemLoadSource
-{
-    SystemLoad Read();
-}

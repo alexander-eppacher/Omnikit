@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Alle Texte der Leistungsseite. {0}, {1} ... werden durch Werte ersetzt. -->
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="PageTitle" xml:space="preserve"><value>Leistung</value></data>
+  <data name="PageSubtitle" xml:space="preserve"><value>Wie viel dein PC gerade zu tun hat. Wird jede Sekunde gemessen, solange diese Seite offen ist.</value></data>
+  <data name="NotWindows" xml:space="preserve"><value>Nur unter Windows verfügbar.</value></data>
+  <data name="NotAvailable" xml:space="preserve"><value>nicht verfügbar</value></data>
+  <data name="ReadFailed" xml:space="preserve"><value>Die Messwerte konnten nicht gelesen werden. Details stehen in der Log-Datei.</value></data>
+
+  <!-- Zusammenfassung oben -->
+  <data name="Summary_Ok" xml:space="preserve"><value>Dein PC hat gerade genug Reserven.</value></data>
+  <data name="Summary_Collecting" xml:space="preserve"><value>Die Werte werden jede Sekunde gemessen. Eine Bewertung gibt es nach 30 Sekunden.</value></data>
+  <data name="Hint_Cpu" xml:space="preserve"><value>Der Prozessor ist seit einer halben Minute fast voll ausgelastet. Programme reagieren dann langsamer – schließe, was du gerade nicht brauchst.</value></data>
+  <data name="Hint_Memory" xml:space="preserve"><value>Der Arbeitsspeicher ist fast voll. Schließe Programme oder Browser-Tabs, die du nicht brauchst.</value></data>
+  <data name="Hint_Disk" xml:space="preserve"><value>Laufwerk {0} ist seit einer halben Minute fast durchgehend beschäftigt, z. B. durch Updates, einen Virenscan oder Kopiervorgänge.</value></data>
+
+  <!-- Wörter für Einsteiger -->
+  <data name="Word_Low" xml:space="preserve"><value>wenig zu tun</value></data>
+  <data name="Word_Medium" xml:space="preserve"><value>gut beschäftigt</value></data>
+  <data name="Word_High" xml:space="preserve"><value>stark ausgelastet</value></data>
+  <data name="Word_Full" xml:space="preserve"><value>am Limit</value></data>
+  <data name="Word_MemoryLow" xml:space="preserve"><value>viel Platz frei</value></data>
+  <data name="Word_MemoryMedium" xml:space="preserve"><value>gut genutzt</value></data>
+  <data name="Word_MemoryFull" xml:space="preserve"><value>fast voll</value></data>
+
+  <!-- Karten -->
+  <data name="Cpu_Title" xml:space="preserve"><value>Prozessor (CPU)</value></data>
+  <data name="Memory_Title" xml:space="preserve"><value>Arbeitsspeicher (RAM)</value></data>
+  <data name="Memory_Reserved" xml:space="preserve"><value>Eingebaut sind {0}; ein Teil davon ist für die Grafik oder das System reserviert.</value></data>
+  <data name="Memory_Value" xml:space="preserve"><value>{0} von {1} belegt</value></data>
+  <data name="Disk_Title" xml:space="preserve"><value>Laufwerk {0}</value></data>
+  <data name="Disk_TitleNumber" xml:space="preserve"><value>Datenträger {0}</value></data>
+  <data name="Disk_Ssd" xml:space="preserve"><value>SSD</value></data>
+  <data name="Disk_Hdd" xml:space="preserve"><value>Festplatte</value></data>
+  <data name="Disk_Value" xml:space="preserve"><value>Lesen {0} · Schreiben {1}</value></data>
+  <data name="Network_Title" xml:space="preserve"><value>Netzwerk: {0}</value></data>
+  <data name="Network_Wireless" xml:space="preserve"><value>WLAN</value></data>
+  <data name="Network_Wired" xml:space="preserve"><value>Kabel</value></data>
+  <data name="Network_Value" xml:space="preserve"><value>Senden {0}
+Empfangen {1}</value></data>
+  <data name="Network_Disconnected" xml:space="preserve"><value>nicht verbunden</value></data>
+  <data name="Gpu_Title" xml:space="preserve"><value>Grafik (GPU)</value></data>
+  <data name="Gpu_None" xml:space="preserve"><value>Keine Grafikkarte mit Messwerten gefunden. In virtuellen Maschinen ist das normal.</value></data>
+
+  <!-- Expertenwerte -->
+  <data name="Expert_Speed" xml:space="preserve"><value>Geschwindigkeit</value></data>
+  <data name="Expert_BaseSpeed" xml:space="preserve"><value>Basisgeschwindigkeit</value></data>
+  <data name="Expert_Sockets" xml:space="preserve"><value>Sockel</value></data>
+  <data name="Expert_Cores" xml:space="preserve"><value>Kerne</value></data>
+  <data name="Expert_Logical" xml:space="preserve"><value>Logische Prozessoren</value></data>
+  <data name="Expert_Virtualization" xml:space="preserve"><value>Virtualisierung</value></data>
+  <data name="Expert_VirtualizationOn" xml:space="preserve"><value>Aktiviert</value></data>
+  <data name="Expert_VirtualizationOff" xml:space="preserve"><value>Deaktiviert</value></data>
+  <data name="Expert_HypervisorPresent" xml:space="preserve"><value>Hypervisor erkannt</value></data>
+  <data name="Expert_L1" xml:space="preserve"><value>L1-Cache</value></data>
+  <data name="Expert_L2" xml:space="preserve"><value>L2-Cache</value></data>
+  <data name="Expert_L3" xml:space="preserve"><value>L3-Cache</value></data>
+  <data name="Expert_Processes" xml:space="preserve"><value>Prozesse</value></data>
+  <data name="Expert_Threads" xml:space="preserve"><value>Threads</value></data>
+  <data name="Expert_Handles" xml:space="preserve"><value>Handles</value></data>
+  <data name="Expert_Uptime" xml:space="preserve"><value>Betriebszeit</value></data>
+  <data name="Expert_Available" xml:space="preserve"><value>Verfügbar</value></data>
+  <data name="Expert_Usable" xml:space="preserve"><value>Nutzbar</value></data>
+  <data name="Expert_Installed" xml:space="preserve"><value>Eingebaut</value></data>
+  <data name="Expert_Committed" xml:space="preserve"><value>Zugesichert</value></data>
+  <data name="Expert_MemorySpeed" xml:space="preserve"><value>Geschwindigkeit</value></data>
+  <data name="Expert_MemorySpeedValue" xml:space="preserve"><value>{0} MT/s</value></data>
+  <data name="Expert_Slots" xml:space="preserve"><value>Steckplätze belegt</value></data>
+  <data name="Expert_SlotsValue" xml:space="preserve"><value>{0} von {1}</value></data>
+  <data name="Expert_Model" xml:space="preserve"><value>Modell</value></data>
+  <data name="Expert_Type" xml:space="preserve"><value>Typ</value></data>
+  <data name="Expert_ActiveTime" xml:space="preserve"><value>Aktive Zeit</value></data>
+  <data name="Expert_Read" xml:space="preserve"><value>Lesen</value></data>
+  <data name="Expert_Write" xml:space="preserve"><value>Schreiben</value></data>
+  <data name="Expert_Adapter" xml:space="preserve"><value>Adapter</value></data>
+  <data name="Expert_LinkSpeed" xml:space="preserve"><value>Verbindungsgeschwindigkeit</value></data>
+  <data name="Expert_Send" xml:space="preserve"><value>Senden</value></data>
+  <data name="Expert_Receive" xml:space="preserve"><value>Empfangen</value></data>
+  <data name="Expert_IpAddresses" xml:space="preserve"><value>IP-Adressen</value></data>
+  <data name="Expert_Virtual" xml:space="preserve"><value>Virtueller Adapter</value></data>
+  <data name="Expert_DedicatedMemory" xml:space="preserve"><value>Dedizierter Grafikspeicher</value></data>
+  <data name="Expert_SharedMemory" xml:space="preserve"><value>Gemeinsamer Grafikspeicher</value></data>
+  <data name="Expert_MemoryUsedOf" xml:space="preserve"><value>{0} von {1}</value></data>
+  <data name="Expert_Temperature" xml:space="preserve"><value>Temperatur</value></data>
+  <data name="Expert_TemperatureValue" xml:space="preserve"><value>{0:0} °C</value></data>
+  <data name="Expert_Yes" xml:space="preserve"><value>Ja</value></data>
+  <data name="Expert_Cores_Title" xml:space="preserve"><value>Auslastung je logischem Prozessor</value></data>
+</root>

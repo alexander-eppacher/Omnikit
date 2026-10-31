@@ -22,7 +22,7 @@ public class HealthModuleTests
     private readonly FakeSources _sources = new();
 
     private HealthModule CreateModule() => new(
-        _sources, _sources, _sources, _sources, _sources, _sources, _sources, _sources,
+        _sources, _sources, _sources, _sources, _sources, _sources, _sources,
         TimeProvider.System, NullLogger<HealthModule>.Instance);
 
     private static IEnumerable<Finding> InCategory(ModuleReport report, string category) =>

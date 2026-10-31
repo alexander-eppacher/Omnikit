@@ -20,16 +20,21 @@ public partial class ModulePageViewModel : ViewModelBase
     private readonly SystemContext _context;
     private readonly IDialogService _dialogs;
     private readonly TimeProvider _time;
+    private readonly ViewModeState _viewMode;
     private readonly ILogger _logger;
     private ModuleReport? _report;
 
-    public ModulePageViewModel(IModule module, SystemContext context, IDialogService dialogs, TimeProvider time, ILogger logger)
+    public ModulePageViewModel(IModule module, SystemContext context, IDialogService dialogs, TimeProvider time, ViewModeState viewMode, ILogger logger)
     {
         _module = module;
         _context = context;
         _dialogs = dialogs;
         _time = time;
+        _viewMode = viewMode;
         _logger = logger;
+
+        // Schalter "Einfach / Experte" umgelegt: denselben Bericht neu anzeigen, ohne erneut zu prüfen.
+        _viewMode.PropertyChanged += (_, _) => ShowFindings();
 
         // Erste Prüfung startet sofort im Hintergrund.
         RefreshCommand.Execute(null);
@@ -142,17 +147,28 @@ public partial class ModulePageViewModel : ViewModelBase
     private void ShowReport(ModuleReport report)
     {
         OverallSeverity = report.OverallSeverity;
-
-        Groups.Clear();
-        foreach (var group in report.Findings.GroupBy(finding => finding.Category ?? string.Empty))
-        {
-            Groups.Add(new FindingGroupViewModel(group.Key, group.ToList()));
-        }
+        ShowFindings();
 
         Actions.Clear();
         foreach (var action in _module.GetActions(report))
         {
             Actions.Add(new ActionViewModel(action.DisplayName, new AsyncRelayCommand(() => ExecuteActionAsync(action), () => !IsBusy)));
+        }
+    }
+
+    /// <summary>Zeigt die Befunde passend zur Ansicht. Der Export enthält immer alle Befunde (siehe <see cref="ExportAsync"/>).</summary>
+    private void ShowFindings()
+    {
+        Groups.Clear();
+        if (_report is null)
+        {
+            return;
+        }
+
+        var visible = ViewModeFilter.Apply(_report.Findings, _viewMode.Mode);
+        foreach (var group in visible.GroupBy(finding => finding.Category ?? string.Empty))
+        {
+            Groups.Add(new FindingGroupViewModel(group.Key, group.ToList()));
         }
     }
 }

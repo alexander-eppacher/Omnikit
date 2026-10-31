@@ -2,6 +2,7 @@ using System.Management;
 using System.Runtime.Versioning;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
+using PcTool.Core.Windows;
 using PcTool.Modules.Health.Data;
 
 namespace PcTool.Modules.Health.Sources;

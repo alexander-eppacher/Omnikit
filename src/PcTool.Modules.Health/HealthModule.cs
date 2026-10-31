@@ -11,7 +11,8 @@ using PcTool.Modules.Health.Sources;
 namespace PcTool.Modules.Health;
 
 /// <summary>
-/// Health-Modul: prüft Laufwerke, Speicherplatz, Akku, Windows-Zustand und Auslastung.
+/// Health-Modul: prüft Laufwerke, Speicherplatz, Akku und Windows-Zustand.
+/// Die Auslastung (CPU, RAM …) steht auf der eigenen Seite „Leistung“ (PcTool.Modules.Performance).
 /// Ändert nichts am System. Einzige Aktion: Laufwerksdetails mit Adminrechten nachladen.
 /// </summary>
 public sealed class HealthModule : IModule
@@ -24,7 +25,6 @@ public sealed class HealthModule : IModule
     private readonly IBatterySource _battery;
     private readonly IWindowsStateSource _windowsState;
     private readonly IUpdateSource _updates;
-    private readonly ISystemLoadSource _load;
     private readonly IElevationRunner _elevation;
     private readonly TimeProvider _time;
     private readonly ILogger<HealthModule> _logger;
@@ -43,7 +43,6 @@ public sealed class HealthModule : IModule
         IBatterySource battery,
         IWindowsStateSource windowsState,
         IUpdateSource updates,
-        ISystemLoadSource load,
         IElevationRunner elevation,
         TimeProvider time,
         ILogger<HealthModule> logger)
@@ -54,7 +53,6 @@ public sealed class HealthModule : IModule
         _battery = battery;
         _windowsState = windowsState;
         _updates = updates;
-        _load = load;
         _elevation = elevation;
         _time = time;
         _logger = logger;
@@ -84,7 +82,6 @@ public sealed class HealthModule : IModule
         {
             findings.AddRange(WindowsStateEvaluator.Evaluate(await Task.Run(_windowsState.Read, cancellationToken), _time.GetLocalNow()));
             findings.Add(WindowsStateEvaluator.EvaluateUpdates(await updatesTask));
-            findings.AddRange(LoadEvaluator.Evaluate(await Task.Run(_load.Read, cancellationToken)));
         }
         else
         {

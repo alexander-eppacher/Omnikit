@@ -6,10 +6,15 @@ namespace PcTool.Modules.Health.Data;
 /// </summary>
 /// <param name="DeviceId">Gehört zu <see cref="DiskInfo.DeviceId"/>.</param>
 /// <param name="WearPercent">Verschleiß in Prozent: 0 = neu, 100 = geschätzte Lebensdauer erreicht (kann darüber liegen).</param>
+/// <param name="TemperatureMaxCelsius">
+/// "TemperatureMax" laut Laufwerk. Je nach Hersteller der höchste gemessene Wert oder die Warnschwelle,
+/// deshalb nur als Rohwert in der Expertenansicht und nicht bewertet.
+/// </param>
 public sealed record DiskReliability(
     string DeviceId,
     int? TemperatureCelsius,
     int? WearPercent,
     long? PowerOnHours,
     long? ReadErrorsTotal,
-    long? WriteErrorsTotal);
+    long? WriteErrorsTotal,
+    int? TemperatureMaxCelsius = null);

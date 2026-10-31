@@ -2,7 +2,15 @@
 
 Ein modulares Tool, das Windows-PCs, Laptops und virtuelle Maschinen **einrichtet, aktuell hält und auf ihren Zustand prüft** – mit einer einfachen Oberfläche, ohne IT-Abteilung.
 
-> **Status:** Phase 1 (Gerätezustand). Die App zeigt Systeminformationen und den Zustand von Laufwerken, Akku und Windows an. Sie verändert nichts am System.
+> **Status:** Zwischenschritt 1.5 (Ansichten und Leistung). Die App zeigt Systeminformationen, den Zustand von Laufwerken, Akku und Windows sowie die Live-Auslastung von CPU, Arbeitsspeicher, Laufwerken, Netzwerk und Grafik. Sie verändert nichts am System.
+
+## Ansichten „Einfach“ und „Experte“
+
+Unten in der Navigationsleiste lässt sich die Ansicht umschalten. **Einfach** zeigt Ampel, verständliche Sätze und das Wichtigste. **Experte** zeigt zusätzlich Fachwerte und Rohdaten, z. B. Firmware und Fehlerzähler der Laufwerke, Taktfrequenz, Caches, Prozesse/Threads/Handles, Verlauf je Prozessorkern oder IP-Adressen. Beide Ansichten zeigen dieselben Messwerte und dieselbe Ampel. Die Wahl wird gespeichert.
+
+## Seite „Leistung“
+
+Zeigt jede Sekunde die Auslastung wie der Task-Manager, mit Verlauf der letzten Minute. Gemessen wird nur, solange die Seite geöffnet ist. Bewertet wird der Durchschnitt über 30 Sekunden: Erst wenn Prozessor, Arbeitsspeicher oder ein Laufwerk eine halbe Minute lang zu mindestens 90 % ausgelastet sind, erscheint ein Hinweis. Kurze Spitzen lösen keinen Hinweis aus. Grafik und Netzwerk werden nur angezeigt, nicht bewertet. IP-Adressen werden nur angezeigt, nie gespeichert, geloggt oder exportiert.
 
 ## Voraussetzungen
 
@@ -48,10 +56,12 @@ PcTool startet immer **ohne** Adminrechte. Nur für Laufwerksdetails (Verschlei�
 | Ordner | Inhalt |
 |---|---|
 | `src/PcTool.Core` | Modul-Schnittstelle, Systemerkennung, Einstellungen (keine UI) |
-| `src/PcTool.Modules.Health` | Modul „Gerätezustand“: Laufwerke, Speicherplatz, Akku, Windows, Auslastung |
+| `src/PcTool.Modules.Health` | Modul „Gerätezustand“: Laufwerke, Speicherplatz, Akku, Windows |
+| `src/PcTool.Modules.Performance` | Seite „Leistung“: Live-Messung von CPU, RAM, Laufwerken, Netzwerk und Grafik |
 | `src/PcTool.Desktop` | Avalonia-Oberfläche |
 | `tests/PcTool.Core.Tests` | Unit-Tests für den Kern |
 | `tests/PcTool.Modules.Health.Tests` | Unit-Tests für das Health-Modul (u. a. Ampel-Grenzwerte) |
+| `tests/PcTool.Modules.Performance.Tests` | Unit-Tests für die Leistungsseite (Bewertung, Verlauf, Instanznamen) |
 | `docs/decisions` | Wichtige Entscheidungen mit Begründung |
 
 ## Lizenz

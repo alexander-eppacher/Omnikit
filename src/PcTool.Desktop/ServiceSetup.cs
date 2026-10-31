@@ -9,6 +9,7 @@ using PcTool.Desktop.Services;
 using PcTool.Desktop.ViewModels;
 using PcTool.Modules.Health;
 using PcTool.Modules.Health.Sources;
+using PcTool.Modules.Performance.Sources;
 using Serilog;
 
 namespace PcTool.Desktop;
@@ -45,13 +46,23 @@ internal static class ServiceSetup
         services.AddSingleton<IBatterySource, PowercfgBatterySource>();
         services.AddSingleton<IWindowsStateSource, WindowsStateSource>();
         services.AddSingleton<IUpdateSource, WindowsUpdateSource>();
-        services.AddSingleton<ISystemLoadSource, WindowsLoadSource>();
+
+        // Seite "Leistung": Messquellen und die Seite selbst (braucht den SystemContext, der erst beim Start ermittelt wird)
+        services.AddSingleton<IPerformanceSource, WindowsPerformanceSource>();
+        services.AddSingleton<IHardwareInventorySource, WindowsHardwareInventorySource>();
+        services.AddSingleton<Func<SystemContext, PerformancePageViewModel>>(provider => context => new PerformancePageViewModel(
+            provider.GetRequiredService<IPerformanceSource>(),
+            provider.GetRequiredService<IHardwareInventorySource>(),
+            provider.GetRequiredService<ViewModeState>(),
+            context,
+            provider.GetRequiredService<ILogger<PerformancePageViewModel>>()));
 
         // Module: Reihenfolge = Reihenfolge in der Navigationsleiste
         services.AddSingleton<IModule, HealthModule>();
         services.AddSingleton<ModuleRegistry>();
 
         services.AddSingleton<IDialogService, DialogService>();
+        services.AddSingleton<ViewModeState>();
         services.AddTransient<MainViewModel>();
 
         return services.BuildServiceProvider();

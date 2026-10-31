@@ -1,5 +1,6 @@
 using System.Management;
 using Microsoft.Extensions.Logging;
+using PcTool.Core.Windows;
 using PcTool.Modules.Health.Data;
 
 namespace PcTool.Modules.Health.Sources;
@@ -26,13 +27,15 @@ public sealed class WindowsDiskSource : IDiskSource, IDiskReliabilitySource
 
         try
         {
-            return Wmi.Query(Wmi.StorageNamespace, "SELECT DeviceId, FriendlyName, MediaType, Size, HealthStatus FROM MSFT_PhysicalDisk")
+            return Wmi.Query(Wmi.StorageNamespace, "SELECT DeviceId, FriendlyName, MediaType, Size, HealthStatus, BusType, FirmwareVersion FROM MSFT_PhysicalDisk")
                 .Select(row => new DiskInfo(
                     row["DeviceId"] as string ?? "?",
                     (row["FriendlyName"] as string)?.Trim() ?? "?",
                     ToMediaType(Wmi.ToLong(row["MediaType"])),
                     Wmi.ToLong(row["Size"]),
-                    ToHealthStatus(Wmi.ToLong(row["HealthStatus"]))))
+                    ToHealthStatus(Wmi.ToLong(row["HealthStatus"])),
+                    ToBusName(Wmi.ToLong(row["BusType"])),
+                    (row["FirmwareVersion"] as string)?.Trim()))
                 .ToList();
         }
         catch (Exception ex) when (Wmi.IsExpectedError(ex))
@@ -73,7 +76,8 @@ public sealed class WindowsDiskSource : IDiskSource, IDiskReliabilitySource
                                 (int?)Wmi.ToLong(counter["Wear"]),
                                 Wmi.ToLong(counter["PowerOnHours"]),
                                 Wmi.ToLong(counter["ReadErrorsTotal"]),
-                                Wmi.ToLong(counter["WriteErrorsTotal"])));
+                                Wmi.ToLong(counter["WriteErrorsTotal"]),
+                                (int?)Wmi.ToLong(counter["TemperatureMax"])));
                         }
                     }
                 }
@@ -92,6 +96,20 @@ public sealed class WindowsDiskSource : IDiskSource, IDiskReliabilitySource
         3 => DiskMediaType.Hdd,
         4 => DiskMediaType.Ssd,
         _ => DiskMediaType.Unknown,
+    };
+
+    /// <summary>Anschluss laut MSFT_PhysicalDisk.BusType. Seltene Werte (z. B. Fibre Channel) bleiben leer.</summary>
+    public static string? ToBusName(long? value) => value switch
+    {
+        1 => "SCSI",
+        3 => "ATA",
+        7 => "USB",
+        8 => "RAID",
+        10 => "SAS",
+        11 => "SATA",
+        12 => "SD",
+        17 => "NVMe",
+        _ => null,
     };
 
     private static DiskHealthStatus ToHealthStatus(long? value) => value switch

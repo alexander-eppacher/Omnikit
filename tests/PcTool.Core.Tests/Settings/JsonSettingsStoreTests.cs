@@ -41,6 +41,27 @@ public sealed class JsonSettingsStoreTests : IDisposable
     }
 
     [Fact]
+    public void ViewModeIsSavedAsTextAndReadBack()
+    {
+        var store = CreateStore();
+
+        store.Save(new AppSettings { ViewMode = ViewMode.Expert });
+
+        Assert.Contains("\"Expert\"", File.ReadAllText(SettingsPath), StringComparison.Ordinal);
+        Assert.Equal(ViewMode.Expert, store.Load().ViewMode);
+    }
+
+    [Fact]
+    public void OldFileWithoutViewModeStartsInSimpleView()
+    {
+        // So sah die Datei vor Zwischenschritt 1.5 aus.
+        Directory.CreateDirectory(Path.GetDirectoryName(SettingsPath)!);
+        File.WriteAllText(SettingsPath, """{ "SchemaVersion": 1 }""");
+
+        Assert.Equal(ViewMode.Simple, CreateStore().Load().ViewMode);
+    }
+
+    [Fact]
     public void LoadReturnsDefaultsWhenFileIsBroken()
     {
         Directory.CreateDirectory(Path.GetDirectoryName(SettingsPath)!);

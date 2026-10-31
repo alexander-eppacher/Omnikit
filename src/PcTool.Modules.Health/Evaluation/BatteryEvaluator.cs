@@ -29,7 +29,9 @@ public static class BatteryEvaluator
                 Severity.Warning => HealthTexts.Battery_Capacity_Warning,
                 _ => HealthTexts.Battery_Capacity_Ok,
             };
-            findings.Add(new Finding(HealthTexts.Battery_Capacity_Title, Format(text, capacityPercent, full, design), severity, category));
+            // Die mWh-Werte sagen Einsteigern wenig: Sie stehen nur in der Expertenansicht.
+            var details = Details(Format(HealthTexts.Details_DesignCapacity, design), Format(HealthTexts.Details_FullCapacity, full));
+            findings.Add(new Finding(HealthTexts.Battery_Capacity_Title, Format(text, capacityPercent), severity, category, details));
         }
 
         if (battery.CycleCount is int cycles and > 0)

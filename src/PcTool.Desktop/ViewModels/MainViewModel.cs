@@ -17,6 +17,7 @@ public partial class MainViewModel : ViewModelBase
     private readonly ModuleRegistry _moduleRegistry;
     private readonly IDialogService _dialogs;
     private readonly TimeProvider _time;
+    private readonly Func<SystemContext, PerformancePageViewModel> _createPerformancePage;
     private readonly ILoggerFactory _loggerFactory;
     private readonly ILogger<MainViewModel> _logger;
 
@@ -25,8 +26,12 @@ public partial class MainViewModel : ViewModelBase
         ModuleRegistry moduleRegistry,
         IDialogService dialogs,
         TimeProvider time,
+        ViewModeState viewMode,
+        Func<SystemContext, PerformancePageViewModel> createPerformancePage,
         ILoggerFactory loggerFactory)
     {
+        _createPerformancePage = createPerformancePage;
+        ViewMode = viewMode;
         _contextBuilder = contextBuilder;
         _moduleRegistry = moduleRegistry;
         _dialogs = dialogs;
@@ -34,6 +39,9 @@ public partial class MainViewModel : ViewModelBase
         _loggerFactory = loggerFactory;
         _logger = loggerFactory.CreateLogger<MainViewModel>();
     }
+
+    /// <summary>Schalter "Einfach / Experte" unten in der Navigationsleiste.</summary>
+    public ViewModeState ViewMode { get; }
 
     public ObservableCollection<NavigationItem> NavigationItems { get; } = [];
 
@@ -57,9 +65,11 @@ public partial class MainViewModel : ViewModelBase
             NavigationItems.Add(new NavigationItem(Strings.Nav_Overview, new OverviewViewModel(context)));
             foreach (var module in _moduleRegistry.GetSupported(context))
             {
-                var page = new ModulePageViewModel(module, context, _dialogs, _time, _loggerFactory.CreateLogger<ModulePageViewModel>());
+                var page = new ModulePageViewModel(module, context, _dialogs, _time, ViewMode, _loggerFactory.CreateLogger<ModulePageViewModel>());
                 NavigationItems.Add(new NavigationItem(module.DisplayName, page));
             }
+
+            NavigationItems.Add(new NavigationItem(Strings.Nav_Performance, _createPerformancePage(context)));
 
             SelectedItem = NavigationItems[0];
         }
@@ -74,6 +84,16 @@ public partial class MainViewModel : ViewModelBase
         {
             IsLoading = false;
         }
+    }
+
+    /// <summary>Beim Beenden: laufende Messungen stoppen.</summary>
+    public void Shutdown() => (SelectedItem?.Page as IActivatablePage)?.Deactivate();
+
+    // Seitenwechsel: Die alte Seite hört auf zu messen, die neue fängt an (nur Seiten mit IActivatablePage).
+    partial void OnSelectedItemChanged(NavigationItem? oldValue, NavigationItem? newValue)
+    {
+        (oldValue?.Page as IActivatablePage)?.Deactivate();
+        (newValue?.Page as IActivatablePage)?.Activate();
     }
 
     /// <summary>Schreibt die Systeminfos ins Log. Die Seriennummer bewusst nicht (Datenschutz).</summary>

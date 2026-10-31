@@ -16,6 +16,11 @@
 
   <data name="App_Title" xml:space="preserve"><value>PcTool</value></data>
   <data name="Nav_Overview" xml:space="preserve"><value>Übersicht</value></data>
+  <data name="ViewMode_Label" xml:space="preserve"><value>Ansicht</value></data>
+  <data name="ViewMode_Simple" xml:space="preserve"><value>Einfach</value></data>
+  <data name="ViewMode_Expert" xml:space="preserve"><value>Experte</value></data>
+  <data name="ViewMode_Tooltip" xml:space="preserve"><value>Die Expertenansicht zeigt zusätzlich Fachwerte und Rohdaten, z. B. Firmware, Fehlerzähler oder Betriebsstunden.</value></data>
+  <data name="Nav_Performance" xml:space="preserve"><value>Leistung</value></data>
   <data name="Main_Loading" xml:space="preserve"><value>Systeminformationen werden ermittelt …</value></data>
   <data name="Main_LoadError" xml:space="preserve"><value>Die Systeminformationen konnten nicht ermittelt werden. Technische Details stehen in der Log-Datei.</value></data>
 

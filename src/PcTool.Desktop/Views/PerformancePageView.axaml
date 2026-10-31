@@ -1,0 +1,111 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:PcTool.Desktop.ViewModels"
+             xmlns:ctl="using:PcTool.Desktop.Controls"
+             xmlns:conv="using:PcTool.Desktop.Converters"
+             xmlns:text="using:PcTool.Modules.Performance.Resources"
+             x:Class="PcTool.Desktop.Views.PerformancePageView"
+             x:DataType="vm:PerformancePageViewModel">
+
+    <DockPanel>
+        <!-- Kopf: Titel und Zusammenfassung mit Ampel -->
+        <StackPanel DockPanel.Dock="Top" Spacing="8" Margin="0,0,0,16">
+            <TextBlock Text="{x:Static text:PerformanceTexts.PageTitle}" FontSize="24" FontWeight="SemiBold" />
+            <TextBlock Text="{x:Static text:PerformanceTexts.PageSubtitle}" Opacity="0.7" TextWrapping="Wrap" />
+
+            <TextBlock Text="{x:Static text:PerformanceTexts.NotWindows}" IsVisible="{Binding !IsSupported}" Margin="0,8,0,0" />
+
+            <Grid ColumnDefinitions="Auto,*" Margin="0,8,0,0"
+                  IsVisible="{Binding SummaryText, Converter={x:Static ObjectConverters.IsNotNull}}">
+                <Ellipse Grid.Column="0" Width="16" Height="16" Margin="0,2,10,0" VerticalAlignment="Top"
+                         Fill="{Binding SummarySeverity, Converter={x:Static conv:SeverityConverters.ToBrush}}" />
+                <TextBlock Grid.Column="1" Text="{Binding SummaryText}" FontWeight="SemiBold" TextWrapping="Wrap" />
+            </Grid>
+
+            <TextBlock Text="{Binding ErrorMessage}" TextWrapping="Wrap"
+                       IsVisible="{Binding ErrorMessage, Converter={x:Static ObjectConverters.IsNotNull}}" />
+        </StackPanel>
+
+        <ScrollViewer>
+            <StackPanel Spacing="12" Margin="0,0,12,16">
+                <ItemsControl ItemsSource="{Binding Cards}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:UsageCardViewModel">
+                            <Border IsVisible="{Binding IsVisible}" Margin="0,0,0,12" Padding="16" CornerRadius="8"
+                                    BorderThickness="1" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}">
+                                <StackPanel Spacing="12">
+                                    <Grid ColumnDefinitions="240,*">
+                                        <!-- Links: Name, großer Wert, Wort für Einsteiger -->
+                                        <StackPanel Grid.Column="0" Spacing="2">
+                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                <Ellipse Width="12" Height="12" VerticalAlignment="Center"
+                                                         IsVisible="{Binding Severity, Converter={x:Static ObjectConverters.IsNotNull}}"
+                                                         Fill="{Binding Severity, Converter={x:Static conv:SeverityConverters.ToBrush}}"
+                                                         ToolTip.Tip="{Binding Severity, Converter={x:Static conv:SeverityConverters.ToText}}" />
+                                                <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap" />
+                                            </StackPanel>
+                                            <TextBlock Text="{Binding Subtitle}" Opacity="0.7" FontSize="12" TextWrapping="Wrap"
+                                                       IsVisible="{Binding Subtitle, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                                            <TextBlock Text="{Binding ValueText}" FontSize="28" FontWeight="SemiBold" Margin="0,4,0,0" />
+                                            <TextBlock Text="{Binding Word}" Opacity="0.85"
+                                                       IsVisible="{Binding Word, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                                            <TextBlock Text="{Binding DetailText}" Opacity="0.7" FontSize="12" TextWrapping="Wrap"
+                                                       IsVisible="{Binding DetailText, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                                        </StackPanel>
+
+                                        <!-- Rechts: Verlauf der letzten Minute -->
+                                        <ctl:UsageGraph Grid.Column="1" MinHeight="90" Margin="16,0,0,0"
+                                                        Values="{Binding History}" Maximum="{Binding GraphMaximum}" />
+                                    </Grid>
+
+                                    <!-- Expertenwerte -->
+                                    <ItemsControl ItemsSource="{Binding ExpertRows}" IsVisible="{Binding ShowExpert}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel Orientation="Horizontal" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:ExpertRow">
+                                                <StackPanel Width="200" Margin="0,0,12,8">
+                                                    <TextBlock Text="{Binding Label}" FontSize="12" Opacity="0.6" />
+                                                    <SelectableTextBlock Text="{Binding Value}" TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                    <!-- Verlauf je logischem Prozessor (nur Experten, nur Prozessor) -->
+                                    <StackPanel Spacing="6" IsVisible="{Binding ShowCores}">
+                                        <TextBlock Text="{x:Static text:PerformanceTexts.Expert_Cores_Title}" FontSize="12" Opacity="0.6" />
+                                        <ItemsControl ItemsSource="{Binding Cores}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel Orientation="Horizontal" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="vm:CoreGraph">
+                                                    <ctl:UsageGraph Width="96" Height="48" Margin="0,0,6,6" Values="{Binding Values}" />
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- Keine Grafikkarte mit Messwerten (z. B. in einer VM) -->
+                <Border IsVisible="{Binding ShowNoGpu}" Padding="16" CornerRadius="8"
+                        BorderThickness="1" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}">
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="{x:Static text:PerformanceTexts.Gpu_Title}" FontSize="16" FontWeight="SemiBold" />
+                        <TextBlock Text="{x:Static text:PerformanceTexts.Gpu_None}" Opacity="0.7" TextWrapping="Wrap" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

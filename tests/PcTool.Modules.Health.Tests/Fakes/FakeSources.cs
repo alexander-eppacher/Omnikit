@@ -9,7 +9,7 @@ namespace PcTool.Modules.Health.Tests.Fakes;
 /// </summary>
 internal sealed class FakeSources :
     IDiskSource, IDiskReliabilitySource, IVolumeSource, IBatterySource,
-    IWindowsStateSource, IUpdateSource, ISystemLoadSource, IElevationRunner
+    IWindowsStateSource, IUpdateSource, IElevationRunner
 {
     public List<DiskInfo> Disks { get; set; } = [new DiskInfo("0", "Test-SSD", DiskMediaType.Ssd, 512_000_000_000, DiskHealthStatus.Healthy)];
 
@@ -20,7 +20,6 @@ internal sealed class FakeSources :
     public List<BatteryInfo>? Batteries { get; set; } = [new BatteryInfo("Test", 45000, 42090, 179)];
     public WindowsState WindowsState { get; set; } = new(DateTimeOffset.Now.AddDays(-1), false, true);
     public UpdateStatus? Updates { get; set; } = new(0, 0);
-    public SystemLoad Load { get; set; } = new(10, 16L * 1024 * 1024 * 1024, 8L * 1024 * 1024 * 1024);
 
     /// <summary>Was der Hilfsprozess mit Adminrechten zurückgibt.</summary>
     public ElevationResult ElevationResult { get; set; } = new(ElevationStatus.Cancelled);
@@ -39,8 +38,6 @@ internal sealed class FakeSources :
     WindowsState IWindowsStateSource.Read() => WindowsState;
 
     public Task<UpdateStatus?> CheckAsync(CancellationToken cancellationToken) => Task.FromResult(Updates);
-
-    SystemLoad ISystemLoadSource.Read() => Load;
 
     public Task<ElevationResult> RunAsync(string operationId, CancellationToken cancellationToken)
     {

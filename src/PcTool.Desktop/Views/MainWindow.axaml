@@ -23,6 +23,16 @@
                            Text="{x:Static res:Strings.App_Title}"
                            FontSize="20" FontWeight="SemiBold"
                            Margin="12,8,12,16" />
+
+                <!-- Schalter "Einfach / Experte" für die ganze App -->
+                <StackPanel DockPanel.Dock="Bottom" Margin="12,8" Spacing="2"
+                            ToolTip.Tip="{x:Static res:Strings.ViewMode_Tooltip}">
+                    <TextBlock Text="{x:Static res:Strings.ViewMode_Label}" Opacity="0.7" />
+                    <ToggleSwitch IsChecked="{Binding ViewMode.IsExpert}"
+                                  OnContent="{x:Static res:Strings.ViewMode_Expert}"
+                                  OffContent="{x:Static res:Strings.ViewMode_Simple}" />
+                </StackPanel>
+
                 <ListBox ItemsSource="{Binding NavigationItems}"
                          SelectedItem="{Binding SelectedItem}">
                     <ListBox.ItemTemplate>

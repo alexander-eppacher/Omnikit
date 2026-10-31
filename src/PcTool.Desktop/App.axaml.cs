@@ -3,7 +3,6 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using PcTool.Core.Settings;
 using PcTool.Desktop.ViewModels;
 using PcTool.Desktop.Views;
 
@@ -25,15 +24,14 @@ public partial class App : Application
             _services = ServiceSetup.Build();
             _services.GetRequiredService<ILogger<App>>().LogInformation("PcTool gestartet");
 
-            var settingsStore = _services.GetRequiredService<ISettingsStore>();
-            var settings = settingsStore.Load();
-
             var mainViewModel = _services.GetRequiredService<MainViewModel>();
             desktop.MainWindow = new MainWindow { DataContext = mainViewModel };
 
+            // Einstellungen werden dort gespeichert, wo sie sich ändern (z. B. ViewModeState), nicht hier beim Beenden:
+            // Sonst würde der Stand vom Programmstart spätere Änderungen wieder überschreiben.
             desktop.Exit += (_, _) =>
             {
-                settingsStore.Save(settings);
+                mainViewModel.Shutdown();
                 _services.Dispose();
             };
 

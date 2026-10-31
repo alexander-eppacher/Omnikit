@@ -25,7 +25,7 @@ public sealed class VolumeSource : IVolumeSource
             {
                 if (drive.DriveType == DriveType.Fixed && drive.IsReady && drive.TotalSize > 0)
                 {
-                    volumes.Add(new VolumeInfo(drive.Name, drive.TotalSize, drive.AvailableFreeSpace));
+                    volumes.Add(new VolumeInfo(drive.Name, drive.TotalSize, drive.AvailableFreeSpace, drive.DriveFormat));
                 }
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)

@@ -20,4 +20,13 @@ public enum DiskHealthStatus
 /// </summary>
 /// <param name="DeviceId">Windows-Nummer des Laufwerks, z. B. "0".</param>
 /// <param name="Name">Anzeigename, z. B. "Samsung SSD 980 PRO 1TB".</param>
-public sealed record DiskInfo(string DeviceId, string Name, DiskMediaType MediaType, long? SizeBytes, DiskHealthStatus HealthStatus);
+/// <param name="BusType">Anschluss, z. B. "NVMe", "SATA" oder "USB" (nur Expertenansicht).</param>
+/// <param name="FirmwareVersion">Firmware-Stand des Laufwerks (nur Expertenansicht).</param>
+public sealed record DiskInfo(
+    string DeviceId,
+    string Name,
+    DiskMediaType MediaType,
+    long? SizeBytes,
+    DiskHealthStatus HealthStatus,
+    string? BusType = null,
+    string? FirmwareVersion = null);

@@ -39,5 +39,6 @@
   <ItemGroup>
     <ProjectReference Include="..\PcTool.Core\PcTool.Core.csproj" />
     <ProjectReference Include="..\PcTool.Modules.Health\PcTool.Modules.Health.csproj" />
+    <ProjectReference Include="..\PcTool.Modules.Performance\PcTool.Modules.Performance.csproj" />
   </ItemGroup>
 </Project>
