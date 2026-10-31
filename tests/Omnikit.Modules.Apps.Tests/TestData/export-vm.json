@@ -1,0 +1,40 @@
+{
+	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
+	"CreationDate" : "2026-10-31T15:55:23.692-00:00",
+	"Sources" : 
+	[
+		{
+			"Packages" : 
+			[
+				{
+					"PackageIdentifier" : "Microsoft.EdgeWebView2Runtime",
+					"Version" : "100.0.1185.36"
+				},
+				{
+					"PackageIdentifier" : "Brave.Brave",
+					"Version" : "156.1.98.63"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.AppInstaller",
+					"Version" : "1.29.380.0"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.WindowsAppRuntime.1.8",
+					"Version" : "> 1.8.10"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.WindowsTerminal",
+					"Version" : "1.12.10983.0"
+				}
+			],
+			"SourceDetails" : 
+			{
+				"Argument" : "https://cdn.winget.microsoft.com/cache",
+				"Identifier" : "Microsoft.Winget.Source_8wekyb3d8bbwe",
+				"Name" : "winget",
+				"Type" : "Microsoft.PreIndexed.Package"
+			}
+		}
+	],
+	"WinGetVersion" : "1.29.380"
+}

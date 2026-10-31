@@ -18,6 +18,7 @@ public partial class MainViewModel : ViewModelBase
     private readonly IDialogService _dialogs;
     private readonly TimeProvider _time;
     private readonly Func<SystemContext, PerformancePageViewModel> _createPerformancePage;
+    private readonly Func<SystemContext, AppsPageViewModel> _createAppsPage;
     private readonly ILoggerFactory _loggerFactory;
     private readonly ILogger<MainViewModel> _logger;
 
@@ -28,9 +29,11 @@ public partial class MainViewModel : ViewModelBase
         TimeProvider time,
         ViewModeState viewMode,
         Func<SystemContext, PerformancePageViewModel> createPerformancePage,
+        Func<SystemContext, AppsPageViewModel> createAppsPage,
         ILoggerFactory loggerFactory)
     {
         _createPerformancePage = createPerformancePage;
+        _createAppsPage = createAppsPage;
         ViewMode = viewMode;
         _contextBuilder = contextBuilder;
         _moduleRegistry = moduleRegistry;
@@ -70,6 +73,7 @@ public partial class MainViewModel : ViewModelBase
             }
 
             NavigationItems.Add(new NavigationItem(Strings.Nav_Performance, _createPerformancePage(context)));
+            NavigationItems.Add(new NavigationItem(Omnikit.Modules.Apps.Resources.AppsTexts.PageTitle, _createAppsPage(context)));
 
             SelectedItem = NavigationItems[0];
         }

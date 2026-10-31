@@ -7,6 +7,7 @@ using Omnikit.Core.Settings;
 using Omnikit.Core.SystemInfo;
 using Omnikit.Desktop.Services;
 using Omnikit.Desktop.ViewModels;
+using Omnikit.Modules.Apps.Winget;
 using Omnikit.Modules.Health;
 using Omnikit.Modules.Health.Sources;
 using Omnikit.Modules.Performance.Sources;
@@ -60,6 +61,16 @@ internal static class ServiceSetup
             provider.GetRequiredService<ViewModeState>(),
             context,
             provider.GetRequiredService<ILogger<PerformancePageViewModel>>()));
+
+        // Seite "Apps": winget läuft als normaler Benutzer (Entscheidung 0010)
+        services.AddSingleton<IWingetRunner, WingetRunner>();
+        services.AddSingleton<IWingetClient, WingetClient>();
+        services.AddSingleton<Func<SystemContext, AppsPageViewModel>>(provider => context => new AppsPageViewModel(
+            provider.GetRequiredService<IWingetClient>(),
+            provider.GetRequiredService<IDialogService>(),
+            provider.GetRequiredService<ViewModeState>(),
+            context,
+            provider.GetRequiredService<ILogger<AppsPageViewModel>>()));
 
         // Module: Reihenfolge = Reihenfolge in der Navigationsleiste
         services.AddSingleton<IModule, HealthModule>();

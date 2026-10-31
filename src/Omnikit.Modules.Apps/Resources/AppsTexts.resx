@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Alle Texte der Seite „Apps“. {0}, {1} ... werden durch Werte ersetzt. Produktnamen stehen im Code (werden nicht übersetzt). -->
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <!-- Seite -->
+  <data name="PageTitle" xml:space="preserve"><value>Apps</value></data>
+  <data name="PageSubtitle" xml:space="preserve"><value>Programme installieren und aktuell halten. Omnikit nutzt dafür winget, den Paketmanager von Windows, und lädt nur aus dessen offizieller Quelle.</value></data>
+  <data name="NotWindows" xml:space="preserve"><value>Nur unter Windows verfügbar.</value></data>
+  <data name="Loading" xml:space="preserve"><value>Suche installierte Programme und Updates …</value></data>
+  <data name="Refresh" xml:space="preserve"><value>Erneut suchen</value></data>
+  <data name="WingetMissing" xml:space="preserve"><value>winget fehlt auf diesem PC. Installiere oder aktualisiere im Microsoft Store den „App-Installer“, danach funktioniert diese Seite.</value></data>
+  <data name="LoadFailed" xml:space="preserve"><value>Die Programmliste konnte nicht gelesen werden. Details stehen in der Log-Datei.</value></data>
+  <data name="LoadFailed_NoNetwork" xml:space="preserve"><value>Keine Verbindung zum Internet. winget braucht eine Verbindung, um Programme und Updates zu finden.</value></data>
+
+  <!-- Updates -->
+  <data name="Updates_Title" xml:space="preserve"><value>Updates</value></data>
+  <data name="Updates_Count" xml:space="preserve"><value>{0} Programme können aktualisiert werden.</value></data>
+  <data name="Updates_One" xml:space="preserve"><value>1 Programm kann aktualisiert werden.</value></data>
+  <data name="Updates_None" xml:space="preserve"><value>Alle Programme, die winget kennt, sind aktuell.</value></data>
+  <data name="Updates_Version" xml:space="preserve"><value>{0} → {1}</value></data>
+  <data name="Updates_SelectAll" xml:space="preserve"><value>Alle an- oder abwählen</value></data>
+  <data name="Updates_Run" xml:space="preserve"><value>Ausgewählte aktualisieren</value></data>
+
+  <!-- Katalog -->
+  <data name="Catalog_Title" xml:space="preserve"><value>Programme installieren</value></data>
+  <data name="Catalog_Hint" xml:space="preserve"><value>Wähle Programme aus oder nimm eine Vorlage. Bereits installierte Programme sind markiert.</value></data>
+  <data name="Catalog_Installed" xml:space="preserve"><value>installiert</value></data>
+  <data name="Catalog_Templates" xml:space="preserve"><value>Vorlagen:</value></data>
+  <data name="Catalog_LoadTemplate" xml:space="preserve"><value>Vorlage laden …</value></data>
+  <data name="Catalog_SaveTemplate" xml:space="preserve"><value>Auswahl speichern …</value></data>
+  <data name="Catalog_Clear" xml:space="preserve"><value>Auswahl leeren</value></data>
+  <data name="Catalog_Run" xml:space="preserve"><value>Ausgewählte installieren</value></data>
+  <data name="Catalog_Selected" xml:space="preserve"><value>{0} ausgewählt</value></data>
+  <data name="Catalog_FromTemplate" xml:space="preserve"><value>Weitere aus der Vorlage</value></data>
+  <data name="Catalog_FromTemplateDescription" xml:space="preserve"><value>Nicht im Katalog, aber in der geladenen Vorlage enthalten.</value></data>
+
+  <!-- Bereiche -->
+  <data name="Category_Browser" xml:space="preserve"><value>Browser</value></data>
+  <data name="Category_Communication" xml:space="preserve"><value>Kommunikation</value></data>
+  <data name="Category_Office" xml:space="preserve"><value>Büro und Sicherheit</value></data>
+  <data name="Category_Media" xml:space="preserve"><value>Bild, Ton und Video</value></data>
+  <data name="Category_Tools" xml:space="preserve"><value>Werkzeuge</value></data>
+  <data name="Category_Learning" xml:space="preserve"><value>Lernen</value></data>
+  <data name="Category_Games" xml:space="preserve"><value>Spiele</value></data>
+  <data name="Category_Development" xml:space="preserve"><value>Programmieren</value></data>
+
+  <!-- Vorlagen -->
+  <data name="Template_School" xml:space="preserve"><value>Schul-PC</value></data>
+  <data name="Template_Office" xml:space="preserve"><value>Büro</value></data>
+  <data name="Template_Gaming" xml:space="preserve"><value>Gaming</value></data>
+  <data name="Template_DefaultName" xml:space="preserve"><value>Meine Auswahl</value></data>
+  <data name="Template_FileName" xml:space="preserve"><value>Omnikit-Vorlage.json</value></data>
+  <data name="Template_Loaded" xml:space="preserve"><value>Vorlage „{0}“ geladen.</value></data>
+  <data name="Template_LoadFailed" xml:space="preserve"><value>Die Datei ist keine gültige Omnikit-Vorlage.</value></data>
+  <data name="Template_Saved" xml:space="preserve"><value>Auswahl als Vorlage gespeichert.</value></data>
+  <data name="Template_SaveFailed" xml:space="preserve"><value>Die Vorlage konnte nicht gespeichert werden.</value></data>
+
+  <!-- Bestätigung -->
+  <data name="Confirm_InstallTitle" xml:space="preserve"><value>Programme installieren</value></data>
+  <data name="Confirm_Install" xml:space="preserve"><value>Diese Programme werden aus der offiziellen winget-Quelle heruntergeladen und ohne weitere Fragen installiert:
+
+{0}
+
+Windows fragt eventuell für einzelne Programme nach Adminrechten. Mit der Installation stimmst du den Lizenzbedingungen der Programme zu.</value></data>
+  <data name="Confirm_UpgradeTitle" xml:space="preserve"><value>Programme aktualisieren</value></data>
+  <data name="Confirm_Upgrade" xml:space="preserve"><value>Diese Programme werden auf die neueste Version aktualisiert:
+
+{0}
+
+Schließe sie vorher, falls sie geöffnet sind. Windows fragt eventuell für einzelne Programme nach Adminrechten.</value></data>
+
+  <!-- Fortschritt -->
+  <data name="Jobs_Title" xml:space="preserve"><value>Fortschritt</value></data>
+  <data name="Jobs_Current" xml:space="preserve"><value>Programm {0} von {1}: {2}</value></data>
+  <data name="Jobs_Stop" xml:space="preserve"><value>Nach diesem Programm aufhören</value></data>
+  <data name="Jobs_Stopping" xml:space="preserve"><value>Hört nach dem aktuellen Programm auf …</value></data>
+  <data name="Jobs_Summary" xml:space="preserve"><value>Fertig: {0} von {1} erfolgreich.</value></data>
+  <data name="Job_Waiting" xml:space="preserve"><value>wartet</value></data>
+  <data name="Job_Running" xml:space="preserve"><value>läuft …</value></data>
+  <data name="Job_Skipped" xml:space="preserve"><value>nicht ausgeführt (angehalten)</value></data>
+  <data name="Expert_Code" xml:space="preserve"><value>Code {0}</value></data>
+
+  <!-- Ergebnisse -->
+  <data name="Outcome_Success" xml:space="preserve"><value>fertig</value></data>
+  <data name="Outcome_SuccessRebootRequired" xml:space="preserve"><value>fertig – Windows muss neu starten, um abzuschließen</value></data>
+  <data name="Outcome_NothingToDo" xml:space="preserve"><value>war schon installiert bzw. aktuell</value></data>
+  <data name="Outcome_NoNetwork" xml:space="preserve"><value>keine Internetverbindung oder Download fehlgeschlagen – Verbindung prüfen und erneut versuchen</value></data>
+  <data name="Outcome_PackageNotFound" xml:space="preserve"><value>winget kennt dieses Programm nicht (mehr)</value></data>
+  <data name="Outcome_AppInUse" xml:space="preserve"><value>das Programm ist gerade geöffnet – schließen und erneut versuchen</value></data>
+  <data name="Outcome_RebootRequiredFirst" xml:space="preserve"><value>Windows muss zuerst neu starten, danach erneut versuchen</value></data>
+  <data name="Outcome_Cancelled" xml:space="preserve"><value>abgebrochen, z. B. weil die Windows-Abfrage nach Adminrechten abgelehnt wurde</value></data>
+  <data name="Outcome_BlockedByPolicy" xml:space="preserve"><value>eine Richtlinie deiner Organisation verhindert das</value></data>
+  <data name="Outcome_DiskFull" xml:space="preserve"><value>nicht genug Speicherplatz</value></data>
+  <data name="Outcome_NotSupportedOnThisPc" xml:space="preserve"><value>gibt es nicht für diesen PC (z. B. andere Windows-Version nötig)</value></data>
+  <data name="Outcome_WrongElevation" xml:space="preserve"><value>geht nicht, solange Omnikit mit Adminrechten läuft – Omnikit normal starten</value></data>
+  <data name="Outcome_TimedOut" xml:space="preserve"><value>hat zu lange gedauert und wurde beendet</value></data>
+  <data name="Outcome_Failed" xml:space="preserve"><value>fehlgeschlagen</value></data>
+
+  <!-- Programme im Katalog -->
+  <data name="App_Firefox" xml:space="preserve"><value>Schneller Browser mit Fokus auf Datenschutz.</value></data>
+  <data name="App_Chrome" xml:space="preserve"><value>Browser von Google.</value></data>
+  <data name="App_Brave" xml:space="preserve"><value>Browser mit eingebautem Werbeblocker.</value></data>
+  <data name="App_Zoom" xml:space="preserve"><value>Videokonferenzen.</value></data>
+  <data name="App_Teams" xml:space="preserve"><value>Chat und Videokonferenzen von Microsoft.</value></data>
+  <data name="App_Discord" xml:space="preserve"><value>Sprach- und Textchat, beliebt bei Gruppen und Spielern.</value></data>
+  <data name="App_Thunderbird" xml:space="preserve"><value>E-Mail-Programm mit Kalender.</value></data>
+  <data name="App_Signal" xml:space="preserve"><value>Verschlüsselter Messenger (am PC zusammen mit dem Handy).</value></data>
+  <data name="App_LibreOffice" xml:space="preserve"><value>Kostenloses Office-Paket: Texte, Tabellen, Präsentationen.</value></data>
+  <data name="App_AcrobatReader" xml:space="preserve"><value>PDF-Dateien ansehen, ausfüllen und unterschreiben.</value></data>
+  <data name="App_SumatraPdf" xml:space="preserve"><value>Kleiner, schneller PDF-Betrachter.</value></data>
+  <data name="App_NotepadPlusPlus" xml:space="preserve"><value>Texteditor für Notizen und Code.</value></data>
+  <data name="App_KeePassXc" xml:space="preserve"><value>Passwort-Manager, speichert alles verschlüsselt auf dem PC.</value></data>
+  <data name="App_Bitwarden" xml:space="preserve"><value>Passwort-Manager mit Synchronisierung.</value></data>
+  <data name="App_Vlc" xml:space="preserve"><value>Spielt fast alle Video- und Audioformate ab.</value></data>
+  <data name="App_Spotify" xml:space="preserve"><value>Musik-Streaming.</value></data>
+  <data name="App_Audacity" xml:space="preserve"><value>Audio aufnehmen und schneiden.</value></data>
+  <data name="App_Obs" xml:space="preserve"><value>Bildschirm aufnehmen und streamen.</value></data>
+  <data name="App_Gimp" xml:space="preserve"><value>Bildbearbeitung.</value></data>
+  <data name="App_Inkscape" xml:space="preserve"><value>Vektorgrafiken zeichnen (Logos, Plakate).</value></data>
+  <data name="App_HandBrake" xml:space="preserve"><value>Videos umwandeln und verkleinern.</value></data>
+  <data name="App_ShareX" xml:space="preserve"><value>Bildschirmfotos und -aufnahmen mit vielen Extras.</value></data>
+  <data name="App_Greenshot" xml:space="preserve"><value>Einfache Bildschirmfotos mit Markierungen.</value></data>
+  <data name="App_7Zip" xml:space="preserve"><value>ZIP- und andere Archive packen und entpacken.</value></data>
+  <data name="App_Everything" xml:space="preserve"><value>Findet Dateien auf dem PC in Sekunden.</value></data>
+  <data name="App_PowerToys" xml:space="preserve"><value>Nützliche Zusatzwerkzeuge von Microsoft für Windows.</value></data>
+  <data name="App_WinDirStat" xml:space="preserve"><value>Zeigt, was den Speicherplatz belegt.</value></data>
+  <data name="App_CrystalDiskInfo" xml:space="preserve"><value>Zeigt den Zustand von Festplatten und SSDs.</value></data>
+  <data name="App_GeoGebra" xml:space="preserve"><value>Mathematik: Geometrie, Funktionen, Tabellen.</value></data>
+  <data name="App_Scratch" xml:space="preserve"><value>Programmieren lernen mit Bausteinen.</value></data>
+  <data name="App_Anki" xml:space="preserve"><value>Lernkarten mit Wiederholungsplan.</value></data>
+  <data name="App_Steam" xml:space="preserve"><value>Spiele kaufen, laden und starten.</value></data>
+  <data name="App_Epic" xml:space="preserve"><value>Spiele-Plattform von Epic Games.</value></data>
+  <data name="App_Gog" xml:space="preserve"><value>Spiele-Plattform von GOG.</value></data>
+  <data name="App_Ea" xml:space="preserve"><value>Spiele-Plattform von Electronic Arts.</value></data>
+  <data name="App_Ubisoft" xml:space="preserve"><value>Spiele-Plattform von Ubisoft.</value></data>
+  <data name="App_VsCode" xml:space="preserve"><value>Code-Editor von Microsoft.</value></data>
+  <data name="App_Git" xml:space="preserve"><value>Versionsverwaltung für Code.</value></data>
+  <data name="App_Python" xml:space="preserve"><value>Programmiersprache Python.</value></data>
+  <data name="App_NodeJs" xml:space="preserve"><value>JavaScript außerhalb des Browsers ausführen.</value></data>
+  <data name="App_WindowsTerminal" xml:space="preserve"><value>Moderne Kommandozeile von Microsoft.</value></data>
+</root>

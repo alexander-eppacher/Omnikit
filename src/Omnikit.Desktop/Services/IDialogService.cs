@@ -12,4 +12,8 @@ public interface IDialogService
     /// <summary>Lässt den Nutzer einen Speicherort wählen.</summary>
     /// <returns>Stream zum Schreiben, oder <c>null</c>, wenn abgebrochen wurde.</returns>
     Task<Stream?> PickSaveFileAsync(string suggestedFileName);
+
+    /// <summary>Lässt den Nutzer eine JSON-Datei zum Öffnen wählen.</summary>
+    /// <returns>Stream zum Lesen, oder <c>null</c>, wenn abgebrochen wurde.</returns>
+    Task<Stream?> PickOpenFileAsync();
 }

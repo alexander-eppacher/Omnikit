@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Apps: Programme über winget (Paketmanager von Windows) installieren und aktualisieren. Ändert nur nach Bestätigung. -->
+
+  <PropertyGroup>
+    <NeutralLanguage>de</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Omnikit.Core\Omnikit.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Texte: aus AppsTexts.resx wird beim Bauen die Klasse Omnikit.Modules.Apps.Resources.AppsTexts erzeugt -->
+    <EmbeddedResource Update="Resources\AppsTexts.resx">
+      <StronglyTypedFileName>$(IntermediateOutputPath)AppsTexts.Designer.cs</StronglyTypedFileName>
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedNamespace>Omnikit.Modules.Apps.Resources</StronglyTypedNamespace>
+      <StronglyTypedClassName>AppsTexts</StronglyTypedClassName>
+      <PublicClass>true</PublicClass>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Omnikit.Modules.Apps.Tests" />
+  </ItemGroup>
+</Project>

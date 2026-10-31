@@ -1,0 +1,203 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Omnikit.Desktop.ViewModels"
+             xmlns:conv="using:Omnikit.Desktop.Converters"
+             xmlns:catalog="using:Omnikit.Modules.Apps.Catalog"
+             xmlns:text="using:Omnikit.Modules.Apps.Resources"
+             x:Class="Omnikit.Desktop.Views.AppsPageView"
+             x:DataType="vm:AppsPageViewModel">
+
+    <UserControl.Styles>
+        <Style Selector="Border.card">
+            <Setter Property="Padding" Value="16" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+        </Style>
+        <Style Selector="TextBlock.section">
+            <Setter Property="FontSize" Value="17" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style Selector="TextBlock.hint">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Opacity" Value="0.7" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+    </UserControl.Styles>
+
+    <DockPanel>
+        <!-- Kopf: Titel, Erklärung, Zustand -->
+        <StackPanel DockPanel.Dock="Top" Spacing="8" Margin="0,0,0,16">
+            <TextBlock Text="{x:Static text:AppsTexts.PageTitle}" FontSize="24" FontWeight="SemiBold" />
+            <TextBlock Text="{x:Static text:AppsTexts.PageSubtitle}" Opacity="0.7" TextWrapping="Wrap" />
+
+            <TextBlock Text="{x:Static text:AppsTexts.NotWindows}" IsVisible="{Binding !IsSupported}" Margin="0,8,0,0" />
+
+            <WrapPanel Orientation="Horizontal" IsVisible="{Binding IsSupported}" Margin="0,4,0,0">
+                <Button Content="{x:Static text:AppsTexts.Refresh}" Command="{Binding RefreshCommand}" Margin="0,0,12,0" />
+                <StackPanel Orientation="Horizontal" Spacing="8" IsVisible="{Binding IsLoading}">
+                    <ProgressBar IsIndeterminate="True" Width="120" VerticalAlignment="Center" />
+                    <TextBlock Text="{x:Static text:AppsTexts.Loading}" VerticalAlignment="Center" Opacity="0.8" />
+                </StackPanel>
+                <!-- Während Installationen immer sichtbar, auch wenn unten im Katalog gescrollt ist -->
+                <StackPanel Orientation="Horizontal" Spacing="8" IsVisible="{Binding IsRunning}">
+                    <ProgressBar IsIndeterminate="True" Width="120" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding CurrentJobText}" VerticalAlignment="Center" FontWeight="SemiBold" />
+                </StackPanel>
+            </WrapPanel>
+
+            <TextBlock Text="{Binding ErrorMessage}" TextWrapping="Wrap" FontWeight="SemiBold"
+                       IsVisible="{Binding ErrorMessage, Converter={x:Static ObjectConverters.IsNotNull}}" />
+            <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap"
+                       IsVisible="{Binding StatusMessage, Converter={x:Static ObjectConverters.IsNotNull}}" />
+        </StackPanel>
+
+        <ScrollViewer>
+            <StackPanel Spacing="16" Margin="0,0,12,16">
+
+                <!-- Fortschritt der letzten Installation/Aktualisierung -->
+                <Border Classes="card" IsVisible="{Binding HasJobs}">
+                    <StackPanel Spacing="10">
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" Content="{x:Static text:AppsTexts.Jobs_Stop}" Command="{Binding StopCommand}"
+                                    IsVisible="{Binding IsRunning}" />
+                            <TextBlock Classes="section" Text="{x:Static text:AppsTexts.Jobs_Title}" VerticalAlignment="Center" />
+                        </DockPanel>
+                        <TextBlock Classes="hint" Text="{x:Static text:AppsTexts.Jobs_Stopping}" IsVisible="{Binding IsStopping}" />
+                        <ItemsControl ItemsSource="{Binding Jobs}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:JobViewModel">
+                                    <Grid ColumnDefinitions="24,220,*" Margin="0,0,0,6">
+                                        <ProgressBar Grid.Column="0" IsIndeterminate="True" Width="16" MinWidth="16" Height="4"
+                                                     IsVisible="{Binding IsRunning}" VerticalAlignment="Top" Margin="0,9,0,0" />
+                                        <Ellipse Grid.Column="0" Width="12" Height="12" VerticalAlignment="Top" Margin="0,4,0,0"
+                                                 IsVisible="{Binding Severity, Converter={x:Static ObjectConverters.IsNotNull}}"
+                                                 Fill="{Binding Severity, Converter={x:Static conv:SeverityConverters.ToBrush}}" />
+                                        <TextBlock Grid.Column="1" Text="{Binding Name}" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,0,12,0" />
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Text="{Binding StateText}" TextWrapping="Wrap" />
+                                            <Panel IsVisible="{Binding $parent[UserControl].((vm:AppsPageViewModel)DataContext).ViewMode.IsExpert}">
+                                                <!-- Festbreitenschrift: Inter würde "0x" sonst als "0×" darstellen -->
+                                                <TextBlock Classes="hint" Text="{Binding CodeText}" FontFamily="Consolas, Cascadia Mono, monospace"
+                                                           IsVisible="{Binding CodeText, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                                            </Panel>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- Updates -->
+                <Border Classes="card" IsVisible="{Binding IsReady}">
+                    <StackPanel Spacing="10">
+                        <TextBlock Classes="section" Text="{x:Static text:AppsTexts.Updates_Title}" />
+                        <TextBlock Text="{Binding UpgradesSummary}" TextWrapping="Wrap" />
+                        <ItemsControl ItemsSource="{Binding Upgrades}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:UpgradeItemViewModel">
+                                    <CheckBox IsChecked="{Binding IsSelected}" Margin="0,0,0,2">
+                                        <StackPanel>
+                                            <TextBlock>
+                                                <Run Text="{Binding Name}" FontWeight="SemiBold" />
+                                                <Run Text="  " />
+                                                <Run Text="{Binding VersionText}" />
+                                            </TextBlock>
+                                            <TextBlock Classes="hint"
+                                                       IsVisible="{Binding $parent[UserControl].((vm:AppsPageViewModel)DataContext).ViewMode.IsExpert}">
+                                                <Run Text="{Binding PackageId}" />
+                                                <Run Text=" · " />
+                                                <Run Text="{Binding Source}" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </CheckBox>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <WrapPanel Orientation="Horizontal" IsVisible="{Binding HasUpgrades}">
+                            <Button Content="{x:Static text:AppsTexts.Updates_Run}" Command="{Binding UpgradeSelectedCommand}"
+                                    Classes="accent" Margin="0,0,8,0" />
+                            <Button Content="{x:Static text:AppsTexts.Updates_SelectAll}" Command="{Binding SelectAllUpgradesCommand}" />
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Katalog -->
+                <Border Classes="card" IsVisible="{Binding IsReady}">
+                    <StackPanel Spacing="12">
+                        <TextBlock Classes="section" Text="{x:Static text:AppsTexts.Catalog_Title}" />
+                        <TextBlock Classes="hint" Text="{x:Static text:AppsTexts.Catalog_Hint}" />
+
+                        <WrapPanel Orientation="Horizontal">
+                            <TextBlock Text="{x:Static text:AppsTexts.Catalog_Templates}" VerticalAlignment="Center" Margin="0,0,8,8" />
+                            <ItemsControl ItemsSource="{Binding Templates}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="catalog:AppTemplate">
+                                        <Button Content="{Binding Name}" Margin="0,0,8,8" CommandParameter="{Binding}"
+                                                Command="{Binding $parent[UserControl].((vm:AppsPageViewModel)DataContext).ApplyTemplateCommand}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <Button Content="{x:Static text:AppsTexts.Catalog_LoadTemplate}" Command="{Binding LoadTemplateCommand}" Margin="0,0,8,8" />
+                            <Button Content="{x:Static text:AppsTexts.Catalog_SaveTemplate}" Command="{Binding SaveTemplateCommand}" Margin="0,0,8,8" />
+                            <Button Content="{x:Static text:AppsTexts.Catalog_Clear}" Command="{Binding ClearSelectionCommand}" Margin="0,0,8,8" />
+                        </WrapPanel>
+
+                        <ItemsControl ItemsSource="{Binding CatalogGroups}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:CatalogGroupViewModel">
+                                    <StackPanel Spacing="4" Margin="0,0,0,12">
+                                        <TextBlock Text="{Binding Title}" FontWeight="SemiBold" Opacity="0.85" />
+                                        <ItemsControl ItemsSource="{Binding Items}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel Orientation="Horizontal" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="vm:CatalogItemViewModel">
+                                                    <!-- Nur das Kästchen wird bei installierten Programmen gesperrt; der Text bleibt gut lesbar -->
+                                                    <Grid Width="300" Margin="0,0,12,4" ColumnDefinitions="Auto,*">
+                                                        <CheckBox Grid.Column="0" VerticalAlignment="Top" MinWidth="0" Padding="0" Margin="0,0,8,0"
+                                                                  IsChecked="{Binding IsSelected}" IsEnabled="{Binding CanChange}" />
+                                                        <StackPanel Grid.Column="1" Margin="0,6,0,0" Background="Transparent"
+                                                                    Cursor="Hand" Tapped="OnCatalogTextTapped">
+                                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                                                                <TextBlock Text="{x:Static text:AppsTexts.Catalog_Installed}" FontSize="12"
+                                                                           VerticalAlignment="Center" Opacity="0.8"
+                                                                           IsVisible="{Binding IsInstalled}" />
+                                                            </StackPanel>
+                                                            <TextBlock Classes="hint" Text="{Binding Description}" />
+                                                            <TextBlock Classes="hint"
+                                                                       IsVisible="{Binding $parent[UserControl].((vm:AppsPageViewModel)DataContext).ViewMode.IsExpert}">
+                                                                <Run Text="{Binding PackageId}" />
+                                                                <Run Text="{Binding InstalledVersion}" />
+                                                            </TextBlock>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <WrapPanel Orientation="Horizontal">
+                            <Button Content="{x:Static text:AppsTexts.Catalog_Run}" Command="{Binding InstallSelectedCommand}"
+                                    Classes="accent" Margin="0,0,12,0" />
+                            <TextBlock Text="{Binding SelectedSummary}" VerticalAlignment="Center" Opacity="0.8" />
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

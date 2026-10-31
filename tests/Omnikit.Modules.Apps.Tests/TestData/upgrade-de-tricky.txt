@@ -1,0 +1,13 @@
+Name                                    ID                          Version   Verfügbar  Quelle
+---------------------------------------------------------------------------------------------
+7-Zip 26.03 (x64)                       7zip.7zip                   26.03     26.05      winget
+Notepad++ (64-bit x64)                  Notepad++.Notepad++         8.9.8     8.9.8.1    winget
+Microsoft Visual C++ 2015-2022 Redistr… Microsoft.VCRedist.2015+.x… 14.40.338 14.51.362… winget
+Ein Programm mit Größe                  Example.Tool                < 2.0     2.1        winget
+4 Aktualisierungen verfügbar.
+1 Paket(e) haben Versionsnummern, die nicht ermittelt werden können. Verwenden Sie --include-unknown, um alle Ergebnisse anzuzeigen.
+
+Die folgenden Pakete haben ein Upgrade verfügbar, erfordern jedoch explizite Ausrichtung für das Upgrade:
+Name      ID           Version Verfügbar Quelle
+-----------------------------------------------
+Discord   Discord.Discord 1.0  1.1       winget

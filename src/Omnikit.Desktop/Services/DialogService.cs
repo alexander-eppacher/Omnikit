@@ -44,6 +44,25 @@ public sealed class DialogService : IDialogService
         return file is null ? null : await file.OpenWriteAsync();
     }
 
+    public async Task<Stream?> PickOpenFileAsync()
+    {
+        var owner = GetMainWindow();
+        if (owner is null)
+        {
+            return null;
+        }
+
+        var documents = await owner.StorageProvider.TryGetWellKnownFolderAsync(WellKnownFolder.Documents);
+        var files = await owner.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        {
+            AllowMultiple = false,
+            SuggestedStartLocation = documents,
+            FileTypeFilter = [new FilePickerFileType("JSON") { Patterns = ["*.json"] }],
+        });
+
+        return files.Count == 0 ? null : await files[0].OpenReadAsync();
+    }
+
     private static Window? GetMainWindow() =>
         (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow;
 }

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" Version="4.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Echte winget-Ausgaben (aus der Test-VM) als Testdaten -->
+    <None Include="TestData\**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Omnikit.Modules.Apps\Omnikit.Modules.Apps.csproj" />
+  </ItemGroup>
+</Project>

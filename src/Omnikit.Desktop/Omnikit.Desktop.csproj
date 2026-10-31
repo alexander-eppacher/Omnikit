@@ -38,6 +38,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Omnikit.Core\Omnikit.Core.csproj" />
+    <ProjectReference Include="..\Omnikit.Modules.Apps\Omnikit.Modules.Apps.csproj" />
     <ProjectReference Include="..\Omnikit.Modules.Health\Omnikit.Modules.Health.csproj" />
     <ProjectReference Include="..\Omnikit.Modules.Performance\Omnikit.Modules.Performance.csproj" />
   </ItemGroup>

@@ -10,7 +10,10 @@
 
     <StackPanel Margin="24" Spacing="20">
         <TextBlock x:Name="TitleText" FontSize="20" FontWeight="SemiBold" TextWrapping="Wrap" />
-        <TextBlock x:Name="MessageText" TextWrapping="Wrap" LineHeight="22" />
+        <!-- Lange Texte (z. B. viele Programme) bekommen einen Rollbalken, statt das Fenster über den Bildschirm wachsen zu lassen -->
+        <ScrollViewer MaxHeight="380">
+            <TextBlock x:Name="MessageText" TextWrapping="Wrap" LineHeight="22" />
+        </ScrollViewer>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
             <Button x:Name="CancelButton" Content="{x:Static res:Strings.Dialog_Cancel}" IsCancel="True" Click="OnCancel" />
