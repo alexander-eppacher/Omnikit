@@ -1,0 +1,39 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Omnikit.Desktop.ViewModels"
+             xmlns:res="using:Omnikit.Desktop.Resources"
+             x:Class="Omnikit.Desktop.Views.OverviewView"
+             x:DataType="vm:OverviewViewModel">
+
+    <ScrollViewer>
+        <StackPanel Spacing="16">
+            <StackPanel Spacing="4">
+                <TextBlock Text="{x:Static res:Strings.Overview_Title}" FontSize="24" FontWeight="SemiBold" />
+                <TextBlock Text="{x:Static res:Strings.Overview_Subtitle}" Opacity="0.7" />
+            </StackPanel>
+
+            <!-- Nur sichtbar, wenn die App nicht unter Windows läuft (z. B. beim Entwickeln unter Linux) -->
+            <Border IsVisible="{Binding ShowNotWindowsHint}"
+                    BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                    BorderThickness="1" CornerRadius="4" Padding="12">
+                <TextBlock Text="{x:Static res:Strings.Overview_NotWindowsHint}" TextWrapping="Wrap" />
+            </Border>
+
+            <ItemsControl ItemsSource="{Binding Rows}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:InfoRow">
+                        <Grid ColumnDefinitions="220,*" Margin="0,6">
+                            <TextBlock Grid.Column="0" Text="{Binding Label}" FontWeight="SemiBold" />
+                            <StackPanel Grid.Column="1" Spacing="2">
+                                <SelectableTextBlock Text="{Binding Value}" TextWrapping="Wrap" />
+                                <TextBlock Text="{Binding Note}" TextWrapping="Wrap"
+                                           IsVisible="{Binding Note, Converter={x:Static ObjectConverters.IsNotNull}}"
+                                           FontSize="12" Opacity="0.7" />
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

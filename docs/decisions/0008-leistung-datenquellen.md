@@ -2,7 +2,7 @@
 
 **Datum:** 30.10.2026
 
-**Entscheidung:** Neues Projekt `PcTool.Modules.Performance`. Die Seite misst jede Sekunde, aber **nur solange sie geöffnet ist** (`IActivatablePage`: Messung startet beim Öffnen, stoppt beim Verlassen und beim Beenden). Die Seite ist kein `IModule`, weil sie keinen Prüfbericht und keine Aktionen hat, sondern laufend misst.
+**Entscheidung:** Neues Projekt `Omnikit.Modules.Performance`. Die Seite misst jede Sekunde, aber **nur solange sie geöffnet ist** (`IActivatablePage`: Messung startet beim Öffnen, stoppt beim Verlassen und beim Beenden). Die Seite ist kein `IModule`, weil sie keinen Prüfbericht und keine Aktionen hat, sondern laufend misst.
 
 **Datenquellen** (alle ohne Adminrechte, ohne Treiber, ohne neue Pakete – nur Windows-Funktionen per P/Invoke):
 - **CPU:** Leistungsindikatoren (`pdh.dll`) `\Processor Information(*)\% Processor Utility` wie der Task-Manager, je logischem Prozessor; Takt = `Processor Frequency` × `% Processor Performance`.

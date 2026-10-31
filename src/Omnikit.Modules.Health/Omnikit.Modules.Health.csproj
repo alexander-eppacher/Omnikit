@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Health-Modul: prüft Laufwerke, Akku, Speicherplatz und Windows-Zustand. Ändert nichts am System. -->
+
+  <PropertyGroup>
+    <NeutralLanguage>de</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Omnikit.Core\Omnikit.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Texte: aus HealthTexts.resx wird beim Bauen die Klasse Omnikit.Modules.Health.Resources.HealthTexts erzeugt -->
+    <EmbeddedResource Update="Resources\HealthTexts.resx">
+      <StronglyTypedFileName>$(IntermediateOutputPath)HealthTexts.Designer.cs</StronglyTypedFileName>
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedNamespace>Omnikit.Modules.Health.Resources</StronglyTypedNamespace>
+      <StronglyTypedClassName>HealthTexts</StronglyTypedClassName>
+      <PublicClass>true</PublicClass>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Omnikit.Modules.Health.Tests" />
+  </ItemGroup>
+</Project>

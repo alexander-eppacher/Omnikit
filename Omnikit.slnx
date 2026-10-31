@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Omnikit.Core/Omnikit.Core.csproj" />
+    <Project Path="src/Omnikit.Desktop/Omnikit.Desktop.csproj" />
+    <Project Path="src/Omnikit.Modules.Health/Omnikit.Modules.Health.csproj" />
+    <Project Path="src/Omnikit.Modules.Performance/Omnikit.Modules.Performance.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Omnikit.Core.Tests/Omnikit.Core.Tests.csproj" />
+    <Project Path="tests/Omnikit.Modules.Health.Tests/Omnikit.Modules.Health.Tests.csproj" />
+    <Project Path="tests/Omnikit.Modules.Performance.Tests/Omnikit.Modules.Performance.Tests.csproj" />
+  </Folder>
+</Solution>

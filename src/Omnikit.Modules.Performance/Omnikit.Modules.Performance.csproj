@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Leistung: Live-Auslastung von CPU, RAM, Laufwerken, Netzwerk und Grafik. Nur lesen, nur solange die Seite offen ist. -->
+
+  <PropertyGroup>
+    <NeutralLanguage>de</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Omnikit.Core\Omnikit.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Texte: aus PerformanceTexts.resx wird beim Bauen die Klasse Omnikit.Modules.Performance.Resources.PerformanceTexts erzeugt -->
+    <EmbeddedResource Update="Resources\PerformanceTexts.resx">
+      <StronglyTypedFileName>$(IntermediateOutputPath)PerformanceTexts.Designer.cs</StronglyTypedFileName>
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedNamespace>Omnikit.Modules.Performance.Resources</StronglyTypedNamespace>
+      <StronglyTypedClassName>PerformanceTexts</StronglyTypedClassName>
+      <PublicClass>true</PublicClass>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Omnikit.Modules.Performance.Tests" />
+  </ItemGroup>
+</Project>
