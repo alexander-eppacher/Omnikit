@@ -1,0 +1,325 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Omnikit.Desktop.ViewModels"
+             xmlns:stick="using:Omnikit.Modules.StickBuilder"
+             xmlns:text="using:Omnikit.Modules.StickBuilder.Resources"
+             x:Class="Omnikit.Desktop.Views.StickBuilderPageView"
+             x:DataType="vm:StickBuilderPageViewModel">
+
+    <UserControl.Styles>
+        <Style Selector="Border.card">
+            <Setter Property="Padding" Value="16" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+        </Style>
+        <Style Selector="TextBlock.section">
+            <Setter Property="FontSize" Value="17" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style Selector="TextBlock.hint">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Opacity" Value="0.7" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+        <Style Selector="TextBlock.label">
+            <Setter Property="Margin" Value="0,0,0,4" />
+        </Style>
+        <Style Selector="ComboBox, TextBox">
+            <Setter Property="MinWidth" Value="280" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+    </UserControl.Styles>
+
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Spacing="8" Margin="0,0,0,16">
+            <TextBlock Text="{x:Static text:StickTexts.Page_Title}" FontSize="24" FontWeight="SemiBold" />
+            <TextBlock Text="{x:Static text:StickTexts.Page_Subtitle}" Opacity="0.7" TextWrapping="Wrap" />
+        </StackPanel>
+
+        <ScrollViewer>
+            <StackPanel Spacing="16" Margin="0,0,12,16">
+
+                <!-- USB-Stick erstellen (wie Rufus) -->
+                <Border Classes="card">
+                    <StackPanel Spacing="10">
+                        <TextBlock Classes="section" Text="{x:Static text:StickTexts.Section_Create}" />
+                        <TextBlock Classes="hint" Text="{x:Static text:StickTexts.Hint_Create}" />
+
+                        <RadioButton GroupName="Source" Content="{x:Static text:StickTexts.Source_Download}" IsChecked="{Binding UseDownload}" />
+                        <StackPanel Margin="28,0,0,0" Spacing="4" IsVisible="{Binding UseDownload}">
+                            <TextBlock Classes="label" Text="{x:Static text:StickTexts.Label_DownloadLanguage}" />
+                            <ComboBox ItemsSource="{Binding Downloads}" SelectedItem="{Binding SelectedDownload}"
+                                      AutomationProperties.Name="{x:Static text:StickTexts.Label_DownloadLanguage}" />
+                            <TextBlock Text="{Binding CatalogStatus}" TextWrapping="Wrap"
+                                       IsVisible="{Binding CatalogStatus, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                            <TextBlock Classes="hint" Text="{x:Static text:StickTexts.Hint_Download}" />
+                        </StackPanel>
+                        <RadioButton GroupName="Source" Content="{x:Static text:StickTexts.Source_OwnIso}" IsChecked="{Binding !UseDownload}" />
+
+                        <WrapPanel Orientation="Horizontal" Margin="28,0,0,0" IsVisible="{Binding !UseDownload}">
+                            <Button Content="{x:Static text:StickTexts.Button_PickIso}" Command="{Binding PickIsoCommand}" Margin="0,0,12,8" />
+                            <TextBlock Text="{Binding IsoName}" VerticalAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,8" />
+                        </WrapPanel>
+
+                        <StackPanel IsVisible="{Binding CanWriteToStick}" Spacing="4">
+                            <TextBlock Classes="label" Text="{x:Static text:StickTexts.Label_UsbDisk}" />
+                            <WrapPanel Orientation="Horizontal">
+                                <ComboBox ItemsSource="{Binding UsbDisks}" SelectedItem="{Binding SelectedUsbDisk}" IsVisible="{Binding HasUsbDisks}"
+                                          Margin="0,0,8,8" AutomationProperties.Name="{x:Static text:StickTexts.Label_UsbDisk}" />
+                                <Button Content="{x:Static text:StickTexts.Button_RefreshUsb}" Command="{Binding RefreshUsbDisksCommand}" Margin="0,0,8,8" />
+                            </WrapPanel>
+                            <TextBlock Classes="hint" Text="{x:Static text:StickTexts.Page_NoUsb}" IsVisible="{Binding !HasUsbDisks}" />
+                        </StackPanel>
+
+                        <WrapPanel Orientation="Horizontal">
+                            <Button Content="{x:Static text:StickTexts.Button_CreateStick}" Command="{Binding CreateStickCommand}" Classes="accent" Margin="0,0,12,0" />
+                            <StackPanel Orientation="Horizontal" Spacing="8" IsVisible="{Binding IsCreating}">
+                                <ProgressBar IsIndeterminate="True" Width="120" VerticalAlignment="Center" />
+                                <TextBlock Text="{Binding CreateProgress}" VerticalAlignment="Center" FontWeight="SemiBold" />
+                            </StackPanel>
+                        </WrapPanel>
+                        <TextBlock Text="{Binding CreateStatus}" TextWrapping="Wrap" FontWeight="SemiBold"
+                                   IsVisible="{Binding CreateStatus, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Automatische Installation (wie der Unattend-Generator von Schneegans) -->
+                <StackPanel Spacing="4" Margin="0,8,0,0">
+                    <TextBlock Text="{x:Static text:StickTexts.Section_Auto}" FontSize="20" FontWeight="SemiBold" />
+                    <TextBlock Classes="hint" Text="{x:Static text:StickTexts.Hint_Auto}" />
+                </StackPanel>
+
+                <!-- 1. Sprache und Region -->
+                <Border Classes="card">
+                    <StackPanel Spacing="10">
+                        <TextBlock Classes="section" Text="{x:Static text:StickTexts.Section_Region}" />
+                        <WrapPanel Orientation="Horizontal">
+                            <StackPanel Margin="0,0,24,8">
+                                <TextBlock Classes="label" Text="{x:Static text:StickTexts.Label_Language}" />
+                                <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding SelectedLanguage}"
+                                          AutomationProperties.Name="{x:Static text:StickTexts.Label_Language}" />
+                                <TextBlock Classes="hint" Text="{x:Static text:StickTexts.Hint_Language}" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,24,8">
+                                <TextBlock Classes="label" Text="{x:Static text:StickTexts.Label_Format}" />
+                                <ComboBox ItemsSource="{Binding Formats}" SelectedItem="{Binding SelectedFormat}"
+                                          AutomationProperties.Name="{x:Static text:StickTexts.Label_Format}" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,24,8">
+                                <TextBlock Classes="label" Text="{x:Static text:StickTexts.Label_Keyboard}" />
+                                <ComboBox ItemsSource="{Binding Keyboards}" SelectedItem="{Binding SelectedKeyboard}"
+                                          AutomationProperties.Name="{x:Static text:StickTexts.Label_Keyboard}" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,24,8">
+                                <TextBlock Classes="label" Text="{x:Static text:StickTexts.Label_TimeZone}" />
+                                <ComboBox ItemsSource="{Binding TimeZones}" SelectedItem="{Binding SelectedTimeZone}"
+                                          AutomationProperties.Name="{x:Static text:StickTexts.Label_TimeZone}" />
+                            </StackPanel>
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- 2. Windows -->
+                <Border Classes="card">
+                    <StackPanel Spacing="10">
+                        <TextBlock Classes="section" Text="{x:Static text:StickTexts.Section_Windows}" />
+                        <WrapPanel Orientation="Horizontal">
+                            <StackPanel Margin="0,0,24,8" MaxWidth="420">
+                                <TextBlock Classes="label" Text="{x:Static text:StickTexts.Label_Edition}" />
+                                <ComboBox ItemsSource="{Binding Editions}" SelectedItem="{Binding SelectedEdition}"
+                                          AutomationProperties.Name="{x:Static text:StickTexts.Label_Edition}" />
+                                <TextBlock Classes="hint" Text="{x:Static text:StickTexts.Hint_Edition}" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,24,8" MaxWidth="420">
+                                <TextBlock Classes="label" Text="{x:Static text:StickTexts.Label_ComputerName}" />
+                                <TextBox Text="{Binding ComputerName}" MaxLength="15"
+                                         AutomationProperties.Name="{x:Static text:StickTexts.Label_ComputerName}" />
+                                <TextBlock Classes="hint" Text="{x:Static text:StickTexts.Hint_ComputerName}" />
+                            </StackPanel>
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- 3. Benutzerkonto -->
+                <Border Classes="card">
+                    <StackPanel Spacing="10">
+                        <TextBlock Classes="section" Text="{x:Static text:StickTexts.Section_Account}" />
+                        <TextBlock Classes="hint" Text="{x:Static text:StickTexts.Hint_Account}" />
+                        <WrapPanel Orientation="Horizontal">
+                            <StackPanel Margin="0,0,24,8">
+                                <TextBlock Classes="label" Text="{x:Static text:StickTexts.Label_AccountName}" />
+                                <TextBox Text="{Binding AccountName}" MaxLength="20"
+                                         AutomationProperties.Name="{x:Static text:StickTexts.Label_AccountName}" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,24,8">
+                                <TextBlock Classes="label" Text="{x:Static text:StickTexts.Label_Password}" />
+                                <TextBox Text="{Binding Password}" PasswordChar="●" Classes="revealPasswordButton"
+                                         AutomationProperties.Name="{x:Static text:StickTexts.Label_Password}" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,24,8">
+                                <TextBlock Classes="label" Text="{x:Static text:StickTexts.Label_PasswordRepeat}" />
+                                <TextBox Text="{Binding PasswordRepeat}" PasswordChar="●" Classes="revealPasswordButton"
+                                         AutomationProperties.Name="{x:Static text:StickTexts.Label_PasswordRepeat}" />
+                            </StackPanel>
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- 4. Festplatte -->
+                <Border Classes="card">
+                    <StackPanel Spacing="10">
+                        <TextBlock Classes="section" Text="{x:Static text:StickTexts.Section_Disk}" />
+                        <RadioButton GroupName="Disk" Content="{x:Static text:StickTexts.Disk_Choose}" IsChecked="{Binding !WipeDisk}" />
+                        <RadioButton GroupName="Disk" Content="{x:Static text:StickTexts.Disk_Wipe}" IsChecked="{Binding WipeDisk}" />
+                        <Border IsVisible="{Binding WipeDisk}" Padding="12" CornerRadius="6" BorderThickness="2" BorderBrush="#D13438">
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="{x:Static text:StickTexts.Disk_WipeWarning}" TextWrapping="Wrap" FontWeight="SemiBold" />
+                                <CheckBox IsChecked="{Binding WipeConfirmed}">
+                                    <TextBlock Text="{x:Static text:StickTexts.Disk_WipeConfirm}" TextWrapping="Wrap" />
+                                </CheckBox>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- 5. Programme -->
+                <Border Classes="card">
+                    <StackPanel Spacing="10">
+                        <TextBlock Classes="section" Text="{x:Static text:StickTexts.Section_Programs}" />
+                        <TextBlock Classes="hint" Text="{x:Static text:StickTexts.Hint_Programs}" />
+
+                        <TextBlock Text="{x:Static text:StickTexts.Group_Wifi}" FontWeight="SemiBold" Margin="0,4,0,0" />
+                        <TextBlock Classes="hint" Text="{x:Static text:StickTexts.Hint_Wifi}" />
+                        <WrapPanel Orientation="Horizontal">
+                            <StackPanel Margin="0,0,24,8">
+                                <TextBlock Classes="label" Text="{x:Static text:StickTexts.Label_WifiName}" />
+                                <TextBox Text="{Binding WifiName}"
+                                         AutomationProperties.Name="{x:Static text:StickTexts.Label_WifiName}" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,24,8">
+                                <TextBlock Classes="label" Text="{x:Static text:StickTexts.Label_WifiPassword}" />
+                                <TextBox Text="{Binding WifiPassword}" PasswordChar="●" Classes="revealPasswordButton" MaxLength="64"
+                                         AutomationProperties.Name="{x:Static text:StickTexts.Label_WifiPassword}" />
+                            </StackPanel>
+                        </WrapPanel>
+
+                        <ContentControl Content="{Binding Catalog}" />
+                    </StackPanel>
+                </Border>
+
+                <!-- 6. Aufräumen und Datenschutz -->
+                <Border Classes="card">
+                    <StackPanel Spacing="10">
+                        <TextBlock Classes="section" Text="{x:Static text:StickTexts.Section_Cleanup}" />
+                        <TextBlock Classes="hint" Text="{x:Static text:StickTexts.Hint_Cleanup}" />
+                        <ItemsControl ItemsSource="{Binding RemovableApps}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:ChoiceToggleViewModel">
+                                    <CheckBox Width="300" Margin="0,0,12,0" IsChecked="{Binding IsSelected}" Content="{Binding Choice.Name}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <CheckBox IsChecked="{Binding PrivacyDefaults}" Margin="0,8,0,0">
+                            <TextBlock Text="{x:Static text:StickTexts.Label_Privacy}" TextWrapping="Wrap" />
+                        </CheckBox>
+                    </StackPanel>
+                </Border>
+
+                <!-- 7. Bedienung und System -->
+                <Border Classes="card">
+                    <StackPanel Spacing="2">
+                        <TextBlock Classes="section" Text="{x:Static text:StickTexts.Section_Settings}" />
+                        <TextBlock Classes="hint" Text="{x:Static text:StickTexts.Hint_Settings}" Margin="0,8,0,0" />
+
+                        <TextBlock Text="{x:Static text:StickTexts.Group_Desktop}" FontWeight="SemiBold" Margin="0,12,0,4" />
+                        <CheckBox IsChecked="{Binding ShowFileExtensions}">
+                            <TextBlock Text="{x:Static text:StickTexts.Label_ShowFileExtensions}" TextWrapping="Wrap" />
+                        </CheckBox>
+                        <CheckBox IsChecked="{Binding TaskbarLeft}">
+                            <TextBlock Text="{x:Static text:StickTexts.Label_TaskbarLeft}" TextWrapping="Wrap" />
+                        </CheckBox>
+                        <CheckBox IsChecked="{Binding HideWidgets}">
+                            <TextBlock Text="{x:Static text:StickTexts.Label_HideWidgets}" TextWrapping="Wrap" />
+                        </CheckBox>
+                        <CheckBox IsChecked="{Binding ClassicContextMenu}">
+                            <TextBlock Text="{x:Static text:StickTexts.Label_ClassicContextMenu}" TextWrapping="Wrap" />
+                        </CheckBox>
+                        <CheckBox IsChecked="{Binding NoWebSearch}">
+                            <TextBlock Text="{x:Static text:StickTexts.Label_NoWebSearch}" TextWrapping="Wrap" />
+                        </CheckBox>
+
+                        <TextBlock Text="{x:Static text:StickTexts.Group_Machine}" FontWeight="SemiBold" Margin="0,12,0,4" />
+                        <CheckBox IsChecked="{Binding PasswordNeverExpires}">
+                            <TextBlock Text="{x:Static text:StickTexts.Label_PasswordNeverExpires}" TextWrapping="Wrap" />
+                        </CheckBox>
+                        <CheckBox IsChecked="{Binding DisableFastStartup}">
+                            <TextBlock Text="{x:Static text:StickTexts.Label_DisableFastStartup}" TextWrapping="Wrap" />
+                        </CheckBox>
+                        <CheckBox IsChecked="{Binding PreventDeviceEncryption}">
+                            <TextBlock Text="{x:Static text:StickTexts.Label_PreventDeviceEncryption}" TextWrapping="Wrap" />
+                        </CheckBox>
+                        <TextBlock Classes="hint" Text="{x:Static text:StickTexts.Hint_PreventDeviceEncryption}" Margin="28,0,0,6"
+                                   IsVisible="{Binding PreventDeviceEncryption}" />
+                        <CheckBox IsChecked="{Binding BypassRequirements}">
+                            <TextBlock Text="{x:Static text:StickTexts.Label_BypassRequirements}" TextWrapping="Wrap" />
+                        </CheckBox>
+                        <TextBlock Classes="hint" Text="{x:Static text:StickTexts.Hint_BypassRequirements}" Margin="28,0,0,6"
+                                   IsVisible="{Binding BypassRequirements}" />
+                    </StackPanel>
+                </Border>
+
+                <!-- 8. Fertigstellen -->
+                <Border Classes="card">
+                    <StackPanel Spacing="12">
+                        <TextBlock Classes="section" Text="{x:Static text:StickTexts.Section_Finish}" />
+
+                        <StackPanel Spacing="4" IsVisible="{Binding ErrorText, Converter={x:Static ObjectConverters.IsNotNull}}">
+                            <TextBlock Text="{x:Static text:StickTexts.Page_ErrorsTitle}" FontWeight="SemiBold" />
+                            <TextBlock Text="{Binding ErrorText}" TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <!-- Direkt auf den Stick (nur Windows) -->
+                        <StackPanel Spacing="8" IsVisible="{Binding CanWriteToStick}">
+                            <TextBlock Classes="hint" Text="{x:Static text:StickTexts.Page_NoStick}" IsVisible="{Binding !HasSticks}" />
+                            <WrapPanel Orientation="Horizontal">
+                                <StackPanel Margin="0,0,12,8" IsVisible="{Binding HasSticks}">
+                                    <TextBlock Classes="label" Text="{x:Static text:StickTexts.Label_Stick}" />
+                                    <ComboBox ItemsSource="{Binding Sticks}" SelectedItem="{Binding SelectedStick}"
+                                              AutomationProperties.Name="{x:Static text:StickTexts.Label_Stick}" />
+                                </StackPanel>
+                                <Button Content="{x:Static text:StickTexts.Button_WriteStick}" Command="{Binding WriteToStickCommand}"
+                                        Classes="accent" VerticalAlignment="Bottom" Margin="0,0,8,8" IsVisible="{Binding HasSticks}" />
+                                <Button Content="{x:Static text:StickTexts.Button_ImportXml}" Command="{Binding ImportAnswerFileCommand}"
+                                        VerticalAlignment="Bottom" Margin="0,0,8,8" IsVisible="{Binding HasSticks}" />
+                                <Button Content="{x:Static text:StickTexts.Button_RefreshSticks}" Command="{Binding RefreshSticksCommand}"
+                                        VerticalAlignment="Bottom" Margin="0,0,8,8" />
+                            </WrapPanel>
+                            <TextBlock Text="{Binding LanguageWarning}" TextWrapping="Wrap" FontWeight="SemiBold"
+                                       IsVisible="{Binding LanguageWarning, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                        </StackPanel>
+
+                        <WrapPanel Orientation="Horizontal">
+                            <Button Content="{x:Static text:StickTexts.Button_SaveZip}" Command="{Binding SaveZipCommand}" Margin="0,0,8,0" />
+                        </WrapPanel>
+
+                        <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap" FontWeight="SemiBold"
+                                   IsVisible="{Binding StatusMessage, Converter={x:Static ObjectConverters.IsNotNull}}" />
+
+                        <!-- Expertenansicht: die erzeugte Antwortdatei zum Nachlesen -->
+                        <Expander Header="{x:Static text:StickTexts.Page_Preview}" HorizontalAlignment="Stretch"
+                                  IsVisible="{Binding ViewMode.IsExpert}">
+                            <SelectableTextBlock Text="{Binding Preview}" FontFamily="Consolas, Cascadia Mono, monospace" FontSize="12"
+                                                 TextWrapping="Wrap" />
+                        </Expander>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

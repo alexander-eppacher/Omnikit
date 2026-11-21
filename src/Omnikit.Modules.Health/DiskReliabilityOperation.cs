@@ -6,7 +6,7 @@ using Omnikit.Modules.Health.Sources;
 namespace Omnikit.Modules.Health;
 
 /// <summary>
-/// Die einzige Aktion, die der Hilfsprozess mit Adminrechten für das Health-Modul ausführt:
+/// Die Aktion, die der Hilfsprozess mit Adminrechten für das Health-Modul ausführt:
 /// Laufwerksdetails lesen und als JSON zurückgeben. Nur lesen, nichts ändern.
 /// </summary>
 public sealed class DiskReliabilityOperation : IElevatedOperation
@@ -24,7 +24,8 @@ public sealed class DiskReliabilityOperation : IElevatedOperation
 
     public string Id => OperationId;
 
-    public Task<string> RunAsync(CancellationToken cancellationToken) =>
+    /// <summary>Braucht keine Parameter; übergebene werden ignoriert.</summary>
+    public Task<string> RunAsync(IReadOnlyList<string> arguments, IProgress<string> progress, CancellationToken cancellationToken) =>
         Task.FromResult(Serialize(_source.Read()));
 
     public static string Serialize(IReadOnlyList<DiskReliability> values) =>

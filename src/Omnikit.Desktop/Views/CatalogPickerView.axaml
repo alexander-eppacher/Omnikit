@@ -1,0 +1,76 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Omnikit.Desktop.ViewModels"
+             xmlns:catalog="using:Omnikit.Modules.Apps.Catalog"
+             xmlns:text="using:Omnikit.Modules.Apps.Resources"
+             x:Class="Omnikit.Desktop.Views.CatalogPickerView"
+             x:DataType="vm:CatalogPickerViewModel">
+
+    <!-- Programmkatalog mit Häkchen und Vorlagen; genutzt auf „Apps“ und im Stick-Builder -->
+    <StackPanel Spacing="12">
+        <WrapPanel Orientation="Horizontal">
+            <TextBlock Text="{x:Static text:AppsTexts.Catalog_Templates}" VerticalAlignment="Center" Margin="0,0,8,8" />
+            <ItemsControl ItemsSource="{Binding Templates}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="catalog:AppTemplate">
+                        <Button Content="{Binding Name}" Margin="0,0,8,8" CommandParameter="{Binding}"
+                                Command="{Binding $parent[UserControl].((vm:CatalogPickerViewModel)DataContext).ApplyTemplateCommand}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Button Content="{x:Static text:AppsTexts.Catalog_LoadTemplate}" Command="{Binding LoadTemplateCommand}" Margin="0,0,8,8" />
+            <Button Content="{x:Static text:AppsTexts.Catalog_SaveTemplate}" Command="{Binding SaveTemplateCommand}" Margin="0,0,8,8" />
+            <Button Content="{x:Static text:AppsTexts.Catalog_Clear}" Command="{Binding ClearSelectionCommand}" Margin="0,0,8,8" />
+        </WrapPanel>
+
+        <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap"
+                   IsVisible="{Binding StatusMessage, Converter={x:Static ObjectConverters.IsNotNull}}" />
+
+        <ItemsControl ItemsSource="{Binding Groups}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:CatalogGroupViewModel">
+                    <StackPanel Spacing="4" Margin="0,0,0,12">
+                        <TextBlock Text="{Binding Title}" FontWeight="SemiBold" Opacity="0.85" />
+                        <ItemsControl ItemsSource="{Binding Items}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:CatalogItemViewModel">
+                                    <!-- Nur das Kästchen wird bei installierten Programmen gesperrt; der Text bleibt gut lesbar -->
+                                    <Grid Width="300" Margin="0,0,12,4" ColumnDefinitions="Auto,*">
+                                        <CheckBox Grid.Column="0" VerticalAlignment="Top" MinWidth="0" Padding="0" Margin="0,0,8,0"
+                                                  IsChecked="{Binding IsSelected}" IsEnabled="{Binding CanChange}"
+                                                  AutomationProperties.Name="{Binding Name}" />
+                                        <StackPanel Grid.Column="1" Margin="0,6,0,0" Background="Transparent"
+                                                    Cursor="Hand" Tapped="OnCatalogTextTapped">
+                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                                                <TextBlock Text="{x:Static text:AppsTexts.Catalog_Installed}" FontSize="12"
+                                                           VerticalAlignment="Center" Opacity="0.8"
+                                                           IsVisible="{Binding IsInstalled}" />
+                                            </StackPanel>
+                                            <TextBlock Text="{Binding Description}" FontSize="12" Opacity="0.7" TextWrapping="Wrap" />
+                                            <TextBlock FontSize="12" Opacity="0.7"
+                                                       IsVisible="{Binding $parent[UserControl].((vm:CatalogPickerViewModel)DataContext).ViewMode.IsExpert}">
+                                                <Run Text="{Binding PackageId}" />
+                                                <Run Text="{Binding InstalledVersion}" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </StackPanel>
+</UserControl>

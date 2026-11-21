@@ -19,6 +19,7 @@ public partial class MainViewModel : ViewModelBase
     private readonly TimeProvider _time;
     private readonly Func<SystemContext, PerformancePageViewModel> _createPerformancePage;
     private readonly Func<SystemContext, AppsPageViewModel> _createAppsPage;
+    private readonly Func<SystemContext, StickBuilderPageViewModel> _createStickPage;
     private readonly ILoggerFactory _loggerFactory;
     private readonly ILogger<MainViewModel> _logger;
 
@@ -30,8 +31,10 @@ public partial class MainViewModel : ViewModelBase
         ViewModeState viewMode,
         Func<SystemContext, PerformancePageViewModel> createPerformancePage,
         Func<SystemContext, AppsPageViewModel> createAppsPage,
+        Func<SystemContext, StickBuilderPageViewModel> createStickPage,
         ILoggerFactory loggerFactory)
     {
+        _createStickPage = createStickPage;
         _createPerformancePage = createPerformancePage;
         _createAppsPage = createAppsPage;
         ViewMode = viewMode;
@@ -74,6 +77,7 @@ public partial class MainViewModel : ViewModelBase
 
             NavigationItems.Add(new NavigationItem(Strings.Nav_Performance, _createPerformancePage(context)));
             NavigationItems.Add(new NavigationItem(Omnikit.Modules.Apps.Resources.AppsTexts.PageTitle, _createAppsPage(context)));
+            NavigationItems.Add(new NavigationItem(Omnikit.Modules.StickBuilder.Resources.StickTexts.Page_Title, _createStickPage(context)));
 
             SelectedItem = NavigationItems[0];
         }

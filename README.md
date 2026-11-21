@@ -22,6 +22,16 @@ Programme installieren und aktuell halten, über **winget**, den Paketmanager vo
 - winget läuft als normaler Benutzer. Braucht ein Programm Adminrechte, fragt Windows selbst nach – bei mehreren Programmen eventuell mehrmals.
 - Fehlt winget (Teil des „App-Installers“ aus dem Microsoft Store), erklärt die Seite, was zu tun ist.
 
+## Seite „Windows-Stick“
+
+Erstellt startfähige USB-Sticks – wie Rufus – und richtet auf Wunsch eine automatische Windows-Installation ein.
+
+- **Quelle:** Windows 11 direkt von Microsoft laden (Sprache wählen; derselbe offizielle Katalog wie beim Media Creation Tool, jede Datei wird anhand von Microsofts Prüfsumme kontrolliert) oder eine eigene ISO-Datei (Windows oder z. B. Linux).
+- **Stick:** Es werden nur USB-Laufwerke angeboten. Vor dem Löschen kommt eine deutliche Warnung, dann fragt Windows nach Adminrechten. System- und Startlaufwerke sowie Laufwerke über 256 GB lehnt Omnikit ab.
+- **Automatische Installation (wie der Unattend-Generator von Schneegans):** Sprache, Tastatur, Zeitzone, Edition, lokales Konto statt Microsoft-Konto, optional Festplatte automatisch einteilen, Programme aus dem Katalog (werden nach der ersten Anmeldung über winget installiert), vorinstallierte Werbe-Apps entfernen, Datenschutz-Grundeinstellungen, Explorer und Taskleiste (Dateiendungen, Startknopf links, Widgets, klassisches Kontextmenü, keine Websuche im Start), System (Passwort läuft nicht ab, Schnellstart aus, keine automatische Geräteverschlüsselung, Installation auf älteren PCs ohne TPM 2.0 oder Secure Boot), WLAN vorab eintragen (das Passwort wird danach aus der Kopie der Antwortdatei auf dem PC entfernt). Ergebnis ist eine `autounattend.xml`, die Omnikit an die richtige Stelle auf dem Stick legt. Eine vorhandene `autounattend.xml` (z. B. von schneegans.de) lässt sich importieren. Alternativ alles als ZIP mit Anleitung.
+- Das Passwort des Kontos steht in der Antwortdatei nur verschleiert, nicht verschlüsselt. Windows wird mit Microsofts öffentlichen „generischen“ Schlüsseln installiert, die nur die Edition wählen und nichts aktivieren.
+- Vorbild für den Aufbau der Antwortdatei: [Unattend-Generator von Christoph Schneegans](https://schneegans.de/windows/unattend-generator/) (MIT-Lizenz); es wurde kein Code übernommen.
+
 ## Voraussetzungen
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
@@ -61,7 +71,7 @@ Die Seriennummer des Geräts wird nur angezeigt, nicht gespeichert, nicht gelogg
 
 ## Adminrechte
 
-Omnikit startet immer **ohne** Adminrechte. Für Installationen auf der Seite „Apps“ fragt Windows selbst nach, wenn ein Programm Adminrechte braucht. Nur für Laufwerksdetails (Verschleiß, Temperatur, Fehlerzähler) fragt die App auf Knopfdruck nach. Dann startet sie sich selbst unsichtbar ein zweites Mal mit Adminrechten (Windows zeigt dabei die UAC-Abfrage), liest nur diese Werte aus und beendet sich wieder. Dieser Hilfsprozess kann ausschließlich fest eingebaute Leseaktionen ausführen. Ohne Adminrechte funktioniert die App trotzdem vollständig; nur diese Werte fehlen dann. Der Hilfsprozess schreibt in eine eigene Log-Datei (`omnikit-helper-*.log`).
+Omnikit startet immer **ohne** Adminrechte. Für Installationen auf der Seite „Apps“ fragt Windows selbst nach, wenn ein Programm Adminrechte braucht. Für Laufwerksdetails (Verschleiß, Temperatur, Fehlerzähler) und zum Erstellen eines USB-Sticks fragt die App auf Knopfdruck nach. Dann startet sie sich selbst unsichtbar ein zweites Mal mit Adminrechten (Windows zeigt dabei die UAC-Abfrage), liest nur diese Werte aus und beendet sich wieder. Dieser Hilfsprozess kann ausschließlich fest eingebaute Aktionen ausführen und prüft deren Angaben selbst (z. B. dass ein Datenträger wirklich ein USB-Stick ist). Ohne Adminrechte funktioniert die App trotzdem vollständig; nur diese Werte fehlen dann. Der Hilfsprozess schreibt in eine eigene Log-Datei (`omnikit-helper-*.log`).
 
 ## Projektaufbau
 
@@ -71,11 +81,13 @@ Omnikit startet immer **ohne** Adminrechte. Für Installationen auf der Seite �
 | `src/Omnikit.Modules.Health` | Modul „Gerätezustand“: Laufwerke, Speicherplatz, Akku, Windows |
 | `src/Omnikit.Modules.Performance` | Seite „Leistung“: Live-Messung von CPU, RAM, Laufwerken, Netzwerk und Grafik |
 | `src/Omnikit.Modules.Apps` | Seite „Apps“: winget-Anbindung, Katalog, Vorlagen |
+| `src/Omnikit.Modules.StickBuilder` | Seite „Windows-Stick“: Antwortdatei, Skripte, Stick erstellen, Windows-Download |
 | `src/Omnikit.Desktop` | Avalonia-Oberfläche |
 | `tests/Omnikit.Core.Tests` | Unit-Tests für den Kern |
 | `tests/Omnikit.Modules.Health.Tests` | Unit-Tests für das Health-Modul (u. a. Ampel-Grenzwerte) |
 | `tests/Omnikit.Modules.Performance.Tests` | Unit-Tests für die Leistungsseite (Bewertung, Verlauf, Instanznamen) |
 | `tests/Omnikit.Modules.Apps.Tests` | Unit-Tests für die Apps-Seite (winget-Ausgaben, Fehlercodes, Vorlagen) |
+| `tests/Omnikit.Modules.StickBuilder.Tests` | Unit-Tests für den Stick-Builder (Antwortdatei, Prüfungen, Katalog) |
 | `docs/decisions` | Wichtige Entscheidungen mit Begründung |
 
 ## Lizenz

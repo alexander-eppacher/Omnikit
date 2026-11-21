@@ -5,7 +5,10 @@ namespace Omnikit.Core.Elevation;
 /// </summary>
 public interface IElevationRunner
 {
-    Task<ElevationResult> RunAsync(string operationId, CancellationToken cancellationToken);
+    /// <param name="arguments">Parameter für die Aktion (werden dort geprüft).</param>
+    /// <param name="progress">Empfängt Fortschrittsmeldungen des Hilfsprozesses; kann null sein.</param>
+    Task<ElevationResult> RunAsync(
+        string operationId, IReadOnlyList<string> arguments, IProgress<string>? progress, CancellationToken cancellationToken);
 }
 
 public enum ElevationStatus
@@ -23,4 +26,5 @@ public enum ElevationStatus
     NotSupported,
 }
 
+/// <param name="Payload">Ergebnis der Aktion bei Erfolg; bei einem erwarteten Fehler der Aktion eine verständliche Meldung.</param>
 public sealed record ElevationResult(ElevationStatus Status, string? Payload = null);

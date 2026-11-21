@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Stick-Builder: erzeugt eine Antwortdatei (autounattend.xml) und ein Erststart-Skript für die automatische Windows-Installation. Keine Oberfläche. -->
+
+  <PropertyGroup>
+    <NeutralLanguage>de</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Omnikit.Core\Omnikit.Core.csproj" />
+    <!-- Für die Prüfung der Paket-IDs (dieselbe Regel wie auf der Seite „Apps“) -->
+    <ProjectReference Include="..\Omnikit.Modules.Apps\Omnikit.Modules.Apps.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Texte: aus StickTexts.resx wird beim Bauen die Klasse Omnikit.Modules.StickBuilder.Resources.StickTexts erzeugt -->
+    <EmbeddedResource Update="Resources\StickTexts.resx">
+      <StronglyTypedFileName>$(IntermediateOutputPath)StickTexts.Designer.cs</StronglyTypedFileName>
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedNamespace>Omnikit.Modules.StickBuilder.Resources</StronglyTypedNamespace>
+      <StronglyTypedClassName>StickTexts</StronglyTypedClassName>
+      <PublicClass>true</PublicClass>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Vorlage des Erststart-Skripts; wird in die Antwortdatei eingebettet -->
+    <EmbeddedResource Include="Scripts\*.ps1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Omnikit.Modules.StickBuilder.Tests" />
+  </ItemGroup>
+</Project>

@@ -8,6 +8,8 @@ using Omnikit.Core.SystemInfo;
 using Omnikit.Desktop.Services;
 using Omnikit.Desktop.ViewModels;
 using Omnikit.Modules.Apps.Winget;
+using Omnikit.Modules.StickBuilder.Creation;
+using Omnikit.Modules.StickBuilder.Download;
 using Omnikit.Modules.Health;
 using Omnikit.Modules.Health.Sources;
 using Omnikit.Modules.Performance.Sources;
@@ -39,9 +41,10 @@ internal static class ServiceSetup
 
         services.AddSingleton(TimeProvider.System);
 
-        // Hilfsprozess mit Adminrechten: Nur die hier registrierten Leseaktionen sind erlaubt (feste Liste).
+        // Hilfsprozess mit Adminrechten: Nur die hier registrierten Aktionen sind erlaubt (feste Liste).
         services.AddSingleton<IElevationRunner, ElevationRunner>();
         services.AddSingleton<IElevatedOperation, DiskReliabilityOperation>();
+        services.AddSingleton<IElevatedOperation, CreateStickOperation>(); // ändert: löscht einen USB-Stick, nur nach Bestätigung
 
         // Health-Modul und seine Datenquellen
         services.AddSingleton<WindowsDiskSource>();
@@ -71,6 +74,17 @@ internal static class ServiceSetup
             provider.GetRequiredService<ViewModeState>(),
             context,
             provider.GetRequiredService<ILogger<AppsPageViewModel>>()));
+
+        // Seite "Windows-Stick" (Stick-Builder, Entscheidung 0012)
+        services.AddSingleton<WindowsDownloader>();
+        services.AddSingleton<Func<SystemContext, StickBuilderPageViewModel>>(provider => context => new StickBuilderPageViewModel(
+            provider.GetRequiredService<IDialogService>(),
+            provider.GetRequiredService<IElevationRunner>(),
+            provider.GetRequiredService<WindowsDownloader>(),
+            provider.GetRequiredService<ViewModeState>(),
+            context,
+            provider.GetRequiredService<TimeProvider>(),
+            provider.GetRequiredService<ILogger<StickBuilderPageViewModel>>()));
 
         // Module: Reihenfolge = Reihenfolge in der Navigationsleiste
         services.AddSingleton<IModule, HealthModule>();

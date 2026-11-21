@@ -23,7 +23,7 @@ public sealed class DialogService : IDialogService
         return await dialog.ShowDialog<bool>(owner);
     }
 
-    public async Task<Stream?> PickSaveFileAsync(string suggestedFileName)
+    public async Task<Stream?> PickSaveFileAsync(string suggestedFileName, string fileTypeName = "JSON", string extension = "json")
     {
         var owner = GetMainWindow();
         if (owner is null)
@@ -37,8 +37,8 @@ public sealed class DialogService : IDialogService
         {
             SuggestedFileName = suggestedFileName,
             SuggestedStartLocation = documents,
-            DefaultExtension = "json",
-            FileTypeChoices = [new FilePickerFileType("JSON") { Patterns = ["*.json"] }],
+            DefaultExtension = extension,
+            FileTypeChoices = [new FilePickerFileType(fileTypeName) { Patterns = [$"*.{extension}"] }],
         });
 
         return file is null ? null : await file.OpenWriteAsync();
@@ -61,6 +61,25 @@ public sealed class DialogService : IDialogService
         });
 
         return files.Count == 0 ? null : await files[0].OpenReadAsync();
+    }
+
+    public async Task<string?> PickOpenFilePathAsync(string fileTypeName, string extension)
+    {
+        var owner = GetMainWindow();
+        if (owner is null)
+        {
+            return null;
+        }
+
+        var downloads = await owner.StorageProvider.TryGetWellKnownFolderAsync(WellKnownFolder.Downloads);
+        var files = await owner.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        {
+            AllowMultiple = false,
+            SuggestedStartLocation = downloads,
+            FileTypeFilter = [new FilePickerFileType(fileTypeName) { Patterns = [$"*.{extension}"] }],
+        });
+
+        return files.Count == 0 ? null : files[0].TryGetLocalPath();
     }
 
     private static Window? GetMainWindow() =>

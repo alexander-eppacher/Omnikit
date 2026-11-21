@@ -5,11 +5,13 @@
     <Project Path="src/Omnikit.Modules.Apps/Omnikit.Modules.Apps.csproj" />
     <Project Path="src/Omnikit.Modules.Health/Omnikit.Modules.Health.csproj" />
     <Project Path="src/Omnikit.Modules.Performance/Omnikit.Modules.Performance.csproj" />
+    <Project Path="src/Omnikit.Modules.StickBuilder/Omnikit.Modules.StickBuilder.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Omnikit.Core.Tests/Omnikit.Core.Tests.csproj" />
     <Project Path="tests/Omnikit.Modules.Apps.Tests/Omnikit.Modules.Apps.Tests.csproj" />
     <Project Path="tests/Omnikit.Modules.Health.Tests/Omnikit.Modules.Health.Tests.csproj" />
     <Project Path="tests/Omnikit.Modules.Performance.Tests/Omnikit.Modules.Performance.Tests.csproj" />
+    <Project Path="tests/Omnikit.Modules.StickBuilder.Tests/Omnikit.Modules.StickBuilder.Tests.csproj" />
   </Folder>
 </Solution>

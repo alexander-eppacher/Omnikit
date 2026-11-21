@@ -116,7 +116,7 @@ public sealed class HealthModule : IModule
             return new ActionResult(false, HealthTexts.Action_Unknown);
         }
 
-        var result = await _elevation.RunAsync(DiskReliabilityOperation.OperationId, cancellationToken);
+        var result = await _elevation.RunAsync(DiskReliabilityOperation.OperationId, [], null, cancellationToken);
 
         switch (result.Status)
         {

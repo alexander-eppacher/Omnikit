@@ -39,7 +39,7 @@ internal sealed class FakeSources :
 
     public Task<UpdateStatus?> CheckAsync(CancellationToken cancellationToken) => Task.FromResult(Updates);
 
-    public Task<ElevationResult> RunAsync(string operationId, CancellationToken cancellationToken)
+    public Task<ElevationResult> RunAsync(string operationId, IReadOnlyList<string> arguments, IProgress<string>? progress, CancellationToken cancellationToken)
     {
         ElevationCalls++;
         return Task.FromResult(ElevationResult);

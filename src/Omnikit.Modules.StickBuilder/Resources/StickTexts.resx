@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Texte des Stick-Builders (Bibliothek). Oberflächentexte der Seite stehen in Omnikit.Desktop. -->
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <!-- Zeitzonen -->
+  <data name="TimeZone_CentralEurope" xml:space="preserve"><value>Mitteleuropa (Berlin, Wien, Rom, Zürich)</value></data>
+  <data name="TimeZone_WesternEurope" xml:space="preserve"><value>Westeuropa (London, Lissabon)</value></data>
+  <data name="TimeZone_Romance" xml:space="preserve"><value>Paris, Madrid, Brüssel</value></data>
+  <data name="TimeZone_UsEast" xml:space="preserve"><value>USA Ostküste (New York)</value></data>
+  <data name="TimeZone_UsWest" xml:space="preserve"><value>USA Westküste (Los Angeles)</value></data>
+
+  <!-- Vorinstallierte Apps -->
+  <data name="RemoveApp_News" xml:space="preserve"><value>Microsoft Nachrichten</value></data>
+  <data name="RemoveApp_Weather" xml:space="preserve"><value>Wetter</value></data>
+  <data name="RemoveApp_BingSearch" xml:space="preserve"><value>Bing-Suche</value></data>
+  <data name="RemoveApp_Xbox" xml:space="preserve"><value>Xbox-App</value></data>
+  <data name="RemoveApp_Solitaire" xml:space="preserve"><value>Solitaire &amp; Casual Games</value></data>
+  <data name="RemoveApp_Clipchamp" xml:space="preserve"><value>Clipchamp (Videobearbeitung)</value></data>
+  <data name="RemoveApp_Todo" xml:space="preserve"><value>Microsoft To Do</value></data>
+  <data name="RemoveApp_OfficeHub" xml:space="preserve"><value>Microsoft 365 (Office-Werbung)</value></data>
+  <data name="RemoveApp_Outlook" xml:space="preserve"><value>Outlook (neu)</value></data>
+  <data name="RemoveApp_FeedbackHub" xml:space="preserve"><value>Feedback-Hub</value></data>
+  <data name="RemoveApp_GetHelp" xml:space="preserve"><value>Hilfe anfordern</value></data>
+  <data name="RemoveApp_PowerAutomate" xml:space="preserve"><value>Power Automate</value></data>
+  <data name="RemoveApp_Family" xml:space="preserve"><value>Microsoft Family</value></data>
+  <data name="RemoveApp_Copilot" xml:space="preserve"><value>Copilot</value></data>
+
+  <!-- Fehler bei den Eingaben -->
+  <data name="Error_AccountNameMissing" xml:space="preserve"><value>Bitte einen Kontonamen eingeben.</value></data>
+  <data name="Error_AccountName" xml:space="preserve"><value>Der Kontoname muss 1 bis 20 Zeichen lang sein und darf diese Zeichen nicht enthalten: " / \ [ ] : ; | = , + * ? &lt; &gt; @</value></data>
+  <data name="Error_AccountNameReserved" xml:space="preserve"><value>Diesen Kontonamen verwendet Windows selbst. Bitte einen anderen wählen.</value></data>
+  <data name="Error_PasswordTooLong" xml:space="preserve"><value>Das Passwort darf höchstens 127 Zeichen lang sein.</value></data>
+  <data name="Error_ComputerName" xml:space="preserve"><value>Der Computername darf 1 bis 15 Zeichen haben: Buchstaben (ohne Umlaute), Ziffern und Bindestriche, nicht nur Ziffern.</value></data>
+  <data name="Error_Region" xml:space="preserve"><value>Sprache, Format, Tastatur oder Zeitzone ist ungültig.</value></data>
+  <data name="Error_Packages" xml:space="preserve"><value>Die Programmauswahl enthält ungültige Einträge.</value></data>
+
+  <!-- Anleitung im ZIP -->
+  <data name="Guide_Text" xml:space="preserve"><value>OMNIKIT – AUTOMATISCHE WINDOWS-INSTALLATION
+============================================
+
+Was du brauchst
+- Einen USB-Stick mit Windows 11 (mindestens 8 GB). Erstellen mit dem „Media Creation Tool“
+  von Microsoft: https://www.microsoft.com/de-de/software-download/windows11
+- Diese ZIP-Datei.
+
+So geht es
+1. Windows-11-Stick mit dem Media Creation Tool erstellen.
+2. Die Datei „autounattend.xml“ aus dieser ZIP-Datei direkt ins Hauptverzeichnis des Sticks
+   kopieren (neben „setup.exe“, nicht in einen Unterordner).
+3. Den PC vom Stick starten (meist mit F12, F11 oder Esc beim Einschalten das Startmenü öffnen).
+4. Die Installation läuft von selbst. Nur die WLAN-Seite kann erscheinen, damit der PC ins
+   Internet kommt.
+5. Nach der ersten Anmeldung installiert ein Fenster „Omnikit richtet Programme ein“ die
+   gewählten Programme. Bitte offen lassen, bis es sich schließt.
+
+Gut zu wissen
+- Die Sprache in der Antwortdatei muss zur Sprache des Windows-Sticks passen.
+- Das Passwort des Kontos steht nur verschleiert (nicht verschlüsselt) in der autounattend.xml.
+  Den Stick deshalb nicht herumliegen lassen und das Passwort nach der Installation ändern.
+- Windows wird mit einem öffentlichen „generischen“ Schlüssel installiert, der nur die Edition
+  auswählt. Aktiviert wird Windows wie gewohnt über die digitale Lizenz des PCs oder einen
+  eigenen Schlüssel.
+- Protokolle der Installation: C:\Windows\Setup\Scripts\
+- Der Ordner „Skripte“ in dieser ZIP-Datei dient nur zum Nachlesen; die Skripte stecken bereits
+  in der autounattend.xml.</value></data>
+  <data name="Guide_WipeWarning" xml:space="preserve"><value>ACHTUNG: Diese Antwortdatei LÖSCHT DATENTRÄGER 0 KOMPLETT – ohne Rückfrage, sobald der PC vom Stick
+startet. Alle Daten auf diesem Laufwerk gehen verloren. Den Stick nicht an einem PC einstecken und
+starten, dessen Daten noch gebraucht werden.</value></data>
+
+  <!-- Seite „Windows-Stick“ -->
+  <data name="Page_Title" xml:space="preserve"><value>Windows-Stick</value></data>
+  <data name="Page_Subtitle" xml:space="preserve"><value>Erstellt startfähige USB-Sticks aus ISO-Dateien – wie Rufus – und richtet auf Wunsch eine automatische Windows-11-Installation ein: Sprache, Konto und Programme einmal festlegen, danach installiert sich Windows ohne Fragen.</value></data>
+  <data name="Section_Region" xml:space="preserve"><value>1. Sprache und Region</value></data>
+  <data name="Label_Language" xml:space="preserve"><value>Sprache von Windows</value></data>
+  <data name="Hint_Language" xml:space="preserve"><value>Muss zur Sprache des Windows-Sticks passen.</value></data>
+  <data name="Label_Format" xml:space="preserve"><value>Format (Datum, Zahlen, Währung)</value></data>
+  <data name="Label_Keyboard" xml:space="preserve"><value>Tastatur</value></data>
+  <data name="Label_TimeZone" xml:space="preserve"><value>Zeitzone</value></data>
+  <data name="Section_Windows" xml:space="preserve"><value>2. Windows</value></data>
+  <data name="Label_Edition" xml:space="preserve"><value>Edition</value></data>
+  <data name="Hint_Edition" xml:space="preserve"><value>Wähle die Edition, für die der PC eine Lizenz hat – bei Laptops oft „Home“. Omnikit trägt nur einen öffentlichen Schlüssel von Microsoft ein, der die Edition auswählt; aktiviert wird Windows wie gewohnt.</value></data>
+  <data name="Label_ComputerName" xml:space="preserve"><value>Name des PCs (optional)</value></data>
+  <data name="Hint_ComputerName" xml:space="preserve"><value>Leer lassen: Windows wählt einen Namen. Bis 15 Zeichen, nur Buchstaben ohne Umlaute, Ziffern und Bindestriche.</value></data>
+  <data name="Section_Account" xml:space="preserve"><value>3. Benutzerkonto</value></data>
+  <data name="Hint_Account" xml:space="preserve"><value>Ein lokales Konto mit Adminrechten – ohne Microsoft-Konto. Das Passwort steht nur verschleiert (nicht verschlüsselt) in der Datei auf dem Stick: Stick nicht herumliegen lassen und das Passwort nach der Installation ändern.</value></data>
+  <data name="Label_AccountName" xml:space="preserve"><value>Kontoname</value></data>
+  <data name="Label_Password" xml:space="preserve"><value>Passwort (leer = ohne Passwort)</value></data>
+  <data name="Label_PasswordRepeat" xml:space="preserve"><value>Passwort wiederholen</value></data>
+  <data name="Section_Disk" xml:space="preserve"><value>4. Festplatte</value></data>
+  <data name="Disk_Choose" xml:space="preserve"><value>Im Setup selbst auswählen, wohin Windows kommt (sicher)</value></data>
+  <data name="Disk_Wipe" xml:space="preserve"><value>Datenträger 0 komplett löschen und automatisch einteilen</value></data>
+  <data name="Disk_WipeWarning" xml:space="preserve"><value>ACHTUNG: Startet ein PC von diesem Stick, wird sein erster Datenträger ohne Rückfrage komplett gelöscht. Alle Daten darauf gehen verloren. Nur für PCs, die ohnehin neu aufgesetzt werden.</value></data>
+  <data name="Disk_WipeConfirm" xml:space="preserve"><value>Ich habe verstanden, dass alle Daten auf Datenträger 0 gelöscht werden.</value></data>
+  <data name="Section_Programs" xml:space="preserve"><value>5. Programme</value></data>
+  <data name="Hint_Programs" xml:space="preserve"><value>Werden nach der ersten Anmeldung automatisch über winget installiert (Internet nötig).</value></data>
+  <data name="Group_Wifi" xml:space="preserve"><value>WLAN (optional)</value></data>
+  <data name="Hint_Wifi" xml:space="preserve"><value>Damit der PC nach dem Setup ohne Klick ins Internet kommt und die Programme laden kann. Leer lassen, wenn der PC am Netzwerkkabel hängt oder du das WLAN im Setup selbst wählen willst. Das Passwort steht lesbar in der Datei auf dem Stick; auf dem PC entfernt Omnikit es nach dem Eintragen wieder.</value></data>
+  <data name="Label_WifiName" xml:space="preserve"><value>WLAN-Name</value></data>
+  <data name="Label_WifiPassword" xml:space="preserve"><value>WLAN-Passwort (leer = offenes WLAN)</value></data>
+  <data name="Error_WifiName" xml:space="preserve"><value>Der WLAN-Name ist zu lang (höchstens 32 Zeichen, Umlaute zählen doppelt) oder enthält Steuerzeichen.</value></data>
+  <data name="Error_WifiPassword" xml:space="preserve"><value>Ein WLAN-Passwort hat 8 bis 63 Zeichen (ohne Umlaute) – oder leer lassen für ein offenes WLAN.</value></data>
+  <data name="Section_Cleanup" xml:space="preserve"><value>6. Aufräumen und Datenschutz</value></data>
+  <data name="Hint_Cleanup" xml:space="preserve"><value>Diese vorinstallierten Apps werden für alle Benutzer entfernt:</value></data>
+  <data name="Label_Privacy" xml:space="preserve"><value>Datenschutz-Grundeinstellungen: Diagnosedaten nur das Nötigste, Werbe-ID aus, keine still nachinstallierten Werbe-Apps</value></data>
+  <data name="Section_Settings" xml:space="preserve"><value>7. Bedienung und System</value></data>
+  <data name="Hint_Settings" xml:space="preserve"><value>Explorer und Taskleiste gelten für jedes neue Konto auf dem PC. Alles lässt sich danach in den Windows-Einstellungen wieder ändern.</value></data>
+  <data name="Group_Desktop" xml:space="preserve"><value>Explorer und Taskleiste</value></data>
+  <data name="Label_ShowFileExtensions" xml:space="preserve"><value>Dateiendungen anzeigen (z. B. „.exe“) – hilft, gefährliche Anhänge zu erkennen</value></data>
+  <data name="Label_TaskbarLeft" xml:space="preserve"><value>Startknopf links wie bei Windows 10</value></data>
+  <data name="Label_HideWidgets" xml:space="preserve"><value>Widgets (Wetter und Nachrichten) ausblenden</value></data>
+  <data name="Label_ClassicContextMenu" xml:space="preserve"><value>Rechtsklick zeigt gleich alle Einträge wie bei Windows 10 (ab der zweiten Anmeldung)</value></data>
+  <data name="Label_NoWebSearch" xml:space="preserve"><value>Suche im Startmenü nur auf dem PC, ohne Bing-Websuche</value></data>
+  <data name="Group_Machine" xml:space="preserve"><value>System</value></data>
+  <data name="Label_PasswordNeverExpires" xml:space="preserve"><value>Passwort läuft nicht ab (sonst fragt Windows nach 42 Tagen nach einem neuen)</value></data>
+  <data name="Label_DisableFastStartup" xml:space="preserve"><value>Schnellstart aus: Herunterfahren fährt ganz herunter (hilft bei Treiberproblemen und mit Linux auf demselben PC)</value></data>
+  <data name="Label_PreventDeviceEncryption" xml:space="preserve"><value>Laufwerk nicht automatisch verschlüsseln (BitLocker-Geräteverschlüsselung)</value></data>
+  <data name="Hint_PreventDeviceEncryption" xml:space="preserve"><value>Ohne Verschlüsselung kann jeder, der die Festplatte ausbaut, die Daten lesen. Dafür sperrt kein vergessener Wiederherstellungsschlüssel die Daten aus. Mit lokalem Konto liegt dieser Schlüssel nicht in einem Microsoft-Konto.</value></data>
+  <data name="Label_BypassRequirements" xml:space="preserve"><value>Auch auf älteren PCs installieren (Prüfung von TPM 2.0, Secure Boot und Arbeitsspeicher überspringen)</value></data>
+  <data name="Hint_BypassRequirements" xml:space="preserve"><value>Microsoft unterstützt Windows 11 auf solchen PCs nicht offiziell; große Funktionsupdates können später ausbleiben. Der Prozessor wird bei einer Neuinstallation ohnehin nicht geprüft.</value></data>
+  <data name="Section_Finish" xml:space="preserve"><value>8. Fertigstellen</value></data>
+  <data name="Button_SaveZip" xml:space="preserve"><value>Als ZIP speichern …</value></data>
+  <data name="Button_WriteStick" xml:space="preserve"><value>Auf USB-Stick schreiben</value></data>
+  <data name="Button_RefreshSticks" xml:space="preserve"><value>Sticks neu suchen</value></data>
+  <data name="Label_Stick" xml:space="preserve"><value>Windows-Stick</value></data>
+  <data name="Page_NoStick" xml:space="preserve"><value>Kein Windows-Installationsstick gefunden. Erstelle oben einen unter „USB-Stick erstellen“ (oder mit dem Media Creation Tool von Microsoft) und klicke „Sticks neu suchen“.</value></data>
+  <data name="Page_LanguageMismatch" xml:space="preserve"><value>Hinweis: Auf dem Stick ist Windows in dieser Sprache: {0}. Die gewählte Sprache muss dazu passen, sonst bricht das Setup ab.</value></data>
+  <data name="Page_ZipSaved" xml:space="preserve"><value>ZIP gespeichert. Die Anleitung darin erklärt die nächsten Schritte.</value></data>
+  <data name="Page_StickWritten" xml:space="preserve"><value>Fertig: autounattend.xml liegt jetzt auf {0}.</value></data>
+  <data name="Page_SaveFailed" xml:space="preserve"><value>Speichern hat nicht geklappt. Details stehen in der Log-Datei.</value></data>
+  <data name="Page_Preview" xml:space="preserve"><value>Antwortdatei (autounattend.xml)</value></data>
+  <data name="Page_ErrorsTitle" xml:space="preserve"><value>Bitte noch korrigieren:</value></data>
+  <data name="Error_PasswordRepeat" xml:space="preserve"><value>Die beiden Passwörter sind nicht gleich.</value></data>
+  <data name="Error_WipeNotConfirmed" xml:space="preserve"><value>Bitte bestätigen, dass Datenträger 0 gelöscht werden darf – oder „Im Setup selbst auswählen“ nehmen.</value></data>
+  <data name="Confirm_WriteStickTitle" xml:space="preserve"><value>Auf USB-Stick schreiben</value></data>
+  <data name="Confirm_WriteStick" xml:space="preserve"><value>Omnikit schreibt die Datei autounattend.xml auf {0}. Sonst wird am Stick nichts verändert.</value></data>
+  <data name="Confirm_WriteStickReplace" xml:space="preserve"><value>Auf dem Stick liegt schon eine autounattend.xml. Sie wird ersetzt.</value></data>
+  <data name="Confirm_WriteStickNormal" xml:space="preserve"><value>Startet ein PC von diesem Stick, installiert sich Windows danach automatisch mit deinen Einstellungen.</value></data>
+  <data name="Confirm_WriteStickWipe" xml:space="preserve"><value>ACHTUNG: Startet ein PC von diesem Stick, wird sein Datenträger 0 ohne Rückfrage KOMPLETT GELÖSCHT.</value></data>
+
+  <!-- Stick erstellen (Hilfsprozess) -->
+  <data name="Create_WindowsOnly" xml:space="preserve"><value>Einen Stick erstellen geht nur unter Windows.</value></data>
+  <data name="Create_BadArguments" xml:space="preserve"><value>Ungültige Angaben zum Stick oder zur ISO-Datei.</value></data>
+  <data name="Create_DiskGone" xml:space="preserve"><value>Der USB-Stick wurde nicht mehr gefunden. Bitte neu auswählen.</value></data>
+  <data name="Create_DiskChanged" xml:space="preserve"><value>Der ausgewählte Datenträger hat sich geändert (z. B. Stick umgesteckt). Zur Sicherheit wurde nichts gelöscht – bitte den Stick neu auswählen.</value></data>
+  <data name="Create_NotUsb" xml:space="preserve"><value>Das ist kein USB-Laufwerk. Omnikit löscht nur USB-Sticks.</value></data>
+  <data name="Create_SystemDisk" xml:space="preserve"><value>Das ist das System- oder Startlaufwerk dieses PCs. Es wird nie gelöscht.</value></data>
+  <data name="Create_TooLarge" xml:space="preserve"><value>Das Laufwerk ist größer als 256 GB – wahrscheinlich eine Festplatte mit Daten. Omnikit löscht es nicht.</value></data>
+  <data name="Create_StickTooSmall" xml:space="preserve"><value>Der Stick ist zu klein für diese ISO-Datei.</value></data>
+  <data name="Create_EsdTooLarge" xml:space="preserve"><value>Diese Windows-ISO enthält eine install.esd über 4 GB. Das wird (noch) nicht unterstützt.</value></data>
+  <data name="Create_MountFailed" xml:space="preserve"><value>Die ISO-Datei konnte nicht geöffnet werden. Ist sie beschädigt?</value></data>
+  <data name="Create_Mounting" xml:space="preserve"><value>ISO-Datei wird geöffnet …</value></data>
+  <data name="Create_Formatting" xml:space="preserve"><value>USB-Stick wird gelöscht und vorbereitet …</value></data>
+  <data name="Create_Copying" xml:space="preserve"><value>Windows wird auf den Stick kopiert … {0} %</value></data>
+  <data name="Create_Splitting" xml:space="preserve"><value>Großes Windows-Abbild wird für FAT32 aufgeteilt (dauert einige Minuten) …</value></data>
+  <data name="Create_SplittingPercent" xml:space="preserve"><value>Windows-Abbild wird für FAT32 aufgeteilt … {0} %</value></data>
+  <data name="Create_Writing" xml:space="preserve"><value>ISO wird auf den Stick geschrieben … {0} %</value></data>
+
+  <!-- Seite: Stick erstellen -->
+  <data name="Section_Create" xml:space="preserve"><value>USB-Stick erstellen</value></data>
+  <data name="Hint_Create" xml:space="preserve"><value>Macht aus einer ISO-Datei einen startfähigen USB-Stick – wie Rufus. Windows-ISOs werden so eingerichtet, dass sie auf jedem UEFI-PC starten; andere ISOs (z. B. Linux) werden 1:1 geschrieben.</value></data>
+  <data name="Source_OwnIso" xml:space="preserve"><value>Eigene ISO-Datei</value></data>
+  <data name="Source_Download" xml:space="preserve"><value>Windows 11 von Microsoft herunterladen</value></data>
+  <data name="Button_PickIso" xml:space="preserve"><value>ISO-Datei wählen …</value></data>
+  <data name="Label_NoIso" xml:space="preserve"><value>Noch keine ISO-Datei gewählt.</value></data>
+  <data name="Label_UsbDisk" xml:space="preserve"><value>USB-Stick (wird komplett gelöscht)</value></data>
+  <data name="Button_RefreshUsb" xml:space="preserve"><value>Neu suchen</value></data>
+  <data name="Page_NoUsb" xml:space="preserve"><value>Kein USB-Stick gefunden. Stick einstecken und „Neu suchen“ klicken.</value></data>
+  <data name="Button_CreateStick" xml:space="preserve"><value>Stick erstellen</value></data>
+  <data name="Confirm_CreateTitle" xml:space="preserve"><value>USB-Stick erstellen</value></data>
+  <data name="Confirm_Create" xml:space="preserve"><value>ALLE DATEN auf „{0}“ werden gelöscht.
+
+Danach wird „{1}“ auf den Stick geschrieben. Windows fragt nach Adminrechten. Je nach Stick dauert das 10 bis 40 Minuten – den Stick währenddessen nicht abziehen.</value></data>
+  <data name="Page_CreateDoneWindows" xml:space="preserve"><value>Fertig: Der Windows-Stick ist bereit.</value></data>
+  <data name="Page_CreateDoneRaw" xml:space="preserve"><value>Fertig: Die ISO wurde auf den Stick geschrieben. Hinweis: Nur „hybride“ ISOs (z. B. Ubuntu, Debian) starten so; sonst bitte das Werkzeug des Herstellers verwenden.</value></data>
+  <data name="Page_CreateCancelled" xml:space="preserve"><value>Abgebrochen: Die Abfrage nach Adminrechten wurde abgelehnt. Am Stick wurde nichts verändert.</value></data>
+  <data name="Page_CreateFailed" xml:space="preserve"><value>Der Stick konnte nicht erstellt werden. Details stehen in der Log-Datei.</value></data>
+  <data name="Confirm_SetupTitle" xml:space="preserve"><value>Automatische Installation einrichten?</value></data>
+  <data name="Confirm_Setup" xml:space="preserve"><value>Soll sich Windows von diesem Stick automatisch installieren – mit Sprache, Konto, Programmen und Datenschutz-Einstellungen nach Wahl?
+
+Mit „Weiter“ stellst du das unten ein (oder importierst eine vorhandene autounattend.xml) und schreibst es dann auf den Stick.</value></data>
+  <data name="Page_SetupHint" xml:space="preserve"><value>Stelle unten die automatische Installation ein und klicke dann „Auf USB-Stick schreiben“ – oder importiere eine vorhandene autounattend.xml.</value></data>
+  <data name="Section_Auto" xml:space="preserve"><value>Automatische Installation (optional)</value></data>
+  <data name="Hint_Auto" xml:space="preserve"><value>Wie beim Unattend-Generator von Schneegans: Einstellungen für eine Windows-Installation ohne Fragen. Wird als autounattend.xml auf den Stick gelegt.</value></data>
+  <data name="Button_ImportXml" xml:space="preserve"><value>Vorhandene autounattend.xml auf den Stick …</value></data>
+  <data name="Page_ImportInvalid" xml:space="preserve"><value>Die gewählte Datei ist keine gültige Windows-Antwortdatei (autounattend.xml).</value></data>
+  <data name="Confirm_ImportTitle" xml:space="preserve"><value>Antwortdatei auf den Stick</value></data>
+  <data name="Confirm_Import" xml:space="preserve"><value>Omnikit kopiert „{0}“ als autounattend.xml auf {1}. Omnikit prüft nur, ob es eine Antwortdatei ist – was sie bewirkt, hängt von ihrem Inhalt ab (sie kann z. B. Datenträger löschen).</value></data>
+
+  <!-- Windows aus der Microsoft-Datei (ESD) aufbauen -->
+  <data name="Media_Setup" xml:space="preserve"><value>Windows-Setup wird vorbereitet (1/3) … {0} %</value></data>
+  <data name="Media_Boot" xml:space="preserve"><value>Startdateien werden erstellt (2/3) … {0} %</value></data>
+  <data name="Media_Install" xml:space="preserve"><value>Windows-Editionen werden umgewandelt (3/3) … {0} %</value></data>
+  <data name="Create_Verifying" xml:space="preserve"><value>Windows-Datei wird geprüft …</value></data>
+  <data name="Create_HashMismatch" xml:space="preserve"><value>Die Windows-Datei ist beschädigt oder wurde verändert. Bitte erneut herunterladen.</value></data>
+
+  <!-- Windows-Download -->
+  <data name="Label_DownloadLanguage" xml:space="preserve"><value>Sprache von Windows</value></data>
+  <data name="Page_CatalogLoading" xml:space="preserve"><value>Liste wird von Microsoft geladen …</value></data>
+  <data name="Page_CatalogFailed" xml:space="preserve"><value>Die Windows-Liste von Microsoft konnte nicht geladen werden. Bitte die Internetverbindung prüfen.</value></data>
+  <data name="Hint_Download" xml:space="preserve"><value>Omnikit lädt die offizielle Datei direkt von Microsoft (wie das Media Creation Tool) und prüft sie anhand der Prüfsumme von Microsoft. Einmal geladen, wird sie für weitere Sticks wiederverwendet.</value></data>
+  <data name="Confirm_CreateDownload" xml:space="preserve"><value>ALLE DATEN auf „{0}“ werden gelöscht.
+
+Omnikit lädt dazu Windows 11 ({1}) direkt von Microsoft, prüft die Datei und richtet den Stick ein. Windows fragt nach Adminrechten. Je nach Internet und Stick dauert das 30 bis 90 Minuten – den Stick währenddessen nicht abziehen.</value></data>
+  <data name="Create_Downloading" xml:space="preserve"><value>Windows wird von Microsoft geladen … {0} % ({1:0.0} von {2:0.0} GB)</value></data>
+  <data name="Page_DownloadFailed" xml:space="preserve"><value>Der Download von Microsoft ist fehlgeschlagen. Bitte die Internetverbindung prüfen und erneut versuchen – bereits Geladenes wird fortgesetzt.</value></data>
+</root>

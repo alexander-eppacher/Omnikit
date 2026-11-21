@@ -6,7 +6,6 @@ using Microsoft.Extensions.Logging;
 using Omnikit.Core.Modules;
 using Omnikit.Core.SystemInfo;
 using Omnikit.Desktop.Services;
-using Omnikit.Modules.Apps.Catalog;
 using Omnikit.Modules.Apps.Winget;
 using Texts = Omnikit.Modules.Apps.Resources.AppsTexts;
 
@@ -25,10 +24,7 @@ public sealed partial class AppsPageViewModel : ViewModelBase, IActivatablePage
     private readonly IWingetClient _winget;
     private readonly IDialogService _dialogs;
     private readonly ILogger _logger;
-    private readonly Dictionary<string, CatalogItemViewModel> _catalogItems = new(StringComparer.OrdinalIgnoreCase);
-    private Dictionary<string, InstalledPackage> _installed = new(StringComparer.OrdinalIgnoreCase);
     private readonly HashSet<string> _deselectedUpgrades = new(StringComparer.OrdinalIgnoreCase);
-    private CatalogGroupViewModel? _templateExtras;
     private bool _loadedOnce;
     private bool _stopRequested;
 
@@ -39,12 +35,7 @@ public sealed partial class AppsPageViewModel : ViewModelBase, IActivatablePage
         _logger = logger;
         ViewMode = viewMode;
         IsSupported = context.IsWindows;
-
-        foreach (var group in BuiltInCatalog.Apps.GroupBy(app => app.Category).OrderBy(group => group.Key))
-        {
-            var items = group.Select(CreateItem).ToList();
-            CatalogGroups.Add(new CatalogGroupViewModel(BuiltInCatalog.CategoryName(group.Key), items));
-        }
+        Catalog = new CatalogPickerViewModel(dialogs, viewMode, logger);
     }
 
     public bool IsSupported { get; }
@@ -52,9 +43,8 @@ public sealed partial class AppsPageViewModel : ViewModelBase, IActivatablePage
     /// <summary>Für die Expertenansicht (Paket-IDs, Quellen, Fehlercodes).</summary>
     public ViewModeState ViewMode { get; }
 
-    public IReadOnlyList<AppTemplate> Templates { get; } = BuiltInCatalog.Templates;
-
-    public ObservableCollection<CatalogGroupViewModel> CatalogGroups { get; } = [];
+    /// <summary>Katalog mit Häkchen und Vorlagen (gemeinsam mit dem Stick-Builder).</summary>
+    public CatalogPickerViewModel Catalog { get; }
 
     public ObservableCollection<UpgradeItemViewModel> Upgrades { get; } = [];
 
@@ -83,9 +73,6 @@ public sealed partial class AppsPageViewModel : ViewModelBase, IActivatablePage
 
     [ObservableProperty]
     public partial string? UpgradesSummary { get; set; }
-
-    [ObservableProperty]
-    public partial string? SelectedSummary { get; set; }
 
     [ObservableProperty]
     public partial bool IsStopping { get; set; }
@@ -126,7 +113,7 @@ public sealed partial class AppsPageViewModel : ViewModelBase, IActivatablePage
         {
             var installed = await _winget.GetInstalledAsync(CancellationToken.None);
             var upgrades = await _winget.GetUpgradesAsync(installed, CancellationToken.None);
-            ShowInstalled(installed);
+            Catalog.MarkInstalled(installed);
             ShowUpgrades(upgrades);
             IsReady = true;
         }
@@ -156,7 +143,7 @@ public sealed partial class AppsPageViewModel : ViewModelBase, IActivatablePage
     [RelayCommand(CanExecute = nameof(CanStart))]
     private async Task InstallSelectedAsync()
     {
-        var items = AllCatalogItems().Where(item => item.IsSelected && !item.IsInstalled).ToList();
+        var items = Catalog.SelectedToInstall();
         if (items.Count == 0)
         {
             return;
@@ -206,75 +193,6 @@ public sealed partial class AppsPageViewModel : ViewModelBase, IActivatablePage
     {
         _stopRequested = true;
         IsStopping = true;
-    }
-
-    [RelayCommand]
-    private void ApplyTemplate(AppTemplate template) => SelectTemplate(template);
-
-    [RelayCommand]
-    private void ClearSelection()
-    {
-        foreach (var item in AllCatalogItems())
-        {
-            item.IsSelected = false;
-        }
-
-        RemoveTemplateExtras();
-        StatusMessage = null;
-    }
-
-    [RelayCommand]
-    private async Task LoadTemplateAsync()
-    {
-        try
-        {
-            await using var stream = await _dialogs.PickOpenFileAsync();
-            if (stream is null)
-            {
-                return; // abgebrochen
-            }
-
-            var template = await TemplateFile.LoadAsync(stream, Texts.Template_DefaultName, CancellationToken.None);
-            if (template is null)
-            {
-                StatusMessage = Texts.Template_LoadFailed;
-                return;
-            }
-
-            SelectTemplate(template);
-        }
-        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
-        {
-            _logger.LogWarning(ex, "Vorlage konnte nicht gelesen werden");
-            StatusMessage = Texts.Template_LoadFailed;
-        }
-    }
-
-    [RelayCommand]
-    private async Task SaveTemplateAsync()
-    {
-        var ids = AllCatalogItems().Where(item => item.IsSelected).Select(item => item.PackageId).ToList();
-        if (ids.Count == 0)
-        {
-            return;
-        }
-
-        try
-        {
-            await using var stream = await _dialogs.PickSaveFileAsync(Texts.Template_FileName);
-            if (stream is null)
-            {
-                return;
-            }
-
-            await TemplateFile.SaveAsync(stream, new AppTemplate(Texts.Template_DefaultName, ids), CancellationToken.None);
-            StatusMessage = Texts.Template_Saved;
-        }
-        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
-        {
-            _logger.LogWarning(ex, "Vorlage konnte nicht gespeichert werden");
-            StatusMessage = Texts.Template_SaveFailed;
-        }
     }
 
     /// <summary>Führt die Programme nacheinander aus und zeigt den Fortschritt. Danach werden die Listen neu gelesen.</summary>
@@ -347,75 +265,6 @@ public sealed partial class AppsPageViewModel : ViewModelBase, IActivatablePage
         }
     }
 
-    private void SelectTemplate(AppTemplate template)
-    {
-        ClearSelection();
-
-        var unknown = new List<CatalogItemViewModel>();
-        foreach (var id in template.PackageIds)
-        {
-            if (_catalogItems.TryGetValue(id, out var item))
-            {
-                item.IsSelected = true;
-            }
-            else
-            {
-                // Nicht im Katalog (z. B. aus einer selbst gespeicherten Vorlage): als eigener Bereich anzeigen, mit der ID als Name.
-                var extra = new CatalogItemViewModel(id, id, Texts.Catalog_FromTemplateDescription) { IsSelected = true };
-                extra.PropertyChanged += OnItemChanged;
-                unknown.Add(extra);
-            }
-        }
-
-        if (unknown.Count > 0)
-        {
-            _templateExtras = new CatalogGroupViewModel(Texts.Catalog_FromTemplate, unknown);
-            CatalogGroups.Add(_templateExtras);
-            MarkInstalled(unknown);
-        }
-
-        StatusMessage = Format(Texts.Template_Loaded, template.Name);
-    }
-
-    private void RemoveTemplateExtras()
-    {
-        if (_templateExtras is not null)
-        {
-            foreach (var item in _templateExtras.Items)
-            {
-                item.PropertyChanged -= OnItemChanged;
-            }
-
-            CatalogGroups.Remove(_templateExtras);
-            _templateExtras = null;
-            UpdateSelectedSummary();
-        }
-    }
-
-    private void ShowInstalled(IReadOnlyList<InstalledPackage> installed)
-    {
-        var byId = new Dictionary<string, InstalledPackage>(StringComparer.OrdinalIgnoreCase);
-        foreach (var package in installed)
-        {
-            byId[package.Id] = package;
-        }
-
-        _installed = byId;
-        MarkInstalled(AllCatalogItems());
-    }
-
-    private void MarkInstalled(IEnumerable<CatalogItemViewModel> items)
-    {
-        foreach (var item in items)
-        {
-            var isInstalled = _installed.TryGetValue(item.PackageId, out var package);
-            item.IsInstalled = isInstalled;
-            item.InstalledVersion = package?.Version;
-        }
-
-        UpdateSelectedSummary();
-    }
-
     private void ShowUpgrades(IReadOnlyList<AvailableUpgrade> upgrades)
     {
         // Was der Nutzer abgewählt hat, bleibt nach dem Neuladen abgewählt (z. B. ein Programm, das er nicht aktualisieren will).
@@ -449,30 +298,6 @@ public sealed partial class AppsPageViewModel : ViewModelBase, IActivatablePage
             _ => Format(Texts.Updates_Count, Upgrades.Count),
         };
     }
-
-    private CatalogItemViewModel CreateItem(CatalogApp app)
-    {
-        var item = new CatalogItemViewModel(app.PackageId, app.Name, app.Description);
-        item.PropertyChanged += OnItemChanged;
-        _catalogItems[app.PackageId] = item;
-        return item;
-    }
-
-    private void OnItemChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName is nameof(CatalogItemViewModel.IsSelected))
-        {
-            UpdateSelectedSummary();
-        }
-    }
-
-    private void UpdateSelectedSummary()
-    {
-        var count = AllCatalogItems().Count(item => item.IsSelected && !item.IsInstalled);
-        SelectedSummary = count > 0 ? Format(Texts.Catalog_Selected, count) : null;
-    }
-
-    private IEnumerable<CatalogItemViewModel> AllCatalogItems() => CatalogGroups.SelectMany(group => group.Items);
 
     private static string Format(string format, params object[] values) => string.Format(CultureInfo.CurrentCulture, format, values);
 }
