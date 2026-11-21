@@ -243,9 +243,19 @@ public class StickOptionsValidatorTests
     [InlineData("EinSehrLangerKontoname")]
     [InlineData("Administrator")]
     [InlineData("gast")]
+    [InlineData("   ")]          // nur Leerzeichen
+    [InlineData(" Anna")]        // Leerzeichen am Rand sieht man nicht
+    [InlineData("Anna ")]
     public void BadAccountNamesAreRejected(string name)
     {
         Assert.Single(StickOptionsValidator.Validate(Valid with { AccountName = name }));
+    }
+
+    [Fact]
+    public void AccountAndComputerMustHaveDifferentNames()
+    {
+        Assert.Single(StickOptionsValidator.Validate(Valid with { AccountName = "Schule", ComputerName = "SCHULE" }));
+        Assert.Empty(StickOptionsValidator.Validate(Valid with { AccountName = "Anna Bert", ComputerName = "SCHULE" }));   // Leerzeichen in der Mitte gehen
     }
 
     [Theory]

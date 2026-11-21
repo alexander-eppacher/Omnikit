@@ -1,0 +1,29 @@
+@page
+@model UsersModel
+@{
+    ViewData["Title"] = ServerTexts.Nav_Users;
+}
+<h1>@ServerTexts.Nav_Users</h1>
+<p class="hint">@ServerTexts.Users_Hint</p>
+<table>
+    <tr><th>@ServerTexts.Label_UserName</th><th>@ServerTexts.Users_Role</th><th>@ServerTexts.Col_Created</th><th></th></tr>
+    @foreach (var user in Model.Users)
+    {
+        <tr>
+            <td>@user.UserName</td>
+            <td>@(user.Role == UserRole.Admin ? ServerTexts.Role_Admin : ServerTexts.Role_Viewer)</td>
+            <td>@Display.Time(user.CreatedAt)</td>
+            <td><form method="post" asp-page-handler="Delete" asp-route-userId="@user.Id" class="inline"><button type="submit" class="danger">@ServerTexts.Users_Delete</button></form></td>
+        </tr>
+    }
+</table>
+<h2>@ServerTexts.Users_New</h2>
+<form method="post" asp-page-handler="Create" class="row card">
+    <input name="userName" placeholder="@ServerTexts.Label_UserName" maxlength="32" required />
+    <input name="password" type="password" placeholder="@ServerTexts.Label_Password" autocomplete="new-password" required />
+    <select name="role">
+        <option value="@UserRole.Viewer">@ServerTexts.Role_Viewer</option>
+        <option value="@UserRole.Admin">@ServerTexts.Role_Admin</option>
+    </select>
+    <button type="submit" class="primary">@ServerTexts.Users_Create</button>
+</form>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Alle Texte, die der Agent in der Konsole oder an den Server meldet. {0}, {1} ... werden durch Werte ersetzt. -->
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="AlreadyRunning" xml:space="preserve"><value>Der Agent läuft gerade schon (als Dienst). Zum Ausprobieren mit „once“ den Dienst vorher beenden: sc stop {0}</value></data>
+  <data name="Ca_NotFound" xml:space="preserve"><value>Zertifikatsdatei nicht gefunden: {0}</value></data>
+  <data name="Ca_NotRoot" xml:space="preserve"><value>Die Datei bei --ca muss das Stammzertifikat sein (bei Caddy: root.crt), nicht das Zwischen- oder Server-Zertifikat.</value></data>
+  <data name="Command_HttpsOnly" xml:space="preserve"><value>Die Server-Adresse muss mit https:// beginnen.</value></data>
+  <data name="Command_RegisterNeeds" xml:space="preserve"><value>Für „register“ braucht es --server und --code.</value></data>
+  <data name="Command_Unknown" xml:space="preserve"><value>Unbekannter Befehl „{0}“.</value></data>
+  <data name="Command_UnknownOption" xml:space="preserve"><value>Unbekannte Angabe „{0}“.</value></data>
+  <data name="Config_Broken" xml:space="preserve"><value>Die Einstellungen des Agents sind beschädigt ({0}). Bitte „Omnikit.Agent.exe uninstall“ und danach neu registrieren.</value></data>
+  <data name="Config_Corrupt" xml:space="preserve"><value>Einstellungen beschädigt.</value></data>
+  <data name="Config_Incomplete" xml:space="preserve"><value>Einstellungen unvollständig.</value></data>
+  <data name="Help" xml:space="preserve"><value>Omnikit Agent – meldet diesen PC an den Omnikit-Server und installiert freigegebene Programme.
+
+  Omnikit.Agent.exe register --server https://server.example/ --code ABCDE-… [--ca server-ca.crt]
+  Omnikit.Agent.exe install      als Windows-Dienst einrichten und starten
+  Omnikit.Agent.exe uninstall    Dienst und Anmeldedaten entfernen
+  Omnikit.Agent.exe once         einmal melden und Aufgaben holen (zum Ausprobieren)
+
+register, install, uninstall und once brauchen eine Eingabeaufforderung mit Adminrechten.</value></data>
+  <data name="Install_Done" xml:space="preserve"><value>Dienst eingerichtet und gestartet: {0}</value></data>
+  <data name="Install_Failed" xml:space="preserve"><value>Der Dienst konnte nicht eingerichtet werden: {0}</value></data>
+  <data name="NeedAdmin" xml:space="preserve"><value>Bitte in einer Eingabeaufforderung mit Adminrechten ausführen.</value></data>
+  <data name="NotRegistered" xml:space="preserve"><value>Noch nicht registriert – zuerst „Omnikit.Agent.exe register …“ ausführen.</value></data>
+  <data name="Once_Done" xml:space="preserve"><value>Bericht gesendet, Aufgaben abgearbeitet.</value></data>
+  <data name="Register_Done" xml:space="preserve"><value>Registriert als Gerät {0}. Jetzt „Omnikit.Agent.exe install“ ausführen.</value></data>
+  <data name="Register_Refused" xml:space="preserve"><value>Der Server hat den Code nicht angenommen (falsch, schon benutzt oder älter als 24 Stunden).</value></data>
+  <data name="Register_TooMany" xml:space="preserve"><value>Gerade melden sich zu viele PCs an. Bitte in einer Minute noch einmal versuchen – der Code gilt weiter.</value></data>
+  <data name="Register_Unreachable" xml:space="preserve"><value>Server nicht erreichbar oder Zertifikat nicht vertrauenswürdig: {0}</value></data>
+  <data name="Service_Description" xml:space="preserve"><value>Meldet den Zustand dieses PCs an den Omnikit-Server und installiert freigegebene Programme.</value></data>
+  <data name="Service_StepFailed" xml:space="preserve"><value>sc {0} fehlgeschlagen (Fehler {1}).</value></data>
+  <data name="Service_StopTimeout" xml:space="preserve"><value>Der Dienst hat sich nicht innerhalb von 30 Sekunden beendet.</value></data>
+  <data name="Task_InvalidPackage" xml:space="preserve"><value>Ungültige Paket-ID – nicht ausgeführt.</value></data>
+  <data name="Task_NoWinget" xml:space="preserve"><value>winget wurde auf diesem PC nicht gefunden.</value></data>
+  <data name="Task_Unknown" xml:space="preserve"><value>Unbekannte Aufgabe – nicht ausgeführt.</value></data>
+  <data name="Uninstall_Done" xml:space="preserve"><value>Dienst und Anmeldedaten entfernt. Den Ordner „{0}“ kann man jetzt löschen.</value></data>
+  <data name="Uninstall_Failed" xml:space="preserve"><value>Der Dienst konnte nicht entfernt werden: {0}</value></data>
+</root>

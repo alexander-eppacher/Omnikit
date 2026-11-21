@@ -97,6 +97,52 @@ public class ElevatedOperationHostTests
         Assert.Equal("Das ist kein USB-Stick.", lines[^1].Payload);
     }
 
+    /// <summary>Wartet, bis sie abgebrochen wird (Zeitgrenze oder Nutzer).</summary>
+    private sealed class SlowOperation(TimeSpan timeout) : IElevatedOperation
+    {
+        public string Id => "test.slow";
+
+        public TimeSpan Timeout => timeout;
+
+        public async Task<string> RunAsync(IReadOnlyList<string> arguments, IProgress<string> progress, CancellationToken cancellationToken)
+        {
+            await Task.Delay(Timeout * 1000, cancellationToken);
+            return "fertig";
+        }
+    }
+
+    [Fact]
+    public async Task UnexpectedErrorsBecomeAFailureInsteadOfACrash()
+    {
+        // Derselbe Weg gilt, wenn die App schon als Admin läuft – dort hätte eine Ausnahme früher die App beendet
+        var message = await ElevatedOperationHost.RunOperationAsync(
+            new FakeOperation("test.op", (_, _) => throw new IOException("Stick abgezogen")), [], new Progress<string>(), NullLogger.Instance,
+            TestContext.Current.CancellationToken);
+
+        Assert.False(message.Success);
+        Assert.Null(message.Payload);
+    }
+
+    [Fact]
+    public async Task TimeoutBecomesAFailure()
+    {
+        var message = await ElevatedOperationHost.RunOperationAsync(
+            new SlowOperation(TimeSpan.FromMilliseconds(50)), [], new Progress<string>(), NullLogger.Instance, TestContext.Current.CancellationToken);
+
+        Assert.False(message.Success);
+    }
+
+    [Fact]
+    public async Task CancellingBecomesAFailure()
+    {
+        using var cancel = new CancellationTokenSource(TimeSpan.FromMilliseconds(50));
+
+        var message = await ElevatedOperationHost.RunOperationAsync(
+            new SlowOperation(TimeSpan.FromMinutes(5)), [], new Progress<string>(), NullLogger.Instance, cancel.Token);
+
+        Assert.False(message.Success);
+    }
+
     private static async Task<(int ExitCode, List<ElevatedMessage> Lines)> RunAsync(IElevatedOperation operation, params string[] arguments)
     {
         var pipeName = ElevatedOperationHost.CreatePipeName();

@@ -31,7 +31,8 @@
 
   <!-- Fehler bei den Eingaben -->
   <data name="Error_AccountNameMissing" xml:space="preserve"><value>Bitte einen Kontonamen eingeben.</value></data>
-  <data name="Error_AccountName" xml:space="preserve"><value>Der Kontoname muss 1 bis 20 Zeichen lang sein und darf diese Zeichen nicht enthalten: " / \ [ ] : ; | = , + * ? &lt; &gt; @</value></data>
+  <data name="Error_AccountName" xml:space="preserve"><value>Der Kontoname muss 1 bis 20 Zeichen lang sein und darf diese Zeichen nicht enthalten: " / \ [ ] : ; | = , + * ? &lt; &gt; @ – und nicht mit einem Leerzeichen beginnen oder enden.</value></data>
+  <data name="Error_AccountNameIsComputerName" xml:space="preserve"><value>Benutzerkonto und Computer dürfen nicht gleich heißen – sonst bricht die Windows-Installation ab.</value></data>
   <data name="Error_AccountNameReserved" xml:space="preserve"><value>Diesen Kontonamen verwendet Windows selbst. Bitte einen anderen wählen.</value></data>
   <data name="Error_PasswordTooLong" xml:space="preserve"><value>Das Passwort darf höchstens 127 Zeichen lang sein.</value></data>
   <data name="Error_ComputerName" xml:space="preserve"><value>Der Computername darf 1 bis 15 Zeichen haben: Buchstaben (ohne Umlaute), Ziffern und Bindestriche, nicht nur Ziffern.</value></data>
@@ -149,6 +150,19 @@ starten, dessen Daten noch gebraucht werden.</value></data>
   <data name="Create_NotUsb" xml:space="preserve"><value>Das ist kein USB-Laufwerk. Omnikit löscht nur USB-Sticks.</value></data>
   <data name="Create_SystemDisk" xml:space="preserve"><value>Das ist das System- oder Startlaufwerk dieses PCs. Es wird nie gelöscht.</value></data>
   <data name="Create_TooLarge" xml:space="preserve"><value>Das Laufwerk ist größer als 256 GB – wahrscheinlich eine Festplatte mit Daten. Omnikit löscht es nicht.</value></data>
+  <data name="Usb_Display" xml:space="preserve"><value>{0} ({1:0.0} GB)</value></data>
+  <data name="Usb_DisplayFixed" xml:space="preserve"><value>{0} ({1:0.0} GB) – USB-Festplatte</value></data>
+  <data name="Usb_IncludeFixed" xml:space="preserve"><value>Auch USB-Festplatten und -SSDs anzeigen</value></data>
+  <data name="Usb_FixedWarning" xml:space="preserve"><value>Achtung: Auf USB-Festplatten liegen oft Sicherungen oder andere Daten. Nur verwenden, wenn darauf wirklich nichts mehr gebraucht wird – alles wird gelöscht. Manche schnelle USB-Sticks erscheinen ebenfalls nur mit diesem Häkchen.</value></data>
+  <data name="Confirm_FixedWarning" xml:space="preserve"><value>ACHTUNG: Das ist eine USB-Festplatte, kein normaler USB-Stick. Darauf liegen oft Sicherungen oder andere Daten.</value></data>
+  <data name="Create_NotRemovable" xml:space="preserve"><value>Das ist eine USB-Festplatte, kein USB-Stick. Sie wird nur gelöscht, wenn „Auch USB-Festplatten und -SSDs anzeigen“ angehakt ist.</value></data>
+  <data name="Create_ReadOnly" xml:space="preserve"><value>Der Stick ist schreibgeschützt (vielleicht ein Schalter am Stick). Es wurde nichts verändert.</value></data>
+  <data name="Create_NotErased" xml:space="preserve"><value>Der Stick konnte nicht vollständig gelöscht werden (ist noch eine Datei darauf geöffnet?). Es wurde nichts darauf geschrieben.</value></data>
+  <data name="Create_NoSpace" xml:space="preserve"><value>Auf Laufwerk C: ist zu wenig Platz. Für den Bau des Windows-Sticks werden etwa {0:0} GB frei gebraucht.</value></data>
+  <data name="Create_CacheUntrusted" xml:space="preserve"><value>Der Ordner „{0}“ hat nicht die erwarteten Rechte (nur Administratoren). Zur Sicherheit wird er nicht benutzt. Bitte den Ordner löschen und es noch einmal versuchen.</value></data>
+  <data name="Create_AlreadyRunning" xml:space="preserve"><value>Es wird gerade schon ein Stick erstellt. Bitte warten, bis er fertig ist.</value></data>
+  <data name="Create_SourceOnStick" xml:space="preserve"><value>Die ISO-Datei liegt auf dem Stick, der gelöscht werden soll. Bitte die Datei zuerst auf den PC kopieren.</value></data>
+  <data name="Create_AppOnStick" xml:space="preserve"><value>Omnikit wurde von dem Stick gestartet, der gelöscht werden soll. Bitte Omnikit zuerst auf den PC kopieren und von dort starten.</value></data>
   <data name="Create_StickTooSmall" xml:space="preserve"><value>Der Stick ist zu klein für diese ISO-Datei.</value></data>
   <data name="Create_EsdTooLarge" xml:space="preserve"><value>Diese Windows-ISO enthält eine install.esd über 4 GB. Das wird (noch) nicht unterstützt.</value></data>
   <data name="Create_MountFailed" xml:space="preserve"><value>Die ISO-Datei konnte nicht geöffnet werden. Ist sie beschädigt?</value></data>

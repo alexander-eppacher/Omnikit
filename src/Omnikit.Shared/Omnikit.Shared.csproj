@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Verträge zwischen Agent und Server: was über die Leitung geht. Keine Logik, keine Abhängigkeiten außer Omnikit.Core. -->
+
+  <PropertyGroup>
+    <!-- CA1716: „Shared“ ist nur in Visual Basic ein Schlüsselwort; der Name kommt aus der geplanten Ordnerstruktur -->
+    <NoWarn>$(NoWarn);CA1716</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Omnikit.Core\Omnikit.Core.csproj" />
+  </ItemGroup>
+</Project>

@@ -18,17 +18,24 @@ public static partial class StickOptionsValidator
     {
         var errors = new List<string>();
 
-        if (options.AccountName.Length == 0)
+        if (options.AccountName.Trim().Length == 0)
         {
             errors.Add(Texts.Error_AccountNameMissing);
         }
-        else if (!AccountNamePattern().IsMatch(options.AccountName) || options.AccountName.EndsWith('.'))
+        else if (!AccountNamePattern().IsMatch(options.AccountName) || options.AccountName.EndsWith('.')
+            || options.AccountName != options.AccountName.Trim())
         {
+            // Leerzeichen am Anfang oder Ende sieht man nicht – Windows legt das Konto dann anders an, als man denkt
             errors.Add(Texts.Error_AccountName);
         }
         else if (ReservedAccountNames.Contains(options.AccountName, StringComparer.OrdinalIgnoreCase))
         {
             errors.Add(Texts.Error_AccountNameReserved);
+        }
+        else if (string.Equals(options.AccountName, options.ComputerName, StringComparison.OrdinalIgnoreCase))
+        {
+            // Windows-Setup bricht ab, wenn Konto und PC gleich heißen
+            errors.Add(Texts.Error_AccountNameIsComputerName);
         }
 
         if (options.Password.Length > 127)

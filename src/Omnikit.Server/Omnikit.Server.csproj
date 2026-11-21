@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <!-- Server: Schnittstelle für die Agents und Verwaltungsseiten (Razor Pages). Läuft in Docker hinter Caddy (HTTPS). -->
+
+  <PropertyGroup>
+    <NeutralLanguage>de</NeutralLanguage>
+    <InvariantGlobalization>false</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Omnikit.Shared\Omnikit.Shared.csproj" />
+    <!-- Programmkatalog und Prüfung der Paket-IDs, dieselben wie in der App -->
+    <ProjectReference Include="..\Omnikit.Modules.Apps\Omnikit.Modules.Apps.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Datenbank im Betrieb (PostgreSQL-Lizenz, BSD-ähnlich) -->
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+    <!-- Datenbank für Tests und lokales Ausprobieren (MIT) -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Texte: aus ServerTexts.resx wird beim Bauen die Klasse Omnikit.Server.Resources.ServerTexts erzeugt -->
+    <EmbeddedResource Update="Resources\ServerTexts.resx">
+      <StronglyTypedFileName>$(IntermediateOutputPath)ServerTexts.Designer.cs</StronglyTypedFileName>
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedNamespace>Omnikit.Server.Resources</StronglyTypedNamespace>
+      <StronglyTypedClassName>ServerTexts</StronglyTypedClassName>
+      <PublicClass>true</PublicClass>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Omnikit.Server.Tests" />
+  </ItemGroup>
+</Project>

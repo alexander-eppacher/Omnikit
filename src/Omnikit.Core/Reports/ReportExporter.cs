@@ -13,7 +13,8 @@ namespace Omnikit.Core.Reports;
 /// </summary>
 public static class ReportExporter
 {
-    private static readonly JsonSerializerOptions JsonOptions = new()
+    /// <summary>Gemeinsame JSON-Einstellungen; auch der Server liest die Berichte des Agents damit.</summary>
+    public static JsonSerializerOptions JsonOptions { get; } = new()
     {
         WriteIndented = true,
         // Ampelwerte als Text ("Warning") statt als Zahl, damit man die Datei ohne Doku versteht.
@@ -25,28 +26,30 @@ public static class ReportExporter
     public static async Task WriteAsync(
         Stream target, SystemContext context, IEnumerable<ModuleReport> reports, DateTimeOffset createdAt, CancellationToken cancellationToken)
     {
-        var report = new SystemReport(
-            createdAt,
-            typeof(ReportExporter).Assembly.GetName().Version?.ToString() ?? "unbekannt",
-            ReportSystemInfo.From(context),
-            reports.Select(ReportModule.From).ToList());
-
-        await JsonSerializer.SerializeAsync(target, report, JsonOptions, cancellationToken);
+        await JsonSerializer.SerializeAsync(target, Create(context, reports, createdAt), JsonOptions, cancellationToken);
     }
+
+    /// <summary>Der Bericht als Objekt (z. B. für den Agent, der ihn an den Server schickt).</summary>
+    public static SystemReport Create(SystemContext context, IEnumerable<ModuleReport> reports, DateTimeOffset createdAt) => new(
+        createdAt,
+        typeof(ReportExporter).Assembly.GetName().Version?.ToString() ?? "unbekannt",
+        ReportSystemInfo.From(context),
+        reports.Select(ReportModule.From).ToList());
 
     /// <summary>Vorschlag für den Dateinamen, z. B. "Omnikit-Bericht-2026-10-24_1530.json".</summary>
     public static string SuggestFileName(DateTimeOffset createdAt) =>
         $"Omnikit-Bericht-{createdAt:yyyy-MM-dd_HHmm}.json";
 }
 
-internal sealed record SystemReport(
+/// <summary>Inhalt der Berichtsdatei und des Berichts, den der Agent an den Server schickt.</summary>
+public sealed record SystemReport(
     DateTimeOffset CreatedAt,
     string AppVersion,
     ReportSystemInfo System,
     IReadOnlyList<ReportModule> Modules);
 
 /// <summary>Systeminfos für den Bericht, ohne Seriennummer.</summary>
-internal sealed record ReportSystemInfo(
+public sealed record ReportSystemInfo(
     string? OsName,
     string? OsDisplayVersion,
     string? OsBuild,
@@ -67,7 +70,7 @@ internal sealed record ReportSystemInfo(
         context.IsAdmin);
 }
 
-internal sealed record ReportModule(string ModuleId, Severity OverallSeverity, IReadOnlyList<Finding> Findings)
+public sealed record ReportModule(string ModuleId, Severity OverallSeverity, IReadOnlyList<Finding> Findings)
 {
     public static ReportModule From(ModuleReport report) => new(report.ModuleId, report.OverallSeverity, report.Findings);
 }

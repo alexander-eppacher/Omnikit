@@ -1,0 +1,43 @@
+@page
+@model CodesModel
+@{
+    ViewData["Title"] = ServerTexts.Nav_Codes;
+}
+<h1>@ServerTexts.Nav_Codes</h1>
+<p class="hint">@ServerTexts.Codes_Hint</p>
+@if (Model.NewCode is not null)
+{
+    <div class="card">
+        <p>@ServerTexts.Codes_ShownOnce</p>
+        <p class="code">@Model.NewCode</p>
+        <p class="hint">@ServerTexts.Codes_Usage</p>
+        <pre>Omnikit.Agent.exe register --server https://@(Request.Host)/ --code @Model.NewCode</pre>
+    </div>
+}
+<form method="post" class="row card">
+    <label>@ServerTexts.Col_Group
+        <select name="groupId">
+            <option value="">–</option>
+            @foreach (var group in Model.Groups)
+            {
+                <option value="@group.Id">@group.Name</option>
+            }
+        </select>
+    </label>
+    <button type="submit" class="primary">@ServerTexts.Codes_Create</button>
+</form>
+<h2>@ServerTexts.Codes_Open</h2>
+@if (Model.Open.Count == 0)
+{
+    <p class="muted">@ServerTexts.Codes_None</p>
+}
+else
+{
+    <table>
+        <tr><th>@ServerTexts.Col_Created</th><th>@ServerTexts.Codes_Expires</th><th>@ServerTexts.Col_Group</th></tr>
+        @foreach (var code in Model.Open)
+        {
+            <tr><td>@code.CreatedBy, @Display.Time(code.CreatedAt)</td><td>@Display.Time(code.ExpiresAt)</td><td>@(Model.Groups.FirstOrDefault(g => g.Id == code.GroupId)?.Name ?? "–")</td></tr>
+        }
+    </table>
+}

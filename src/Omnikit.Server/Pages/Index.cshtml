@@ -1,0 +1,28 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = ServerTexts.Nav_Devices;
+}
+<h1>@ServerTexts.Nav_Devices</h1>
+@if (Model.Devices.Count == 0)
+{
+    <p>@ServerTexts.Devices_None</p>
+}
+else
+{
+    <table>
+        <tr><th>@ServerTexts.Col_Device</th><th>@ServerTexts.Col_State</th><th>@ServerTexts.Col_Group</th><th>@ServerTexts.Col_System</th><th>@ServerTexts.Col_LastSeen</th><th>@ServerTexts.Col_OpenTasks</th></tr>
+        @foreach (var device in Model.Devices)
+        {
+            <tr>
+                <td><a asp-page="/Device" asp-route-id="@device.Id">@device.Name</a>@(device.IsVirtualMachine ? " (VM)" : "")</td>
+                <td><span class="@Display.SeverityClass(device.LastSeverity)"></span>@Display.Severity(device.LastSeverity)</td>
+                <td>@(device.GroupName ?? "–")</td>
+                <td>@device.OsName<br /><span class="muted">@device.Model</span></td>
+                <td>@Display.Time(device.LastSeenAt)</td>
+                <td>@device.OpenTasks</td>
+            </tr>
+        }
+    </table>
+}
+<p class="hint">@ServerTexts.Devices_Hint</p>

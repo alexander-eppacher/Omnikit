@@ -125,6 +125,12 @@ public sealed partial class StickBuilderPageViewModel : ViewModelBase, IActivata
     [NotifyCanExecuteChangedFor(nameof(CreateStickCommand))]
     public partial UsbDisk? SelectedUsbDisk { get; set; }
 
+    /// <summary>Auch USB-Laufwerke zeigen, die sich als Festplatte melden. Wird nicht gespeichert: jedes Mal bewusst anhaken.</summary>
+    [ObservableProperty]
+    public partial bool IncludeFixedDisks { get; set; }
+
+    partial void OnIncludeFixedDisksChanged(bool value) => RefreshUsbDisks();
+
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CreateStickCommand))]
     public partial bool IsCreating { get; set; }
@@ -330,7 +336,7 @@ public sealed partial class StickBuilderPageViewModel : ViewModelBase, IActivata
         {
             try
             {
-                foreach (var disk in UsbDiskFinder.List())
+                foreach (var disk in UsbDiskFinder.List(IncludeFixedDisks))
                 {
                     UsbDisks.Add(disk);
                 }
@@ -403,6 +409,10 @@ public sealed partial class StickBuilderPageViewModel : ViewModelBase, IActivata
         var message = UseDownload
             ? string.Format(CultureInfo.CurrentCulture, Texts.Confirm_CreateDownload, disk.DisplayName, SelectedDownload!.Language)
             : string.Format(CultureInfo.CurrentCulture, Texts.Confirm_Create, disk.DisplayName, Path.GetFileName(IsoPath));
+        if (!disk.IsRemovable)
+        {
+            message = Texts.Confirm_FixedWarning + Environment.NewLine + Environment.NewLine + message;
+        }
         if (!await _dialogs.ConfirmAsync(Texts.Confirm_CreateTitle, message))
         {
             return;
@@ -433,11 +443,11 @@ public sealed partial class StickBuilderPageViewModel : ViewModelBase, IActivata
                     return;
                 }
 
-                arguments = CreateStickOperation.Arguments(disk, esd, download.Sha1);
+                arguments = CreateStickOperation.Arguments(disk, IncludeFixedDisks, esd, download.Sha1);
             }
             else
             {
-                arguments = CreateStickOperation.Arguments(disk, IsoPath!);
+                arguments = CreateStickOperation.Arguments(disk, IncludeFixedDisks, IsoPath!);
             }
 
             // Progress<T> meldet im UI-Thread zurück, weil es hier erzeugt wird

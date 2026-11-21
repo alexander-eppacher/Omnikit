@@ -1,0 +1,32 @@
+@model TaskTableModel
+<table>
+    <tr>
+        <th>#</th>
+        @if (Model.ShowDevice)
+        {
+            <th>@ServerTexts.Col_Device</th>
+        }
+        <th>@ServerTexts.Col_Task</th><th>@ServerTexts.Col_State</th><th>@ServerTexts.Col_Created</th><th>@ServerTexts.Col_Result</th><th></th>
+    </tr>
+    @foreach (var task in Model.Tasks)
+    {
+        <tr>
+            <td>@task.Id</td>
+            @if (Model.ShowDevice)
+            {
+                <td><a asp-page="/Device" asp-route-id="@task.DeviceId">@task.Device?.Name</a></td>
+            }
+            <td>@Display.Kind(task.Kind): <strong>@task.PackageId</strong></td>
+            <td>@Display.State(task.State)@if (task.DecidedBy is not null) {<br /><span class="muted">@task.DecidedBy, @Display.Time(task.DecidedAt)</span>}</td>
+            <td>@task.CreatedBy<br /><span class="muted">@Display.Time(task.CreatedAt)</span></td>
+            <td>@task.ResultMessage@if (task.FinishedAt is not null) {<br /><span class="muted">@Display.Time(task.FinishedAt)</span>}</td>
+            <td>
+                @if (Model.CanDecide && task.State == TaskState.AwaitingApproval)
+                {
+                    <form method="post" asp-page-handler="Approve" asp-route-taskId="@task.Id" class="inline"><button type="submit" class="primary">@ServerTexts.Task_Approve</button></form>
+                    <form method="post" asp-page-handler="Reject" asp-route-taskId="@task.Id" class="inline"><button type="submit">@ServerTexts.Task_Reject</button></form>
+                }
+            </td>
+        </tr>
+    }
+</table>

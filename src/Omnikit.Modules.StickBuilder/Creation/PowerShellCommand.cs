@@ -22,9 +22,13 @@ internal static class PowerShellCommand
         "$ErrorActionPreference = 'Stop'\n$ProgressPreference = 'SilentlyContinue'\n"
         + "try {\n" + script + "\n} catch {\n[Console]::Error.WriteLine($_.Exception.Message)\nexit 1\n}";
 
+    /// <param name="environment">
+    /// Werte, die das Skript als <c>$env:NAME</c> liest. So kommen Texte wie Gerätepfade ins Skript, ohne je Teil des Skripttexts zu sein.
+    /// </param>
     /// <returns>Die Ausgabe des Befehls (ohne Leerzeilen am Ende).</returns>
-    /// <exception cref="InvalidOperationException">Der Befehl ist fehlgeschlagen; die Meldung von PowerShell steht in der Ausnahme (fürs Log).</exception>
-    public static async Task<string> RunAsync(string script, CancellationToken cancellationToken)
+    /// <exception cref="PowerShellException">Der Befehl ist fehlgeschlagen; Exit-Code und Meldung von PowerShell stehen in der Ausnahme (fürs Log).</exception>
+    public static async Task<string> RunAsync(
+        string script, CancellationToken cancellationToken, IReadOnlyDictionary<string, string>? environment = null)
     {
         var startInfo = new ProcessStartInfo(Path.Combine(Environment.SystemDirectory, "WindowsPowerShell", "v1.0", "powershell.exe"))
         {
@@ -38,17 +42,27 @@ internal static class PowerShellCommand
                 "-EncodedCommand", Convert.ToBase64String(Encoding.Unicode.GetBytes(Wrap(script))),
             },
         };
+        foreach (var (name, value) in environment ?? new Dictionary<string, string>())
+        {
+            startInfo.Environment[name] = value;
+        }
 
         using var process = Process.Start(startInfo) ?? throw new Win32Exception("PowerShell konnte nicht gestartet werden.");
         var output = process.StandardOutput.ReadToEndAsync(cancellationToken);
         var errors = process.StandardError.ReadToEndAsync(cancellationToken);
         await process.WaitForExitAsync(cancellationToken);
-
         if (process.ExitCode != 0)
         {
-            throw new InvalidOperationException($"PowerShell-Befehl fehlgeschlagen ({process.ExitCode}): {(await errors).Trim()}");
+            throw new PowerShellException(process.ExitCode, (await errors).Trim());
         }
 
         return (await output).Trim();
     }
+}
+
+/// <summary>Ein PowerShell-Befehl ist mit einem Exit-Code ungleich 0 beendet worden.</summary>
+internal sealed class PowerShellException(int exitCode, string errorOutput)
+    : InvalidOperationException($"PowerShell-Befehl fehlgeschlagen ({exitCode}): {errorOutput}")
+{
+    public int ExitCode { get; } = exitCode;
 }

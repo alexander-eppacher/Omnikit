@@ -1,0 +1,14 @@
+@page
+@model AuditModel
+@{
+    ViewData["Title"] = ServerTexts.Nav_Audit;
+}
+<h1>@ServerTexts.Nav_Audit</h1>
+<p class="hint">@ServerTexts.Audit_Hint</p>
+<table>
+    <tr><th>@ServerTexts.Audit_When</th><th>@ServerTexts.Audit_Who</th><th>@ServerTexts.Audit_What</th><th>@ServerTexts.Audit_Details</th></tr>
+    @foreach (var entry in Model.Entries)
+    {
+        <tr><td>@Display.Time(entry.At)</td><td>@entry.Actor</td><td>@entry.Action</td><td>@entry.Details</td></tr>
+    }
+</table>

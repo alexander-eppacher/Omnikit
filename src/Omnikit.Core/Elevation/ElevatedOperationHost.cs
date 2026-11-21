@@ -1,4 +1,5 @@
 using System.IO.Pipes;
+using System.Security.Principal;
 using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
@@ -42,23 +43,31 @@ public static class ElevatedOperationHost
             return 3;
         }
 
-        await using var pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.Out, PipeOptions.Asynchronous);
+        // „Identification“: Die Gegenseite der Pipe darf erfahren, wer sich verbindet, aber nicht mit dessen Adminrechten handeln
+        await using var pipe = new NamedPipeClientStream(
+            ".", pipeName, PipeDirection.Out, PipeOptions.Asynchronous,
+            OperatingSystem.IsWindows() ? TokenImpersonationLevel.Identification : TokenImpersonationLevel.None);
         await pipe.ConnectAsync((int)ConnectTimeout.TotalMilliseconds);
         await using var writer = new StreamWriter(pipe, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false)) { AutoFlush = true };
 
         // Fortschritt sofort weiterreichen; Fehler beim Schreiben (App geschlossen) brechen die Aktion nicht ab.
         var progress = new SynchronousProgress(text => TrySend(writer, new ElevatedMessage(Progress: text), logger));
 
-        var response = await RunOperationAsync(operation, arguments, progress, logger);
+        var response = await RunOperationAsync(operation, arguments, progress, logger, CancellationToken.None);
         await writer.WriteLineAsync(JsonSerializer.Serialize(response, ElevatedMessage.JsonOptions));
 
         return response.Success == true ? 0 : 4;
     }
 
-    private static async Task<ElevatedMessage> RunOperationAsync(
-        IElevatedOperation operation, IReadOnlyList<string> arguments, IProgress<string> progress, ILogger logger)
+    /// <summary>
+    /// Führt die Aktion aus und macht aus jedem Ausgang eine Antwort – im Hilfsprozess und ebenso, wenn die App schon als Admin
+    /// läuft (dann ohne Hilfsprozess, siehe <see cref="ElevationRunner"/>). Keine Ausnahme kommt heraus.
+    /// </summary>
+    internal static async Task<ElevatedMessage> RunOperationAsync(
+        IElevatedOperation operation, IReadOnlyList<string> arguments, IProgress<string> progress, ILogger logger, CancellationToken cancellationToken)
     {
-        using var timeout = new CancellationTokenSource(operation.Timeout);
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        timeout.CancelAfter(operation.Timeout);
         try
         {
             var payload = await operation.RunAsync(arguments, progress, timeout.Token);
@@ -70,6 +79,16 @@ public static class ElevatedOperationHost
             // Erwarteter Fehler mit verständlicher Meldung (z. B. „Das ist kein USB-Stick“)
             logger.LogWarning(ex, "Hilfsprozess: Aktion {OperationId} abgelehnt", operation.Id);
             return new ElevatedMessage(Success: false, Payload: ex.Message);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            logger.LogWarning("Aktion {OperationId} abgebrochen", operation.Id);
+            return new ElevatedMessage(Success: false);
+        }
+        catch (OperationCanceledException) when (timeout.IsCancellationRequested)
+        {
+            logger.LogError("Zeitüberschreitung bei Aktion {OperationId} (mehr als {Timeout})", operation.Id, operation.Timeout);
+            return new ElevatedMessage(Success: false);
         }
 #pragma warning disable CA1031 // Jeder Fehler soll als "fehlgeschlagen" an die App zurückgemeldet werden, statt den Hilfsprozess abstürzen zu lassen.
         catch (Exception ex)

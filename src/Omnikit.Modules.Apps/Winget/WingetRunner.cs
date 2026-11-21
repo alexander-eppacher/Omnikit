@@ -10,21 +10,36 @@ namespace Omnikit.Modules.Apps.Winget;
 /// </summary>
 public sealed class WingetRunner : IWingetRunner
 {
+    private readonly Func<WingetLocation?> _locate;
+
+    /// <summary>winget des angemeldeten Benutzers (App).</summary>
+    public WingetRunner()
+        : this(() => new WingetLocation(UserWingetPath, []))
+    {
+    }
+
+    /// <param name="locate">Liefert winget.exe oder <c>null</c> (z. B. für den Agent als SYSTEM).</param>
+    public WingetRunner(Func<WingetLocation?> locate)
+    {
+        _locate = locate;
+    }
+
     /// <summary>
     /// Fester Pfad statt Suche über PATH, damit keine gleichnamige fremde winget.exe gestartet wird.
     /// Dort legt Windows den Aufruf für den „App-Installer“ ab.
     /// </summary>
-    private static string WingetPath => Path.Combine(
+    public static string UserWingetPath => Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft", "WindowsApps", "winget.exe");
 
     public async Task<WingetRunResult> RunAsync(IReadOnlyList<string> arguments, TimeSpan timeout, CancellationToken cancellationToken)
     {
-        if (!OperatingSystem.IsWindows() || !File.Exists(WingetPath))
+        var location = OperatingSystem.IsWindows() ? _locate() : null;
+        if (location is null || !File.Exists(location.Path))
         {
             throw new WingetMissingException();
         }
 
-        var startInfo = new ProcessStartInfo(WingetPath)
+        var startInfo = new ProcessStartInfo(location.Path)
         {
             UseShellExecute = false,
             CreateNoWindow = true,
@@ -34,6 +49,12 @@ public sealed class WingetRunner : IWingetRunner
             StandardOutputEncoding = Encoding.UTF8,
             StandardErrorEncoding = Encoding.UTF8,
         };
+
+        if (location.DllFolders.Count > 0)
+        {
+            // Ordner mit den Laufzeit-DLLs vorne in den Suchpfad (sonst Fehler 0xC0000135, „DLL nicht gefunden“)
+            startInfo.Environment["PATH"] = string.Join(Path.PathSeparator, location.DllFolders) + Path.PathSeparator + startInfo.Environment["PATH"];
+        }
 
         // Argumente als Liste (Regel 6.1.4), nie als zusammengesetzter Text
         foreach (var argument in arguments)
@@ -85,3 +106,10 @@ public sealed class WingetRunner : IWingetRunner
         }
     }
 }
+
+/// <summary>Wo winget.exe liegt.</summary>
+/// <param name="DllFolders">
+/// Ordner mit DLLs, die winget braucht, wenn es außerhalb einer Benutzersitzung startet (Agent als SYSTEM):
+/// Dort fehlt die Paketumgebung, die Windows sonst automatisch einrichtet. Leer für den normalen Aufruf.
+/// </param>
+public sealed record WingetLocation(string Path, IReadOnlyList<string> DllFolders);

@@ -77,7 +77,17 @@ public sealed class PowercfgBatterySource : IBatterySource
         // Ausgaben mitlesen, sonst kann der Prozess bei vollem Puffer hängen bleiben.
         var output = process.StandardOutput.ReadToEndAsync(timeout.Token);
         var errors = process.StandardError.ReadToEndAsync(timeout.Token);
-        await process.WaitForExitAsync(timeout.Token);
+        try
+        {
+            await process.WaitForExitAsync(timeout.Token);
+        }
+        catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+        {
+            // Zeitgrenze: powercfg beenden statt es weiterlaufen zu lassen; der Akku gilt dann als „nicht verfügbar“
+            _logger.LogWarning("powercfg hat nicht innerhalb von {Timeout} geantwortet", Timeout);
+            process.Kill(entireProcessTree: true);
+            return false;
+        }
 
         if (process.ExitCode != 0)
         {

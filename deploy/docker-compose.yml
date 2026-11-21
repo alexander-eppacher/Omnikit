@@ -1,0 +1,52 @@
+# Omnikit-Server mit Datenbank und HTTPS. Start: im Ordner „deploy“  →  cp .env.example .env  (ausfüllen)  →  docker compose up -d
+services:
+  db:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: omnikit
+      POSTGRES_USER: omnikit
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD in .env setzen}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U omnikit -d omnikit"]
+      interval: 5s
+      retries: 20
+
+  server:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ConnectionStrings__Default: Host=db;Database=omnikit;Username=omnikit;Password=${POSTGRES_PASSWORD}
+      OMNIKIT_ADMIN_PASSWORD: ${OMNIKIT_ADMIN_PASSWORD:?OMNIKIT_ADMIN_PASSWORD in .env setzen (mindestens 12 Zeichen)}
+      # Caddy steht davor und meldet dem Server, dass die Anfrage über HTTPS kam (nur setzen, wenn der Server selbst nicht erreichbar ist)
+      Server__TrustProxy: "true"
+      TZ: ${TZ:-Europe/Berlin}
+    # Bewusst kein „ports“: Der Server ist nur über Caddy (HTTPS) erreichbar
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on:
+      - server
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      OMNIKIT_DOMAIN: ${OMNIKIT_DOMAIN:?OMNIKIT_DOMAIN in .env setzen}
+      OMNIKIT_TLS: ${OMNIKIT_TLS:-internal}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+
+volumes:
+  db-data:
+  caddy-data:
+  caddy-config:

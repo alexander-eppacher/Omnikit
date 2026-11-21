@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] – Omnikit Server</title>
+    <link rel="stylesheet" href="~/site.css" asp-append-version="true" />
+</head>
+<body>
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <nav>
+            <strong>Omnikit</strong>
+            <a asp-page="/Index">@ServerTexts.Nav_Devices</a>
+            <a asp-page="/Tasks">@ServerTexts.Nav_Tasks</a>
+            <a asp-page="/Groups">@ServerTexts.Nav_Groups</a>
+            @if (User.IsInRole(nameof(UserRole.Admin)))
+            {
+                <a asp-page="/Codes">@ServerTexts.Nav_Codes</a>
+                <a asp-page="/Users">@ServerTexts.Nav_Users</a>
+                <a asp-page="/Audit">@ServerTexts.Nav_Audit</a>
+            }
+            <span class="spacer"></span>
+            <a asp-page="/Account">@User.Identity.Name</a>
+            <form method="post" asp-page="/Logout" class="inline"><button type="submit" class="link">@ServerTexts.Nav_Logout</button></form>
+        </nav>
+    }
+    <main>
+        @if (TempData["Message"] is string message)
+        {
+            <p class="message">@message</p>
+        }
+        @if (TempData["Error"] is string error)
+        {
+            <p class="error">@error</p>
+        }
+        @RenderBody()
+    </main>
+</body>
+</html>

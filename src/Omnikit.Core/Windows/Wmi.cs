@@ -38,11 +38,24 @@ public static class Wmi
     [SupportedOSPlatform("windows")]
     public static List<Dictionary<string, object?>> Query(string query) => Query(@"root\cimv2", query);
 
-    /// <summary>Wandelt einen WMI-Zahlenwert (UInt16, UInt64, ...) sicher in long um.</summary>
-    public static long? ToLong(object? value) => value switch
+    /// <summary>
+    /// Wandelt einen WMI-Zahlenwert (UInt16, UInt64, ...) sicher in long um.
+    /// Text, zu große Werte (UInt64 über long.MaxValue) und andere Typen ergeben <c>null</c> statt einer Ausnahme.
+    /// </summary>
+    public static long? ToLong(object? value)
     {
-        null => null,
-        IConvertible convertible => convertible.ToInt64(System.Globalization.CultureInfo.InvariantCulture),
-        _ => null,
-    };
+        if (value is not IConvertible convertible)
+        {
+            return null;
+        }
+
+        try
+        {
+            return convertible.ToInt64(System.Globalization.CultureInfo.InvariantCulture);
+        }
+        catch (Exception ex) when (ex is FormatException or OverflowException or InvalidCastException)
+        {
+            return null;
+        }
+    }
 }

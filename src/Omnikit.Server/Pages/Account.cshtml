@@ -1,0 +1,12 @@
+@page
+@model AccountModel
+@{
+    ViewData["Title"] = ServerTexts.Account_Title;
+}
+<h1>@ServerTexts.Account_Title</h1>
+<form method="post" class="card" style="max-width: 400px">
+    <p><label>@ServerTexts.Account_Current<br /><input name="current" type="password" autocomplete="current-password" required /></label></p>
+    <p><label>@ServerTexts.Account_New<br /><input name="next" type="password" autocomplete="new-password" required /></label></p>
+    <p class="hint">@ServerTexts.Account_Hint</p>
+    <button type="submit" class="primary">@ServerTexts.Button_Save</button>
+</form>

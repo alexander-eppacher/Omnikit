@@ -76,7 +76,7 @@ internal static class ServiceSetup
             provider.GetRequiredService<ILogger<PerformancePageViewModel>>()));
 
         // Seite "Apps": winget läuft als normaler Benutzer (Entscheidung 0010)
-        services.AddSingleton<IWingetRunner, WingetRunner>();
+        services.AddSingleton<IWingetRunner>(_ => new WingetRunner());
         services.AddSingleton<IWingetClient, WingetClient>();
         services.AddSingleton<Func<SystemContext, AppsPageViewModel>>(provider => context => new AppsPageViewModel(
             provider.GetRequiredService<IWingetClient>(),

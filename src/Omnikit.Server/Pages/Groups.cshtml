@@ -1,0 +1,61 @@
+@page
+@model GroupsModel
+@{
+    ViewData["Title"] = ServerTexts.Nav_Groups;
+}
+<h1>@ServerTexts.Nav_Groups</h1>
+<p class="hint">@ServerTexts.Groups_Hint</p>
+@if (Model.IsAdmin)
+{
+    <form method="post" asp-page-handler="Create" class="row">
+        <input name="name" placeholder="@ServerTexts.Groups_NewName" maxlength="64" required />
+        <button type="submit" class="primary">@ServerTexts.Groups_Create</button>
+    </form>
+}
+@if (Model.Groups.Count == 0)
+{
+    <p class="muted">@ServerTexts.Groups_None</p>
+}
+@foreach (var group in Model.Groups)
+{
+    <div class="card">
+        <h2 style="margin-top: 0">@group.Name</h2>
+        <p>@ServerTexts.Groups_Devices: @(group.Devices.Count == 0 ? "–" : string.Join(", ", group.Devices.Select(device => device.Name)))</p>
+        <p>@ServerTexts.Groups_Required:</p>
+        <ul>
+            @foreach (var package in group.RequiredPackages.OrderBy(package => package.PackageId))
+            {
+                <li>@package.PackageId
+                    @if (Model.IsAdmin)
+                    {
+                        <form method="post" asp-page-handler="RemovePackage" asp-route-entryId="@package.Id" class="inline"><button type="submit" class="link danger">✕</button></form>
+                    }
+                </li>
+            }
+        </ul>
+        @if (Model.IsAdmin)
+        {
+            <form method="post" asp-page-handler="AddPackage" asp-route-groupId="@group.Id" class="row">
+                <select name="catalogId">
+                    <option value="">@ServerTexts.Task_FromCatalog</option>
+                    @foreach (var app in Omnikit.Modules.Apps.Catalog.BuiltInCatalog.Apps.OrderBy(app => app.Name))
+                    {
+                        <option value="@app.PackageId">@app.Name</option>
+                    }
+                </select>
+                <input name="packageId" placeholder="@ServerTexts.Task_OrPackageId" />
+                <button type="submit">@ServerTexts.Groups_AddPackage</button>
+            </form>
+            <div class="row" style="margin-top: 8px">
+                <form method="post" asp-page-handler="CreateTasks" asp-route-groupId="@group.Id" class="inline">
+                    <button type="submit" class="primary">@ServerTexts.Groups_CreateTasks</button>
+                </form>
+                <form method="post" asp-page-handler="Delete" asp-route-groupId="@group.Id" class="inline">
+                    <label><input type="checkbox" name="confirmed" value="true" required /> @ServerTexts.Groups_DeleteConfirm</label>
+                    <button type="submit" class="danger">@ServerTexts.Groups_Delete</button>
+                </form>
+            </div>
+            <p class="hint">@ServerTexts.Groups_CreateTasksHint</p>
+        }
+    </div>
+}

@@ -1,0 +1,120 @@
+@page "{id:int}"
+@model DeviceModel
+@{
+    var device = Model.Device!;
+    ViewData["Title"] = device.Name;
+}
+<h1>@device.Name</h1>
+<p>
+    <span class="@Display.SeverityClass(device.LastSeverity)"></span>@Display.Severity(device.LastSeverity)
+    · @ServerTexts.Col_LastSeen: @Display.Time(device.LastSeenAt)
+    · @ServerTexts.Device_Registered: @Display.Time(device.RegisteredAt)
+</p>
+<p class="muted">@device.OsName · @device.Model@(device.IsVirtualMachine ? " · VM" : "")</p>
+
+@if (Model.IsAdmin)
+{
+    <form method="post" asp-page-handler="Group" class="row">
+        <label>@ServerTexts.Col_Group
+            <select name="groupId">
+                <option value="">–</option>
+                @foreach (var group in Model.Groups)
+                {
+                    <option value="@group.Id" selected="@(group.Id == device.GroupId)">@group.Name</option>
+                }
+            </select>
+        </label>
+        <button type="submit">@ServerTexts.Button_Save</button>
+    </form>
+}
+else
+{
+    <p>@ServerTexts.Col_Group: @(device.Group?.Name ?? "–")</p>
+}
+
+<h2>@ServerTexts.Device_Tasks</h2>
+@if (device.Tasks.Count == 0)
+{
+    <p class="muted">@ServerTexts.Tasks_None</p>
+}
+else
+{
+    <partial name="_TaskTable" model="@(new TaskTableModel(device.Tasks.OrderByDescending(task => task.Id).ToList(), Model.IsAdmin, ShowDevice: false))" />
+}
+@if (Model.IsAdmin)
+{
+    <form method="post" asp-page-handler="Task" class="card row">
+        <select name="kind">
+            <option value="@AgentTaskKind.Install">@ServerTexts.Kind_Install</option>
+            <option value="@AgentTaskKind.Upgrade">@ServerTexts.Kind_Upgrade</option>
+        </select>
+        <select name="catalogId">
+            <option value="">@ServerTexts.Task_FromCatalog</option>
+            @foreach (var app in Omnikit.Modules.Apps.Catalog.BuiltInCatalog.Apps.OrderBy(app => app.Name))
+            {
+                <option value="@app.PackageId">@app.Name</option>
+            }
+        </select>
+        <input name="packageId" placeholder="@ServerTexts.Task_OrPackageId" />
+        <button type="submit" class="primary">@ServerTexts.Task_Create</button>
+        <span class="hint">@ServerTexts.Task_CreateHint</span>
+    </form>
+}
+
+<h2>@ServerTexts.Device_Report</h2>
+@if (Model.Report is null)
+{
+    <p class="muted">@ServerTexts.Device_NoReport</p>
+}
+else
+{
+    <p class="muted">@ServerTexts.Device_ReportFrom @Display.Time(Model.Report.CreatedAt.UtcDateTime) · Omnikit @Model.Report.AppVersion</p>
+    @foreach (var module in Model.Report.Modules ?? [])
+    {
+        <div class="card">
+            <strong><span class="@Display.SeverityClass(module.OverallSeverity)"></span>@Display.Module(module.ModuleId)</strong>
+            <table>
+                @foreach (var finding in module.Findings ?? [])
+                {
+                    <tr>
+                        <td style="width: 30%"><span class="@Display.SeverityClass(finding.Severity)"></span>@finding.Title<br /><span class="muted">@finding.Category</span></td>
+                        <td>@finding.Explanation
+                            @if (finding.Details is not null)
+                            {
+                                <br /><span class="muted">@finding.Details</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+}
+
+<h2>@ServerTexts.Device_Installed</h2>
+@if (Model.Installed is null)
+{
+    <p class="muted">@ServerTexts.Device_InstalledUnknown</p>
+}
+else
+{
+    <details>
+        <summary>@string.Format(System.Globalization.CultureInfo.CurrentCulture, ServerTexts.Device_InstalledCount, Model.Installed.Count)</summary>
+        <table>
+            @foreach (var program in Model.Installed.OrderBy(program => program.Id))
+            {
+                <tr><td>@program.Id</td><td>@program.Version</td></tr>
+            }
+        </table>
+    </details>
+}
+
+@if (Model.IsAdmin)
+{
+    <h2>@ServerTexts.Device_Remove</h2>
+    <form method="post" asp-page-handler="Delete" class="card">
+        <p class="hint">@ServerTexts.Device_RemoveHint</p>
+        <label><input type="checkbox" name="confirmed" value="true" required /> @ServerTexts.Device_RemoveConfirm</label>
+        <button type="submit" class="danger">@ServerTexts.Device_Remove</button>
+    </form>
+}

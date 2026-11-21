@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Alle Texte der Server-Oberfläche. {0}, {1} ... werden durch Werte ersetzt. -->
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Account_Changed" xml:space="preserve"><value>Passwort geändert.</value></data>
+  <data name="Account_Current" xml:space="preserve"><value>Aktuelles Passwort</value></data>
+  <data name="Account_Hint" xml:space="preserve"><value>Mindestens 12 Zeichen. Ein Satz aus mehreren Wörtern ist leicht zu merken und schwer zu erraten.</value></data>
+  <data name="Account_New" xml:space="preserve"><value>Neues Passwort</value></data>
+  <data name="Account_Title" xml:space="preserve"><value>Eigenes Konto</value></data>
+  <data name="Audit_Details" xml:space="preserve"><value>Details</value></data>
+  <data name="Audit_Hint" xml:space="preserve"><value>Jede Änderung wird hier festgehalten und lässt sich nicht löschen. Angezeigt werden die letzten 300 Einträge.</value></data>
+  <data name="Audit_TaskNoAnswer" xml:space="preserve"><value>Aufgabe {0} ({1} {2}): keine Rückmeldung vom Gerät</value></data>
+  <data name="Audit_LoginFailed" xml:space="preserve"><value>Anmeldung als „{0}“ fehlgeschlagen (von {1})</value></data>
+  <data name="Audit_Unknown" xml:space="preserve"><value>Unbekannt</value></data>
+  <data name="Audit_TaskResult" xml:space="preserve"><value>Aufgabe {0} ({1} {2}): {3}</value></data>
+  <data name="Audit_FirstAdmin" xml:space="preserve"><value>{0} (Admin, erster Start)</value></data>
+  <data name="Audit_OwnPassword" xml:space="preserve"><value>eigenes Passwort geändert</value></data>
+  <data name="Audit_LoggedIn" xml:space="preserve"><value>angemeldet</value></data>
+  <data name="Audit_GroupPackage" xml:space="preserve"><value>Gruppe {0}: {1}</value></data>
+  <data name="Audit_DeviceToGroup" xml:space="preserve"><value>{0} → Gruppe {1}</value></data>
+  <data name="Audit_NoGroup" xml:space="preserve"><value>keine</value></data>
+  <data name="Audit_Device" xml:space="preserve"><value>Gerät {0} ({1})</value></data>
+  <data name="Audit_TaskCreate" xml:space="preserve"><value>{0} {1} für {2}</value></data>
+  <data name="Audit_TaskDecision" xml:space="preserve"><value>Aufgabe {0}: {1} {2} für Gerät {3} ({4})</value></data>
+  <data name="Audit_CodeWithoutGroup" xml:space="preserve"><value>ohne Gruppe</value></data>
+  <data name="Audit_CodeForGroup" xml:space="preserve"><value>Gruppe {0}</value></data>
+  <data name="Audit_What" xml:space="preserve"><value>Aktion</value></data>
+  <data name="Audit_When" xml:space="preserve"><value>Zeit</value></data>
+  <data name="Audit_Who" xml:space="preserve"><value>Wer</value></data>
+  <data name="Button_Save" xml:space="preserve"><value>Speichern</value></data>
+  <data name="Codes_Create" xml:space="preserve"><value>Neuen Code erstellen</value></data>
+  <data name="Codes_Expires" xml:space="preserve"><value>Gültig bis</value></data>
+  <data name="Codes_Hint" xml:space="preserve"><value>Mit einem Registrierungscode meldet sich ein PC einmalig am Server an. Jeder Code gilt 24 Stunden und nur für ein Gerät. Der Server speichert nur eine Prüfsumme – den Code selbst siehst du nur jetzt.</value></data>
+  <data name="Codes_None" xml:space="preserve"><value>Keine offenen Codes.</value></data>
+  <data name="Codes_Open" xml:space="preserve"><value>Offene Codes</value></data>
+  <data name="Codes_ShownOnce" xml:space="preserve"><value>Neuer Code – jetzt notieren, er wird nicht noch einmal angezeigt:</value></data>
+  <data name="Codes_Usage" xml:space="preserve"><value>Auf dem PC in einer Eingabeaufforderung mit Adminrechten (im Ordner des Agents):</value></data>
+  <data name="Col_Created" xml:space="preserve"><value>Angelegt</value></data>
+  <data name="Col_Device" xml:space="preserve"><value>Gerät</value></data>
+  <data name="Col_Group" xml:space="preserve"><value>Gruppe</value></data>
+  <data name="Col_LastSeen" xml:space="preserve"><value>Zuletzt gemeldet</value></data>
+  <data name="Col_OpenTasks" xml:space="preserve"><value>Offene Aufgaben</value></data>
+  <data name="Col_Result" xml:space="preserve"><value>Ergebnis</value></data>
+  <data name="Col_State" xml:space="preserve"><value>Zustand</value></data>
+  <data name="Col_System" xml:space="preserve"><value>System</value></data>
+  <data name="Col_Task" xml:space="preserve"><value>Aufgabe</value></data>
+  <data name="Denied_Text" xml:space="preserve"><value>Für diese Seite oder Aktion braucht es die Rolle „Admin“.</value></data>
+  <data name="Denied_Title" xml:space="preserve"><value>Keine Berechtigung</value></data>
+  <data name="Device_Installed" xml:space="preserve"><value>Installierte Programme</value></data>
+  <data name="Device_InstalledCount" xml:space="preserve"><value>{0} Programme laut winget</value></data>
+  <data name="Device_InstalledUnknown" xml:space="preserve"><value>Noch keine Programmliste (winget war beim letzten Bericht nicht erreichbar oder es gab noch keinen Bericht).</value></data>
+  <data name="Device_NoReport" xml:space="preserve"><value>Noch kein Bericht. Der Agent schickt ihn kurz nach dem Start und danach alle 30 Minuten.</value></data>
+  <data name="Device_Registered" xml:space="preserve"><value>Registriert</value></data>
+  <data name="Device_Remove" xml:space="preserve"><value>Gerät entfernen</value></data>
+  <data name="Device_RemoveConfirm" xml:space="preserve"><value>Ja, entfernen</value></data>
+  <data name="Device_RemoveHint" xml:space="preserve"><value>Das Gerät verschwindet mit allen Aufgaben; sein Token gilt sofort nicht mehr. Auf dem PC selbst ändert sich nichts – den Agent dort mit „Omnikit.Agent.exe uninstall“ entfernen.</value></data>
+  <data name="Device_Removed" xml:space="preserve"><value>Gerät entfernt. Sein Token gilt nicht mehr.</value></data>
+  <data name="Device_Report" xml:space="preserve"><value>Letzter Bericht</value></data>
+  <data name="Device_ReportFrom" xml:space="preserve"><value>Erstellt am</value></data>
+  <data name="Device_Tasks" xml:space="preserve"><value>Aufgaben</value></data>
+  <data name="Devices_Hint" xml:space="preserve"><value>Neue Geräte kommen über einen Registrierungscode dazu (Menü „Codes“, nur Admins).</value></data>
+  <data name="Devices_None" xml:space="preserve"><value>Noch keine Geräte registriert.</value></data>
+  <data name="Error_CannotDeleteUser" xml:space="preserve"><value>Das eigene Konto und den letzten Admin kann man nicht löschen.</value></data>
+  <data name="Error_GroupExists" xml:space="preserve"><value>Eine Gruppe mit diesem Namen gibt es schon.</value></data>
+  <data name="Error_GroupName" xml:space="preserve"><value>Der Gruppenname braucht 1 bis 64 Zeichen.</value></data>
+  <data name="Error_NotConfirmed" xml:space="preserve"><value>Bitte zuerst das Häkchen zur Bestätigung setzen.</value></data>
+  <data name="Audit_CodeBy" xml:space="preserve"><value>Code von {0}</value></data>
+  <data name="Error_HttpsOnly" xml:space="preserve"><value>Nur HTTPS.</value></data>
+  <data name="Error_NotFound" xml:space="preserve"><value>Nicht gefunden – vielleicht wurde es inzwischen gelöscht.</value></data>
+  <data name="Error_PackageId" xml:space="preserve"><value>Bitte ein Programm aus dem Katalog wählen oder eine gültige winget-ID eingeben (z. B. „7zip.7zip“).</value></data>
+  <data name="Error_PasswordShort" xml:space="preserve"><value>Das Passwort braucht mindestens 12 Zeichen.</value></data>
+  <data name="Error_PasswordWrong" xml:space="preserve"><value>Das aktuelle Passwort stimmt nicht.</value></data>
+  <data name="Error_Role" xml:space="preserve"><value>Diese Rolle gibt es nicht.</value></data>
+  <data name="Error_TaskAlreadyDecided" xml:space="preserve"><value>Über diese Aufgabe wurde schon entschieden.</value></data>
+  <data name="Error_UserExists" xml:space="preserve"><value>Diesen Benutzernamen gibt es schon.</value></data>
+  <data name="Error_UserName" xml:space="preserve"><value>Benutzername: 1 bis 32 Zeichen, nur Buchstaben ohne Umlaute, Ziffern, Punkt, Binde- und Unterstrich.</value></data>
+  <data name="Groups_AddPackage" xml:space="preserve"><value>Pflichtprogramm hinzufügen</value></data>
+  <data name="Groups_Create" xml:space="preserve"><value>Gruppe anlegen</value></data>
+  <data name="Groups_CreateTasks" xml:space="preserve"><value>Aufgaben für fehlende Pflichtprogramme anlegen</value></data>
+  <data name="Groups_CreateTasksHint" xml:space="preserve"><value>Legt für jedes Gerät der Gruppe eine Installationsaufgabe je fehlendem Programm an. Sie laufen erst nach der Freigabe (Seite „Aufgaben“).</value></data>
+  <data name="Groups_Delete" xml:space="preserve"><value>Gruppe löschen</value></data>
+  <data name="Groups_DeleteConfirm" xml:space="preserve"><value>Ja, löschen</value></data>
+  <data name="Groups_Devices" xml:space="preserve"><value>Geräte</value></data>
+  <data name="Groups_Hint" xml:space="preserve"><value>Gruppen fassen Geräte zusammen, z. B. „Computerraum 1“. Pflichtprogramme sollen auf allen Geräten der Gruppe installiert sein.</value></data>
+  <data name="Groups_NewName" xml:space="preserve"><value>Name der neuen Gruppe</value></data>
+  <data name="Groups_None" xml:space="preserve"><value>Noch keine Gruppen.</value></data>
+  <data name="Groups_Required" xml:space="preserve"><value>Pflichtprogramme</value></data>
+  <data name="Groups_TasksCreated" xml:space="preserve"><value>{0} Aufgaben angelegt. Sie warten auf Freigabe.</value></data>
+  <data name="Kind_Install" xml:space="preserve"><value>Installieren</value></data>
+  <data name="Kind_Upgrade" xml:space="preserve"><value>Aktualisieren</value></data>
+  <data name="Label_Password" xml:space="preserve"><value>Passwort</value></data>
+  <data name="Label_UserName" xml:space="preserve"><value>Benutzername</value></data>
+  <data name="Login_Button" xml:space="preserve"><value>Anmelden</value></data>
+  <data name="Login_Failed" xml:space="preserve"><value>Benutzername oder Passwort falsch.</value></data>
+  <data name="Login_Title" xml:space="preserve"><value>Anmelden</value></data>
+  <data name="Module_Bios" xml:space="preserve"><value>BIOS</value></data>
+  <data name="Module_Drivers" xml:space="preserve"><value>Treiber</value></data>
+  <data name="Module_Health" xml:space="preserve"><value>Gerätezustand</value></data>
+  <data name="Nav_Audit" xml:space="preserve"><value>Audit-Log</value></data>
+  <data name="Nav_Codes" xml:space="preserve"><value>Codes</value></data>
+  <data name="Nav_Devices" xml:space="preserve"><value>Geräte</value></data>
+  <data name="Nav_Groups" xml:space="preserve"><value>Gruppen</value></data>
+  <data name="Nav_Logout" xml:space="preserve"><value>Abmelden</value></data>
+  <data name="Nav_Tasks" xml:space="preserve"><value>Aufgaben</value></data>
+  <data name="Nav_Users" xml:space="preserve"><value>Benutzer</value></data>
+  <data name="Role_Admin" xml:space="preserve"><value>Admin</value></data>
+  <data name="Role_Viewer" xml:space="preserve"><value>Betrachter</value></data>
+  <data name="Saved" xml:space="preserve"><value>Gespeichert.</value></data>
+  <data name="Severity_Critical" xml:space="preserve"><value>Kritisch</value></data>
+  <data name="Severity_Info" xml:space="preserve"><value>Hinweis</value></data>
+  <data name="Severity_Ok" xml:space="preserve"><value>In Ordnung</value></data>
+  <data name="Severity_Unknown" xml:space="preserve"><value>Noch kein Bericht</value></data>
+  <data name="Severity_Warning" xml:space="preserve"><value>Warnung</value></data>
+  <data name="State_Approved" xml:space="preserve"><value>Freigegeben – wartet auf das Gerät</value></data>
+  <data name="State_AwaitingApproval" xml:space="preserve"><value>Wartet auf Freigabe</value></data>
+  <data name="State_Failed" xml:space="preserve"><value>Fehlgeschlagen</value></data>
+  <data name="State_Rejected" xml:space="preserve"><value>Abgelehnt</value></data>
+  <data name="State_Running" xml:space="preserve"><value>Läuft</value></data>
+  <data name="State_Succeeded" xml:space="preserve"><value>Erledigt</value></data>
+  <data name="Task_Approve" xml:space="preserve"><value>Freigeben</value></data>
+  <data name="Task_Approved" xml:space="preserve"><value>Freigegeben. Das Gerät holt die Aufgabe innerhalb einer Minute ab.</value></data>
+  <data name="Task_Create" xml:space="preserve"><value>Aufgabe anlegen</value></data>
+  <data name="Task_CreateHint" xml:space="preserve"><value>Läuft erst nach der Freigabe durch einen Admin.</value></data>
+  <data name="Task_Created" xml:space="preserve"><value>Aufgabe angelegt. Sie läuft erst nach der Freigabe.</value></data>
+  <data name="Task_FromCatalog" xml:space="preserve"><value>Programm aus dem Katalog …</value></data>
+  <data name="Task_NoAnswer" xml:space="preserve"><value>Keine Rückmeldung vom Gerät. Bitte am PC prüfen, ob das Programm installiert ist.</value></data>
+  <data name="Task_OrPackageId" xml:space="preserve"><value>oder winget-ID</value></data>
+  <data name="Task_Reject" xml:space="preserve"><value>Ablehnen</value></data>
+  <data name="Task_Rejected" xml:space="preserve"><value>Abgelehnt. Die Aufgabe wird nie ausgeführt.</value></data>
+  <data name="Tasks_Hint" xml:space="preserve"><value>Aufgaben installieren oder aktualisieren Programme über winget. Jede Aufgabe läuft erst, wenn ein Admin sie freigegeben hat; der PC holt sie dann selbst ab.</value></data>
+  <data name="Tasks_None" xml:space="preserve"><value>Keine.</value></data>
+  <data name="Tasks_Recent" xml:space="preserve"><value>Letzte Aufgaben</value></data>
+  <data name="Tasks_Waiting" xml:space="preserve"><value>Warten auf Freigabe</value></data>
+  <data name="Users_Create" xml:space="preserve"><value>Benutzer anlegen</value></data>
+  <data name="Users_Delete" xml:space="preserve"><value>Löschen</value></data>
+  <data name="Users_Hint" xml:space="preserve"><value>Admins dürfen alles. Betrachter sehen Geräte, Berichte und Aufgaben, können aber nichts ändern.</value></data>
+  <data name="Users_New" xml:space="preserve"><value>Neuer Benutzer</value></data>
+  <data name="Users_Role" xml:space="preserve"><value>Rolle</value></data>
+</root>

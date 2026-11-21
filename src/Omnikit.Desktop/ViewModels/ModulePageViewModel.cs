@@ -136,6 +136,13 @@ public partial class ModulePageViewModel : ViewModelBase
             var result = await _module.ExecuteAsync(action, CancellationToken.None);
             StatusMessage = result.Message;
         }
+#pragma warning disable CA1031 // Ein Fehler einer Aktion soll als Meldung erscheinen, nicht die App beenden.
+        catch (Exception ex)
+#pragma warning restore CA1031
+        {
+            _logger.LogError(ex, "Aktion {ActionId} von Modul {ModuleId} fehlgeschlagen", action.Id, _module.Id);
+            StatusMessage = Strings.ModulePage_ActionFailed;
+        }
         finally
         {
             IsBusy = false;

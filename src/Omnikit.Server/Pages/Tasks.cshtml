@@ -1,0 +1,25 @@
+@page
+@model TasksModel
+@{
+    ViewData["Title"] = ServerTexts.Nav_Tasks;
+}
+<h1>@ServerTexts.Nav_Tasks</h1>
+<p class="hint">@ServerTexts.Tasks_Hint</p>
+<h2>@ServerTexts.Tasks_Waiting</h2>
+@if (Model.Waiting.Count == 0)
+{
+    <p class="muted">@ServerTexts.Tasks_None</p>
+}
+else
+{
+    <partial name="_TaskTable" model="@(new TaskTableModel(Model.Waiting, Model.IsAdmin, ShowDevice: true))" />
+}
+<h2>@ServerTexts.Tasks_Recent</h2>
+@if (Model.Recent.Count == 0)
+{
+    <p class="muted">@ServerTexts.Tasks_None</p>
+}
+else
+{
+    <partial name="_TaskTable" model="@(new TaskTableModel(Model.Recent, false, ShowDevice: true))" />
+}

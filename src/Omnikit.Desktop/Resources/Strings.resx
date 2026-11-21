@@ -56,6 +56,7 @@
   <data name="ModulePage_Checking" xml:space="preserve"><value>Wird geprüft … (die Suche nach Updates kann bis zu einer Minute dauern)</value></data>
   <data name="ModulePage_Overall" xml:space="preserve"><value>Gesamtzustand:</value></data>
   <data name="ModulePage_CheckFailed" xml:space="preserve"><value>Die Prüfung ist fehlgeschlagen. Technische Details stehen in der Log-Datei.</value></data>
+  <data name="ModulePage_ActionFailed" xml:space="preserve"><value>Die Aktion ist fehlgeschlagen. Technische Details stehen in der Log-Datei.</value></data>
   <data name="ModulePage_ExportDone" xml:space="preserve"><value>Der Bericht wurde gespeichert.</value></data>
   <data name="ModulePage_ExportFailed" xml:space="preserve"><value>Der Bericht konnte nicht gespeichert werden. Technische Details stehen in der Log-Datei.</value></data>
 

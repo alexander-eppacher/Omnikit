@@ -1,6 +1,9 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO.Pipes;
+using System.Runtime.Versioning;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
@@ -52,9 +55,7 @@ public sealed class ElevationRunner : IElevationRunner
 
         var pipeName = ElevatedOperationHost.CreatePipeName();
 
-        // CurrentUserOnly: Nur Prozesse desselben Windows-Benutzers dürfen sich verbinden.
-        await using var pipe = new NamedPipeServerStream(
-            pipeName, PipeDirection.In, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly);
+        await using var pipe = CreatePipe(pipeName);
 
         // Zeitgrenze: Zeit für die Windows-Abfrage plus die erlaubte Dauer der Aktion
         using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
@@ -144,27 +145,34 @@ public sealed class ElevationRunner : IElevationRunner
         }
     }
 
-    /// <summary>Läuft die App schon als Admin, braucht es keinen Hilfsprozess.</summary>
+    /// <summary>Läuft die App schon als Admin, braucht es keinen Hilfsprozess. Fehler werden genauso behandelt wie im Hilfsprozess.</summary>
     private async Task<ElevationResult> RunInProcessAsync(
         IElevatedOperation operation, IReadOnlyList<string> arguments, IProgress<string>? progress, CancellationToken cancellationToken)
     {
-        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-        timeout.CancelAfter(operation.Timeout);
-        try
+        var message = await Task.Run(
+            () => ElevatedOperationHost.RunOperationAsync(operation, arguments, progress ?? new Progress<string>(), _logger, cancellationToken),
+            CancellationToken.None);
+        return new ElevationResult(message.Success == true && message.Payload is not null ? ElevationStatus.Success : ElevationStatus.Failed, message.Payload);
+    }
+
+    /// <summary>
+    /// Pipe für die Antworten des Hilfsprozesses. Verbinden dürfen sich nur dieser Windows-Benutzer und Administratoren:
+    /// Bei einem Standardkonto erteilt ein *anderes* (Admin-)Konto in der UAC-Abfrage die Rechte, und der Hilfsprozess
+    /// läuft dann unter diesem Konto. „FirstPipeInstance“: Gibt es den Namen schon, schlägt das Anlegen fehl, statt sich anzuhängen.
+    /// </summary>
+    [SupportedOSPlatform("windows")]
+    private static NamedPipeServerStream CreatePipe(string pipeName)
+    {
+        var security = new PipeSecurity();
+        using (var identity = WindowsIdentity.GetCurrent())
         {
-            var payload = await Task.Run(() => operation.RunAsync(arguments, progress ?? new Progress<string>(), timeout.Token), timeout.Token);
-            return new ElevationResult(ElevationStatus.Success, payload);
+            security.AddAccessRule(new PipeAccessRule(identity.User!, PipeAccessRights.FullControl, AccessControlType.Allow));
         }
-        catch (ElevatedOperationException ex)
-        {
-            _logger.LogWarning(ex, "Aktion {OperationId} abgelehnt", operation.Id);
-            return new ElevationResult(ElevationStatus.Failed, ex.Message);
-        }
-        catch (OperationCanceledException)
-        {
-            _logger.LogWarning("Zeitüberschreitung bei Aktion {OperationId}", operation.Id);
-            return new ElevationResult(ElevationStatus.Failed);
-        }
+
+        security.AddAccessRule(new PipeAccessRule(
+            new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null), PipeAccessRights.FullControl, AccessControlType.Allow));
+        return NamedPipeServerStreamAcl.Create(
+            pipeName, PipeDirection.In, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous | PipeOptions.FirstPipeInstance, 0, 0, security);
     }
 
     private static async Task IgnoreCancellationAsync(Task task)

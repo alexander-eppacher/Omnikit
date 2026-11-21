@@ -70,6 +70,12 @@
                                 <Button Content="{x:Static text:StickTexts.Button_RefreshUsb}" Command="{Binding RefreshUsbDisksCommand}" Margin="0,0,8,8" />
                             </WrapPanel>
                             <TextBlock Classes="hint" Text="{x:Static text:StickTexts.Page_NoUsb}" IsVisible="{Binding !HasUsbDisks}" />
+                            <CheckBox IsChecked="{Binding IncludeFixedDisks}">
+                                <TextBlock Text="{x:Static text:StickTexts.Usb_IncludeFixed}" TextWrapping="Wrap" />
+                            </CheckBox>
+                            <Border IsVisible="{Binding IncludeFixedDisks}" Padding="12" CornerRadius="6" BorderThickness="2" BorderBrush="#D13438">
+                                <TextBlock Text="{x:Static text:StickTexts.Usb_FixedWarning}" TextWrapping="Wrap" FontWeight="SemiBold" />
+                            </Border>
                         </StackPanel>
 
                         <WrapPanel Orientation="Horizontal">

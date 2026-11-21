@@ -1,0 +1,7 @@
+# Nur Quellcode ins Docker-Image, keine Build-Ergebnisse und keine Geheimnisse
+**/bin
+**/obj
+artifacts
+.git
+**/.env
+deploy/.env

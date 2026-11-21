@@ -1,0 +1,10 @@
+# HTTPS vor dem Omnikit-Server.
+# OMNIKIT_TLS=internal  → eigenes Zertifikat fürs LAN (Agents brauchen dann das Stammzertifikat, siehe README)
+# OMNIKIT_TLS=du@example.org → Zertifikat von Let's Encrypt (Domain muss aus dem Internet erreichbar sein)
+{$OMNIKIT_DOMAIN} {
+	tls {$OMNIKIT_TLS}
+	encode gzip
+	# Browser merken sich: diese Adresse nur noch über HTTPS. Die übrigen Schutz-Angaben setzt der Server selbst.
+	header Strict-Transport-Security "max-age=31536000"
+	reverse_proxy server:8080
+}

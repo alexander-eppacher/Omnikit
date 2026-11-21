@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Agent: Windows-Dienst, meldet den Zustand an den Server und führt freigegebene Aufgaben aus (nur winget). -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <NeutralLanguage>de</NeutralLanguage>
+    <AssemblyName>Omnikit.Agent</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Omnikit.Shared\Omnikit.Shared.csproj" />
+    <ProjectReference Include="..\Omnikit.Modules.Health\Omnikit.Modules.Health.csproj" />
+    <ProjectReference Include="..\Omnikit.Modules.Drivers\Omnikit.Modules.Drivers.csproj" />
+    <ProjectReference Include="..\Omnikit.Modules.Bios\Omnikit.Modules.Bios.csproj" />
+    <ProjectReference Include="..\Omnikit.Modules.Apps\Omnikit.Modules.Apps.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Grundgerüst für Hintergrunddienste und Betrieb als Windows-Dienst (beide MIT, von Microsoft) -->
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.13" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="10.0.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Omnikit.Agent.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Texte: aus AgentTexts.resx wird beim Bauen die Klasse Omnikit.Agent.Resources.AgentTexts erzeugt -->
+    <EmbeddedResource Update="Resources\AgentTexts.resx">
+      <StronglyTypedFileName>$(IntermediateOutputPath)AgentTexts.Designer.cs</StronglyTypedFileName>
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedNamespace>Omnikit.Agent.Resources</StronglyTypedNamespace>
+      <StronglyTypedClassName>AgentTexts</StronglyTypedClassName>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

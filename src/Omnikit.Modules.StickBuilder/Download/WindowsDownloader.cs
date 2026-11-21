@@ -21,6 +21,9 @@ public sealed class WindowsDownloader
 {
     private const int MaxAttempts = 5;
     private static readonly TimeSpan StallTimeout = TimeSpan.FromSeconds(60);
+
+    /// <summary>Der Katalog ist klein (wenige MB); hängt das Laden länger, stimmt etwas mit dem Netz nicht.</summary>
+    private static readonly TimeSpan CatalogTimeout = TimeSpan.FromMinutes(2);
     private static readonly HttpClient Http = new() { Timeout = Timeout.InfiniteTimeSpan };
 
     private readonly ILogger<WindowsDownloader> _logger;
@@ -34,7 +37,23 @@ public sealed class WindowsDownloader
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Omnikit", "downloads");
 
     /// <summary>Lädt den Katalog (products.cab) und packt ihn mit expand.exe aus (in Windows enthalten).</summary>
+    /// <exception cref="IOException">Auch, wenn das Laden länger als 2 Minuten dauert.</exception>
     public async Task<IReadOnlyList<WindowsDownload>> LoadCatalogAsync(CancellationToken cancellationToken)
+    {
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        timeout.CancelAfter(CatalogTimeout);
+        try
+        {
+            return await LoadCatalogCoreAsync(timeout.Token);
+        }
+        catch (OperationCanceledException ex) when (!cancellationToken.IsCancellationRequested)
+        {
+            // Zeitgrenze, kein Abbruch durch den Nutzer: als Netzfehler melden (die Seite zeigt dann einen Hinweis)
+            throw new IOException("Der Windows-Katalog wurde nicht innerhalb von 2 Minuten geladen.", ex);
+        }
+    }
+
+    private async Task<IReadOnlyList<WindowsDownload>> LoadCatalogCoreAsync(CancellationToken cancellationToken)
     {
         Directory.CreateDirectory(AppPaths.TempDirectory);
         var folder = Path.Combine(AppPaths.TempDirectory, "catalog-" + Guid.NewGuid().ToString("N"));
@@ -155,7 +174,17 @@ public sealed class WindowsDownloader
         {
             using var stall = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             stall.CancelAfter(StallTimeout);
-            var read = await input.ReadAsync(buffer, stall.Token);
+            int read;
+            try
+            {
+                read = await input.ReadAsync(buffer, stall.Token);
+            }
+            catch (OperationCanceledException ex) when (!cancellationToken.IsCancellationRequested)
+            {
+                // Stillstand, kein Abbruch durch den Nutzer: als Netzfehler melden. Das Geladene bleibt und wird beim nächsten Mal fortgesetzt.
+                throw new IOException("60 Sekunden lang kamen keine Daten von Microsoft.", ex);
+            }
+
             if (read == 0)
             {
                 break;

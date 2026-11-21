@@ -66,12 +66,12 @@ public sealed class EsdArgumentsTests : IDisposable
         File.WriteAllText(esd, "x");
         const string sha1 = "AABBCCDDEEFF00112233445566778899AABBCCDD";
 
-        var parsed = CreateStickOperation.ParseArguments(["1", "32000000000", esd, sha1]);
+        var parsed = CreateStickOperation.ParseArguments(["1", "32000000000", CreateStickTests.DevicePath, "0", esd, sha1]);
 
         Assert.Equal(sha1.ToLowerInvariant(), parsed.Sha1);
-        Assert.Throws<ElevatedOperationException>(() => CreateStickOperation.ParseArguments(["1", "32000000000", esd]));            // ohne Prüfsumme
-        Assert.Throws<ElevatedOperationException>(() => CreateStickOperation.ParseArguments(["1", "32000000000", esd, "abc"]));     // zu kurz
-        Assert.Throws<ElevatedOperationException>(() => CreateStickOperation.ParseArguments(["1", "32000000000", esd, new string('z', 40)]));
+        Assert.Throws<ElevatedOperationException>(() => CreateStickOperation.ParseArguments(["1", "32000000000", CreateStickTests.DevicePath, "0", esd]));            // ohne Prüfsumme
+        Assert.Throws<ElevatedOperationException>(() => CreateStickOperation.ParseArguments(["1", "32000000000", CreateStickTests.DevicePath, "0", esd, "abc"]));     // zu kurz
+        Assert.Throws<ElevatedOperationException>(() => CreateStickOperation.ParseArguments(["1", "32000000000", CreateStickTests.DevicePath, "0", esd, new string('z', 40)]));
     }
 
     [Fact]
