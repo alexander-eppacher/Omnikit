@@ -194,7 +194,8 @@ public class AnswerFileTests
 
         Assert.Equal("true", document.Descendants(U + "HideWirelessSetupInOOBE").First().Value);
         var file = document.Descendants(Ext + "File").Single(f => ((string)f.Attribute("path")!).EndsWith(AnswerFile.WifiProfileName, StringComparison.Ordinal));
-        Assert.Equal(WifiProfile.Create("Zuhause", "geheim123"), file.Value);
+        // XML liest Zeilenenden immer als \n, unter Windows erzeugt das Profil \r\n
+        Assert.Equal(WifiProfile.Create("Zuhause", "geheim123").ReplaceLineEndings("\n"), file.Value);
 
         // Das Vorbereitungsskript trägt es ein, auch wenn sonst nichts gewählt ist
         Assert.Contains(document.Descendants(U + "Path"), path => path.Value.Contains(AnswerFile.PreparationScriptName, StringComparison.Ordinal));

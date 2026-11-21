@@ -149,12 +149,14 @@ public class ElevatedOperationHostTests
         await using var server = new NamedPipeServerStream(pipeName, PipeDirection.In, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous);
         var connect = server.WaitForConnectionAsync(TestContext.Current.CancellationToken);
 
-        var exitCode = await ElevatedOperationHost.RunAsync(
+        // Gleichzeitig lesen wie die echte App: Unter Windows wartet das Schreiben in die Pipe, bis die Gegenseite liest
+        var run = ElevatedOperationHost.RunAsync(
             [ElevatedOperationHost.Argument, operation.Id, pipeName, .. arguments], [operation], NullLogger.Instance);
 
         await connect;
         using var reader = new StreamReader(server);
         var text = await reader.ReadToEndAsync(TestContext.Current.CancellationToken);
+        var exitCode = await run;
         var lines = text.Split('\n', StringSplitOptions.RemoveEmptyEntries)
             .Select(line => JsonSerializer.Deserialize<ElevatedMessage>(line, ElevatedMessage.JsonOptions)!)
             .ToList();
