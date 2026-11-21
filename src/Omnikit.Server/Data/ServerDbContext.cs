@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Omnikit.Server.Data;
 
-/// <summary>Zugriff auf die Server-Datenbank (PostgreSQL im Betrieb, SQLite in Tests).</summary>
+/// <summary>Zugriff auf die Server-Datenbank (eine SQLite-Datei).</summary>
 public sealed class ServerDbContext(DbContextOptions<ServerDbContext> options) : DbContext(options)
 {
     public DbSet<User> Users => Set<User>();

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Texte des Kerns, z. B. für „Als Text kopieren“. {0}, {1} ... werden durch Werte ersetzt. -->
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="Text_Heading" xml:space="preserve"><value>Omnikit – {0} ({1:g})</value></data>
+  <data name="Text_System" xml:space="preserve"><value>System: {0}</value></data>
+  <data name="Text_Build" xml:space="preserve"><value>Build {0}</value></data>
+  <data name="Text_Vm" xml:space="preserve"><value>virtueller PC ({0})</value></data>
+  <data name="Text_Overall" xml:space="preserve"><value>Gesamt: {0}</value></data>
+  <data name="Text_Finding" xml:space="preserve"><value>[{0}] {1}</value></data>
+  <data name="Severity_Ok" xml:space="preserve"><value>In Ordnung</value></data>
+  <data name="Severity_Info" xml:space="preserve"><value>Hinweis</value></data>
+  <data name="Severity_Warning" xml:space="preserve"><value>Warnung</value></data>
+  <data name="Severity_Critical" xml:space="preserve"><value>Kritisch</value></data>
+</root>

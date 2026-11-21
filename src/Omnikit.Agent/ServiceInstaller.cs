@@ -33,8 +33,8 @@ public static class ServiceInstaller
         var target = Path.Combine(AgentStore.InstallDirectory, "Omnikit.Agent.exe");
         if (!string.Equals(Path.GetFullPath(source), Path.GetFullPath(target), StringComparison.OrdinalIgnoreCase))
         {
-            await StopAsync(); // eine ältere Version könnte die Datei gerade benutzen
-            File.Copy(source, target, overwrite: true);
+            await StopAsync(); // eine ältere Version könnte die Dateien gerade benutzen
+            CopyProgramFiles(AppContext.BaseDirectory, AgentStore.InstallDirectory);
         }
 
         if (await ScAsync("query", ServiceName) != 0)
@@ -47,6 +47,27 @@ public static class ServiceInstaller
         Require(await ScAsync("failure", ServiceName, "reset=", "86400", "actions=", "restart/60000/restart/60000/restart/300000"), "failure");
         Require(await ScAsync("start", ServiceName), "start", ErrorServiceAlreadyRunning);
         return target;
+    }
+
+    /// <summary>
+    /// Kopiert alle Dateien des Agents (er liegt als Ordner mit .NET-Laufzeit vor) in den Programmordner.
+    /// Die Ordner mit Einstellungen und Updates im Ziel bleiben unberührt.
+    /// </summary>
+    internal static void CopyProgramFiles(string sourceFolder, string targetFolder)
+    {
+        foreach (var file in Directory.EnumerateFiles(sourceFolder, "*", SearchOption.AllDirectories))
+        {
+            var relative = Path.GetRelativePath(sourceFolder, file);
+            var first = relative.Split(Path.DirectorySeparatorChar)[0];
+            if (first is "config" or "updates")
+            {
+                continue;
+            }
+
+            var destination = Path.Combine(targetFolder, relative);
+            Directory.CreateDirectory(Path.GetDirectoryName(destination)!);
+            File.Copy(file, destination, overwrite: true);
+        }
     }
 
     public static async Task UninstallAsync()

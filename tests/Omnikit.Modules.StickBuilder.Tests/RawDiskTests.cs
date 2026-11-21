@@ -165,3 +165,34 @@ public class SourceOnStickTests
         Assert.True(UsbDiskFinder.IsOnVolume(StickVolume + "x.iso", [StickVolume.TrimEnd('\\')]));
     }
 }
+
+public class HelperConfirmationTests
+{
+    private static readonly UsbDisk Stick = new(3, "SanDisk Ultra", 31_914_983_424, DevicePath, IsRemovable: true);
+
+    [Fact]
+    public void ConfirmationNamesTheDiskTheHelperCheckedItself()
+    {
+        var folder = Path.Combine(Path.GetTempPath(), "Downloads");
+        var request = new CreateStickOperation.Request(3, Stick.SizeBytes, DevicePath, false, Path.Combine(folder, "ubuntu-24.04.iso"), null);
+
+        var text = CreateStickOperation.ConfirmText(Stick, request);
+
+        Assert.Contains(Stick.DisplayName, text, StringComparison.Ordinal);
+        Assert.Contains("Datenträger 3", text, StringComparison.Ordinal);
+        Assert.Contains("„ubuntu-24.04.iso“", text, StringComparison.Ordinal);
+        Assert.DoesNotContain(folder, text, StringComparison.Ordinal);   // nur der Dateiname, kein Pfad
+    }
+
+    [Fact]
+    public void HardDisksAndDownloadsAreNamedClearly()
+    {
+        var hardDisk = Stick with { Name = "WD Elements", IsRemovable = false };
+        var download = new CreateStickOperation.Request(3, Stick.SizeBytes, DevicePath, true, @"C:\x\a.esd", new string('a', 40));
+
+        var text = CreateStickOperation.ConfirmText(hardDisk, download);
+
+        Assert.StartsWith(Omnikit.Modules.StickBuilder.Resources.StickTexts.Confirm_FixedWarning, text, StringComparison.Ordinal);
+        Assert.Contains(Omnikit.Modules.StickBuilder.Resources.StickTexts.Helper_ConfirmWindows, text, StringComparison.Ordinal);
+    }
+}

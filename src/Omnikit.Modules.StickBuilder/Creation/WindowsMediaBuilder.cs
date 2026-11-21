@@ -4,6 +4,7 @@ using System.Runtime.Versioning;
 using System.Security.Cryptography;
 using Microsoft.Extensions.Logging;
 using Omnikit.Core.Elevation;
+using Omnikit.Core.Windows;
 using System.Text.RegularExpressions;
 using Texts = Omnikit.Modules.StickBuilder.Resources.StickTexts;
 

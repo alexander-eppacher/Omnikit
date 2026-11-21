@@ -22,4 +22,14 @@ public interface IDialogService
     /// <summary>Lässt den Nutzer eine Datei wählen und gibt ihren Pfad zurück (z. B. eine ISO für den Hilfsprozess).</summary>
     /// <returns>Vollständiger Pfad, oder <c>null</c>, wenn abgebrochen wurde oder die Datei keinen lokalen Pfad hat.</returns>
     Task<string?> PickOpenFilePathAsync(string fileTypeName, string extension);
+
+    /// <summary>Legt Text in die Zwischenablage.</summary>
+    /// <returns><c>false</c>, wenn das nicht ging (z. B. kein Fenster).</returns>
+    Task<bool> CopyToClipboardAsync(string text);
+
+    /// <summary>Öffnet eine feste Webseite im Browser (z. B. die Release-Seite).</summary>
+    Task OpenWebPageAsync(Uri address);
+
+    /// <summary>Beendet die App (z. B. damit ein Update ihre Dateien ersetzen kann).</summary>
+    void CloseApp();
 }

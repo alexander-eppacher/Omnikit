@@ -4,10 +4,10 @@ using System.Runtime.Versioning;
 using System.Security.AccessControl;
 using Microsoft.Win32.SafeHandles;
 
-namespace Omnikit.Modules.StickBuilder.Creation;
+namespace Omnikit.Core.Windows;
 
 /// <summary>Ergebnis der Prüfung eines Ordners, in den der Hilfsprozess mit Adminrechten schreibt.</summary>
-internal enum FolderVerdict
+public enum FolderVerdict
 {
     Trusted,
     NotADirectory,
@@ -22,10 +22,10 @@ internal enum FolderVerdict
 }
 
 /// <summary>Die Rechte eines Ordners, vereinfacht: Besitzer, ob die Rechte fest gesetzt sind, und die Einträge (null = keine DACL).</summary>
-internal sealed record FolderSecurity(string? OwnerSid, bool IsProtected, IReadOnlyList<FolderAccess>? Entries);
+public sealed record FolderSecurity(string? OwnerSid, bool IsProtected, IReadOnlyList<FolderAccess>? Entries);
 
 /// <summary>Ein Eintrag der Rechteliste. <see cref="IsSimple"/> = gewöhnlicher Erlaubt-/Verweigert-Eintrag.</summary>
-internal sealed record FolderAccess(string? Sid, bool IsAllow, int Mask, bool IsSimple);
+public sealed record FolderAccess(string? Sid, bool IsAllow, int Mask, bool IsSimple);
 
 /// <summary>
 /// Ordner, in die nur Administratoren und das System schreiben dürfen. Wird ein Ordner neu angelegt, bekommt er seine Rechte
@@ -34,7 +34,7 @@ internal sealed record FolderAccess(string? Sid, bool IsAllow, int Mask, bool Is
 /// könnte das Löschen auf einen anderen Ordner umlenken oder offene Handles behalten, die eine Rechteänderung überstehen.
 /// </summary>
 [SupportedOSPlatform("windows")]
-internal static class ProtectedFolder
+public static class ProtectedFolder
 {
     /// <summary>Besitzer Administratoren; Rechte nicht geerbt; Vollzugriff für Administratoren und System, vererbt auf alles darin.</summary>
     internal const string Sddl = "O:BAG:BAD:P(A;OICI;FA;;;BA)(A;OICI;FA;;;SY)";

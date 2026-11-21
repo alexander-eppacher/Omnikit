@@ -15,12 +15,6 @@ sealed class Program
     [STAThread]
     public static int Main(string[] args)
     {
-        // Gestartet als Hilfsprozess mit Adminrechten? Dann KEINE Oberfläche, nur die eine Leseaktion.
-        if (ElevatedOperationHost.IsHelperMode(args))
-        {
-            return RunElevatedHelper(args);
-        }
-
         ConfigureLogging("omnikit-.log");
         AppDomain.CurrentDomain.UnhandledException += (_, e) =>
             Log.Fatal(e.ExceptionObject as Exception, "Unbehandelter Fehler, die App wird beendet");
@@ -42,35 +36,6 @@ sealed class Program
             .UsePlatformDetect()
             .WithInterFont()
             .LogToTrace();
-
-    /// <summary>
-    /// Hilfsprozess: läuft unsichtbar mit Adminrechten, führt eine erlaubte Leseaktion aus und beendet sich.
-    /// Eigene Log-Datei, damit sich die beiden Prozesse nicht gegenseitig die Datei sperren.
-    /// </summary>
-    private static int RunElevatedHelper(string[] args)
-    {
-        ConfigureLogging("omnikit-helper-.log");
-
-        try
-        {
-            using var services = ServiceSetup.Build();
-            var logger = services.GetRequiredService<ILoggerFactory>().CreateLogger("ElevatedHelper");
-            var operations = services.GetServices<IElevatedOperation>();
-
-            return ElevatedOperationHost.RunAsync(args, operations, logger).GetAwaiter().GetResult();
-        }
-#pragma warning disable CA1031 // Der Hilfsprozess soll nie mit einer Fehlermeldung abstürzen, sondern nur einen Fehlercode liefern.
-        catch (Exception ex)
-#pragma warning restore CA1031
-        {
-            Log.Fatal(ex, "Hilfsprozess fehlgeschlagen");
-            return 1;
-        }
-        finally
-        {
-            Log.CloseAndFlush();
-        }
-    }
 
     /// <summary>
     /// Log-Datei pro Tag, die letzten 7 Tage bleiben erhalten.

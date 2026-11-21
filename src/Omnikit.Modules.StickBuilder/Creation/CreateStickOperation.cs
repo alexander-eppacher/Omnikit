@@ -31,9 +31,12 @@ public sealed class CreateStickOperation : IElevatedOperation
 
     private readonly ILogger<CreateStickOperation> _logger;
 
-    public CreateStickOperation(ILogger<CreateStickOperation> logger)
+    private readonly IDestructiveConfirmation _confirmation;
+
+    public CreateStickOperation(ILogger<CreateStickOperation> logger, IDestructiveConfirmation confirmation)
     {
         _logger = logger;
+        _confirmation = confirmation;
     }
 
     public string Id => OperationId;
@@ -101,6 +104,14 @@ public sealed class CreateStickOperation : IElevatedOperation
         {
             throw new ElevatedOperationException(Texts.Create_SourceOnStick);
         }
+
+        // Letzte Rückfrage im eigenen Fenster, mit dem Stick, wie ihn dieser Prozess selbst geprüft hat (nicht wie die App ihn nennt)
+        if (!_confirmation.Confirm(Texts.Helper_ConfirmTitle, ConfirmText(disk, request)))
+        {
+            _logger.LogInformation("Löschen von Datenträger {Number} im Hilfsprozess abgelehnt", disk.Number);
+            throw new ElevatedOperationException(Texts.Create_DeclinedInHelper);
+        }
+
         if (request.Sha1 is { } sha1)
         {
             await CreateFromDownloadAsync(request, disk, sha1, progress, cancellationToken);
@@ -130,6 +141,14 @@ public sealed class CreateStickOperation : IElevatedOperation
 
         await WriteRawAsync(request, isoPath, progress, cancellationToken);
         return JsonSerializer.Serialize(new { mode = "raw" });
+    }
+
+    /// <summary>Text der letzten Rückfrage: welcher Datenträger (Name, Größe, Nummer) und was darauf geschrieben wird.</summary>
+    internal static string ConfirmText(UsbDisk disk, Request request)
+    {
+        var source = request.Sha1 is null ? Path.GetFileName(request.Path) : Texts.Helper_ConfirmWindows;
+        var text = string.Format(CultureInfo.CurrentCulture, Texts.Helper_Confirm, disk.DisplayName, disk.Number, source);
+        return disk.IsRemovable ? text : Texts.Confirm_FixedWarning + Environment.NewLine + Environment.NewLine + text;
     }
 
     /// <summary>

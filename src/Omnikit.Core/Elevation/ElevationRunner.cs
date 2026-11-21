@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 namespace Omnikit.Core.Elevation;
 
 /// <summary>
-/// Startet die eigene Omnikit.exe noch einmal mit Adminrechten im Hilfsmodus (ohne Fenster)
+/// Startet den Hilfsprozess <c>Omnikit.Helper.exe</c> aus dem Ordner der App mit Adminrechten (ohne Fenster)
 /// und empfängt das Ergebnis über eine Named Pipe.
 /// Windows zeigt dabei die Benutzerkontensteuerung (UAC) an. Das lässt sich nicht umgehen und ist so gewollt.
 /// </summary>
@@ -23,14 +23,27 @@ public sealed class ElevationRunner : IElevationRunner
     // Windows-Fehlercode, wenn der Nutzer in der UAC-Abfrage "Nein" klickt.
     private const int ErrorCancelled = 1223;
 
+    /// <summary>Dateiname des Hilfsprozesses; er liegt immer im selben Ordner wie die App (nie über PATH gesucht).</summary>
+    public const string HelperFileName = "Omnikit.Helper.exe";
+
     private readonly IEnumerable<IElevatedOperation> _operations;
     private readonly ILogger<ElevationRunner> _logger;
+    private readonly string _helperPath;
 
     public ElevationRunner(IEnumerable<IElevatedOperation> operations, ILogger<ElevationRunner> logger)
+        : this(operations, logger, HelperPathNextTo(AppContext.BaseDirectory))
+    {
+    }
+
+    internal ElevationRunner(IEnumerable<IElevatedOperation> operations, ILogger<ElevationRunner> logger, string helperPath)
     {
         _operations = operations;
         _logger = logger;
+        _helperPath = helperPath;
     }
+
+    /// <summary>Absoluter Pfad des Hilfsprozesses neben der App.</summary>
+    internal static string HelperPathNextTo(string appFolder) => Path.Combine(Path.GetFullPath(appFolder), HelperFileName);
 
     public async Task<ElevationResult> RunAsync(
         string operationId, IReadOnlyList<string> arguments, IProgress<string>? progress, CancellationToken cancellationToken)
@@ -47,10 +60,15 @@ public sealed class ElevationRunner : IElevationRunner
             return await RunInProcessAsync(operation, arguments, progress, cancellationToken);
         }
 
-        var executablePath = Environment.ProcessPath;
-        if (!OperatingSystem.IsWindows() || executablePath is null)
+        if (!OperatingSystem.IsWindows())
         {
             return new ElevationResult(ElevationStatus.NotSupported);
+        }
+
+        if (!File.Exists(_helperPath))
+        {
+            _logger.LogError("Hilfsprozess fehlt: {Path} (gehört in denselben Ordner wie Omnikit.exe)", _helperPath);
+            return new ElevationResult(ElevationStatus.Failed);
         }
 
         var pipeName = ElevatedOperationHost.CreatePipeName();
@@ -67,7 +85,7 @@ public sealed class ElevationRunner : IElevationRunner
         Process? helper;
         try
         {
-            var startInfo = new ProcessStartInfo(executablePath)
+            var startInfo = new ProcessStartInfo(_helperPath)
             {
                 UseShellExecute = true,
                 Verb = "runas", // "Als Administrator ausführen"

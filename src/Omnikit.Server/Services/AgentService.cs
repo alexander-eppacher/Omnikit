@@ -17,6 +17,7 @@ public sealed class AgentService(ServerDbContext db, AuditLog audit, TimeProvide
     // Mehr Programme hat kein normaler PC; schützt die Datenbank vor übergroßen Listen
     private const int MaxInstalled = 2000;
     private const int MaxMessageLength = 500;
+    private const int MaxVersionLength = 40;
 
     /// <summary>
     /// So lange darf ein Ergebnis ausbleiben, bevor die Aufgabe als fehlgeschlagen gilt.
@@ -49,6 +50,12 @@ public sealed class AgentService(ServerDbContext db, AuditLog audit, TimeProvide
         device.InstalledJson = request.Installed is null
             ? null
             : JsonSerializer.Serialize(request.Installed.Take(MaxInstalled).Where(program => program.Id is not null).ToList(), AgentApi.JsonOptions);
+        if (request.Agent is { } agent)
+        {
+            device.AgentVersion = Limit(agent.Version, MaxVersionLength);
+            device.SupportedTasks = string.Join(',', (agent.SupportedTasks ?? []).Where(kind => kind != AgentTaskKind.Unknown).Distinct());
+        }
+
         await db.SaveChangesAsync(cancellationToken);
     }
 
@@ -96,8 +103,8 @@ public sealed class AgentService(ServerDbContext db, AuditLog audit, TimeProvide
             task.State = TaskState.Failed;
             task.FinishedAt = now;
             task.ResultMessage = ServerTexts.Task_NoAnswer;
-            audit.Add(task.Device is { } device ? AuditLog.DeviceActor(device) : AuditLog.SystemActor, "task.result",
-                string.Format(CultureInfo.CurrentCulture, ServerTexts.Audit_TaskNoAnswer, task.Id, task.Kind, task.PackageId));
+            audit.Add(task.Device is { } device ? AuditActor.Device(device) : AuditActor.System, AuditEvents.TaskTimeout,
+                ("task", task.Id), ("kind", task.Kind), ("package", task.PackageId));
         }
 
         if (lost.Count > 0)
@@ -122,7 +129,7 @@ public sealed class AgentService(ServerDbContext db, AuditLog audit, TimeProvide
         task.FinishedAt = time.GetUtcNow().UtcDateTime;
         task.ExitCode = result.ExitCode;
         task.ResultMessage = Limit(result.Message, MaxMessageLength);
-        audit.Add(AuditLog.DeviceActor(device), "task.result", string.Format(CultureInfo.CurrentCulture, ServerTexts.Audit_TaskResult, task.Id, task.Kind, task.PackageId, task.State));
+        audit.Add(AuditActor.Device(device), AuditEvents.TaskResult, ("task", task.Id), ("kind", task.Kind), ("package", task.PackageId), ("state", task.State), ("exitCode", task.ExitCode));
         await db.SaveChangesAsync(cancellationToken);
         return true;
     }

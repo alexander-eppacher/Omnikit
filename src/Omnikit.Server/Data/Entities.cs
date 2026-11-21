@@ -82,6 +82,19 @@ public sealed class Device
     /// <summary>Installierte Programme laut letztem Bericht, als JSON; null = unbekannt.</summary>
     public string? InstalledJson { get; set; }
 
+    /// <summary>Version des Agents laut letztem Bericht; null = Agent vor Version 4 (meldete sie noch nicht).</summary>
+    public string? AgentVersion { get; set; }
+
+    /// <summary>Aufgabentypen, die der Agent kann, durch Komma getrennt (z. B. „Install,Upgrade“); null = wie vor Version 4.</summary>
+    public string? SupportedTasks { get; set; }
+
+    /// <summary>Kann der Agent dieses Geräts diesen Aufgabentyp ausführen?</summary>
+    public bool Supports(AgentTaskKind kind) =>
+        kind != AgentTaskKind.Unknown
+        && (SupportedTasks is null
+            ? AgentTaskKinds.Legacy.Contains(kind)
+            : SupportedTasks.Split(',').Contains(kind.ToString(), StringComparer.Ordinal));
+
     public List<DeviceTask> Tasks { get; set; } = [];
 }
 
@@ -160,13 +173,28 @@ public sealed class AuditEntry
 {
     public int Id { get; set; }
 
+    /// <summary>Zeitpunkt in UTC.</summary>
     public DateTime At { get; set; }
 
-    /// <summary>Benutzername oder „Gerät 12“.</summary>
-    public required string Actor { get; set; }
+    public AuditActorKind ActorKind { get; set; }
 
-    /// <summary>Kurzname der Aktion, z. B. „task.approve“.</summary>
+    /// <summary>Benutzername bzw. Name des Geräts zum Zeitpunkt des Eintrags (leer bei System/Unbekannt).</summary>
+    public required string ActorName { get; set; }
+
+    /// <summary>Nummer des Geräts, wenn ein Agent etwas getan hat (bleibt auch, wenn das Gerät gelöscht ist).</summary>
+    public int? ActorDeviceId { get; set; }
+
+    /// <summary>Ereignis-Code aus <see cref="Services.AuditEvents"/>, z. B. „task.approve“.</summary>
     public required string Action { get; set; }
 
-    public required string Details { get; set; }
+    /// <summary>Werte des Ereignisses als JSON-Objekt mit Texten, z. B. <c>{"task":"7","package":"Mozilla.Firefox"}</c>.</summary>
+    public required string Values { get; set; }
+}
+
+public enum AuditActorKind
+{
+    User,
+    Device,
+    System,
+    Anonymous,
 }

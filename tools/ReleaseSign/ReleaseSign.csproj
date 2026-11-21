@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Werkzeug des Entwicklers (offline): Signierschlüssel erzeugen, Update-Manifest schreiben und signieren. Siehe docs/Release.md.
+       Wird nicht ausgeliefert und läuft nie in der CI – der private Schlüssel verlässt den Rechner des Entwicklers nicht. -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>ReleaseSign</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Omnikit.Core\Omnikit.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Omnikit.Core.Tests" />
+  </ItemGroup>
+</Project>

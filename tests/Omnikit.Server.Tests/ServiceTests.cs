@@ -219,7 +219,7 @@ public sealed class TaskFlowTests : IDisposable
         Assert.Equal(TaskState.Failed, task.State);
         Assert.NotNull(task.FinishedAt);
         Assert.False(string.IsNullOrEmpty(task.ResultMessage));
-        Assert.Contains(await db.Audit.ToListAsync(Ct), entry => entry.Action == "task.result");
+        Assert.Contains(await db.Audit.ToListAsync(Ct), entry => entry.Action == AuditEvents.TaskTimeout);
         // Ein verspätetes Ergebnis ändert daran nichts mehr
         Assert.False(await Agents().SaveResultAsync(device, task.Id, new TaskResultRequest(true, 0, "fertig"), Ct));
     }

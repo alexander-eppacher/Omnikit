@@ -184,6 +184,16 @@ starten, dessen Daten noch gebraucht werden.</value></data>
   <data name="Button_RefreshUsb" xml:space="preserve"><value>Neu suchen</value></data>
   <data name="Page_NoUsb" xml:space="preserve"><value>Kein USB-Stick gefunden. Stick einstecken und „Neu suchen“ klicken.</value></data>
   <data name="Button_CreateStick" xml:space="preserve"><value>Stick erstellen</value></data>
+  <data name="Helper_ConfirmTitle" xml:space="preserve"><value>Omnikit – Datenträger wirklich löschen?</value></data>
+  <data name="Helper_Confirm" xml:space="preserve"><value>Mit Adminrechten wird jetzt dieser Datenträger vollständig gelöscht:
+
+    {0} – Datenträger {1} in der Datenträgerverwaltung
+
+Alle Daten darauf gehen verloren. Danach wird „{2}“ darauf geschrieben.
+
+Nur „Ja“ wählen, wenn du das gerade selbst in Omnikit gestartet hast.</value></data>
+  <data name="Helper_ConfirmWindows" xml:space="preserve"><value>Windows (von Microsoft geladen)</value></data>
+  <data name="Create_DeclinedInHelper" xml:space="preserve"><value>Abgebrochen: Das Löschen wurde nicht bestätigt. Am Stick wurde nichts verändert.</value></data>
   <data name="Confirm_CreateTitle" xml:space="preserve"><value>USB-Stick erstellen</value></data>
   <data name="Confirm_Create" xml:space="preserve"><value>ALLE DATEN auf „{0}“ werden gelöscht.
 

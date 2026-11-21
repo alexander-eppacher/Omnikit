@@ -8,6 +8,20 @@
     <PackageReference Include="System.Management" Version="10.0.13" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <NeutralLanguage>de</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Texte: aus CoreTexts.resx wird beim Bauen die Klasse Omnikit.Core.Resources.CoreTexts erzeugt -->
+    <EmbeddedResource Update="Resources\CoreTexts.resx">
+      <StronglyTypedFileName>$(IntermediateOutputPath)CoreTexts.Designer.cs</StronglyTypedFileName>
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedNamespace>Omnikit.Core.Resources</StronglyTypedNamespace>
+      <StronglyTypedClassName>CoreTexts</StronglyTypedClassName>
+    </EmbeddedResource>
+  </ItemGroup>
+
   <ItemGroup>
     <InternalsVisibleTo Include="Omnikit.Core.Tests" />
   </ItemGroup>

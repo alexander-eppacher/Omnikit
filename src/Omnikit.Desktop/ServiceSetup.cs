@@ -16,6 +16,7 @@ using Omnikit.Modules.StickBuilder.Creation;
 using Omnikit.Modules.StickBuilder.Download;
 using Omnikit.Modules.Health;
 using Omnikit.Modules.Health.Sources;
+using Omnikit.Operations;
 using Omnikit.Modules.Performance.Sources;
 using Serilog;
 
@@ -45,10 +46,8 @@ internal static class ServiceSetup
 
         services.AddSingleton(TimeProvider.System);
 
-        // Hilfsprozess mit Adminrechten: Nur die hier registrierten Aktionen sind erlaubt (feste Liste).
+        // Hilfsprozess mit Adminrechten (Omnikit.Helper.exe): Die erlaubten Aktionen stehen in ElevatedOperations (feste Liste)
         services.AddSingleton<IElevationRunner, ElevationRunner>();
-        services.AddSingleton<IElevatedOperation, DiskReliabilityOperation>();
-        services.AddSingleton<IElevatedOperation, CreateStickOperation>(); // ändert: löscht einen USB-Stick, nur nach Bestätigung
 
         // Health-Modul und seine Datenquellen
         services.AddSingleton<WindowsDiskSource>();
@@ -104,7 +103,12 @@ internal static class ServiceSetup
 
         services.AddSingleton<IDialogService, DialogService>();
         services.AddSingleton<ViewModeState>();
+        services.AddSingleton<UpdateViewModel>();
         services.AddTransient<MainViewModel>();
+
+        // Dieselbe Liste wie im Hilfsprozess; die App braucht sie für Zeitgrenzen und wenn sie selbst schon als Admin läuft
+        services.AddElevatedOperations();
+        services.AddSingleton<IDestructiveConfirmation, ConfirmedInApp>();
 
         return services.BuildServiceProvider();
     }

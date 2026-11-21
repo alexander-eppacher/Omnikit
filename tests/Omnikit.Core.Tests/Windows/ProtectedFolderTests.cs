@@ -1,7 +1,7 @@
 using System.Runtime.Versioning;
-using Omnikit.Modules.StickBuilder.Creation;
+using Omnikit.Core.Windows;
 
-namespace Omnikit.Modules.StickBuilder.Tests;
+namespace Omnikit.Core.Tests.Windows;
 
 /// <summary>
 /// Prüfregel für Ordner, in die der Hilfsprozess mit Adminrechten schreibt. Die Rechte werden als einfaches Abbild

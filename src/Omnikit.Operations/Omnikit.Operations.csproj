@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Die feste Liste der Aktionen mit Adminrechten (Regel 6.1.5). Genutzt vom Hilfsprozess Omnikit.Helper und von der App,
+       wenn sie selbst schon als Admin läuft. Eine Liste an einer Stelle, damit beide nie auseinanderlaufen. -->
+
+  <ItemGroup>
+    <ProjectReference Include="..\Omnikit.Core\Omnikit.Core.csproj" />
+    <ProjectReference Include="..\Omnikit.Modules.Health\Omnikit.Modules.Health.csproj" />
+    <ProjectReference Include="..\Omnikit.Modules.StickBuilder\Omnikit.Modules.StickBuilder.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <NeutralLanguage>de</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Texte: aus OperationTexts.resx wird beim Bauen die Klasse Omnikit.Operations.Resources.OperationTexts erzeugt -->
+    <EmbeddedResource Update="Resources\OperationTexts.resx">
+      <StronglyTypedFileName>$(IntermediateOutputPath)OperationTexts.Designer.cs</StronglyTypedFileName>
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedNamespace>Omnikit.Operations.Resources</StronglyTypedNamespace>
+      <StronglyTypedClassName>OperationTexts</StronglyTypedClassName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Omnikit.Core.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- IServiceCollection und ILogger (MIT, von Microsoft) -->
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.13" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.13" />
+  </ItemGroup>
+</Project>

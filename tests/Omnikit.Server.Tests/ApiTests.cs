@@ -4,6 +4,7 @@ using System.Net.Http.Json;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Omnikit.Core.Modules;
 using Omnikit.Core.Reports;
@@ -42,7 +43,6 @@ public sealed class ServerFactory : WebApplicationFactory<Program>
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseSetting("ConnectionStrings:Default", $"Data Source={_databaseFile}");
-        builder.UseSetting("Database:Provider", "Sqlite");
         builder.UseSetting("Server:AllowHttp", AllowHttp ? "true" : "false");
         builder.UseSetting("Server:TrustProxy", TrustProxy ? "true" : "false");
         builder.UseSetting("OMNIKIT_ADMIN_PASSWORD", "Test-Passwort-123");
@@ -101,6 +101,63 @@ public sealed class ApiTests : IDisposable
 
         var result = await client.PostAsJsonAsync(AgentApi.TaskResult(task.Id), new TaskResultRequest(true, 0, "fertig"), AgentApi.JsonOptions, Ct);
         Assert.Equal(HttpStatusCode.NoContent, result.StatusCode);
+    }
+
+    [Fact]
+    public async Task SelfUpdateGoesOnlyToAgentsThatCanDoItAndCarriesNoFile()
+    {
+        using var client = _factory.CreateClient();
+        var registered = await client.PostAsJsonAsync(AgentApi.Register, new RegisterRequest(await NewCodeAsync(), "VM-03"), AgentApi.JsonOptions, Ct);
+        var device = (await registered.Content.ReadFromJsonAsync<RegisterResponse>(AgentApi.JsonOptions, Ct))!;
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", device.Token);
+
+        // Alter Agent (meldet keine Fähigkeiten): kein Selbst-Update
+        await client.PostAsJsonAsync(AgentApi.Report, new ReportRequest("VM-03", Report(), []), AgentApi.JsonOptions, Ct);
+        using (var scope = _factory.Services.CreateScope())
+        {
+            Assert.False((await scope.ServiceProvider.GetRequiredService<TaskService>().CreateAsync("admin", device.DeviceId, AgentTaskKind.SelfUpdate, "", Ct)).Success);
+        }
+
+        // Neuer Agent: ja – und eine mitgeschickte „Paket-ID“ wird verworfen, der Server kann keine Datei vorgeben
+        await client.PostAsJsonAsync(AgentApi.Report, new ReportRequest("VM-03", Report(), [], new AgentInfo("4.0.0", [AgentTaskKind.SelfUpdate])), AgentApi.JsonOptions, Ct);
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var tasks = scope.ServiceProvider.GetRequiredService<TaskService>();
+            Assert.True((await tasks.CreateAsync("admin", device.DeviceId, AgentTaskKind.SelfUpdate, "https://boese.example/x.exe", Ct)).Success);
+            var id = (await scope.ServiceProvider.GetRequiredService<Omnikit.Server.Data.ServerDbContext>().Tasks.SingleAsync(Ct)).Id;
+            await tasks.ApproveAsync("admin", id, Ct);
+        }
+
+        var task = Assert.Single((await client.GetFromJsonAsync<List<AgentTask>>(AgentApi.Tasks, AgentApi.JsonOptions, Ct))!);
+        Assert.Equal(AgentTaskKind.SelfUpdate, task.Kind);
+        Assert.Equal(string.Empty, task.PackageId);
+    }
+
+    [Fact]
+    public async Task NewerAgentsWithUnknownFieldsAreUnderstoodAndTheirAbilitiesCount()
+    {
+        using var client = _factory.CreateClient();
+        var registered = await client.PostAsJsonAsync(AgentApi.Register, new RegisterRequest(await NewCodeAsync(), "VM-02"), AgentApi.JsonOptions, Ct);
+        var device = (await registered.Content.ReadFromJsonAsync<RegisterResponse>(AgentApi.JsonOptions, Ct))!;
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", device.Token);
+
+        // Bericht eines (gedachten) neueren Agents: zusätzliches Feld und ein Aufgabentyp, den dieser Server nicht kennt
+        var json = System.Text.Json.JsonSerializer.SerializeToNode(new ReportRequest("VM-02", Report(), [], new AgentInfo("4.1.0", [AgentTaskKind.Install])), AgentApi.JsonOptions)!;
+        json["agent"]!["supportedTasks"]!.AsArray().Add("Reboot");
+        json["futureField"] = "egal";
+        using var content = new StringContent(json.ToJsonString(), System.Text.Encoding.UTF8, "application/json");
+        Assert.Equal(HttpStatusCode.NoContent, (await client.PostAsync(AgentApi.Report, content, Ct)).StatusCode);
+
+        using var scope = _factory.Services.CreateScope();
+        var stored = await scope.ServiceProvider.GetRequiredService<Omnikit.Server.Data.ServerDbContext>().Devices.SingleAsync(d => d.Id == device.DeviceId, Ct);
+        Assert.Equal("4.1.0", stored.AgentVersion);
+        Assert.Equal("Install", stored.SupportedTasks);
+
+        // Der Agent meldet „Upgrade“ nicht: Der Server legt dafür keine Aufgabe an
+        var tasks = scope.ServiceProvider.GetRequiredService<TaskService>();
+        Assert.False((await tasks.CreateAsync("admin", device.DeviceId, AgentTaskKind.Upgrade, "VideoLAN.VLC", Ct)).Success);
+        Assert.True((await tasks.CreateAsync("admin", device.DeviceId, AgentTaskKind.Install, "VideoLAN.VLC", Ct)).Success);
+        Assert.False((await tasks.CreateAsync("admin", device.DeviceId, AgentTaskKind.Unknown, "VideoLAN.VLC", Ct)).Success);
     }
 
     [Fact]

@@ -38,6 +38,12 @@ register, install, uninstall und once brauchen eine Eingabeaufforderung mit Admi
   <data name="Task_InvalidPackage" xml:space="preserve"><value>Ungültige Paket-ID – nicht ausgeführt.</value></data>
   <data name="Task_NoWinget" xml:space="preserve"><value>winget wurde auf diesem PC nicht gefunden.</value></data>
   <data name="Task_Unknown" xml:space="preserve"><value>Unbekannte Aufgabe – nicht ausgeführt.</value></data>
+  <data name="Update_NoKeys" xml:space="preserve"><value>Diese Agent-Version kennt noch keine Update-Schlüssel – bitte einmal von Hand aktualisieren.</value></data>
+  <data name="Update_NotInstalled" xml:space="preserve"><value>Der Agent ist nicht über das Setup installiert und kann sich nicht selbst aktualisieren.</value></data>
+  <data name="Update_Current" xml:space="preserve"><value>Der Agent ist schon aktuell.</value></data>
+  <data name="Update_FolderUntrusted" xml:space="preserve"><value>Der Ordner für Updates ist nicht geschützt – aus Sicherheitsgründen nicht aktualisiert.</value></data>
+  <data name="Update_DownloadFailed" xml:space="preserve"><value>Das Update konnte nicht geladen oder nicht als echt bestätigt werden.</value></data>
+  <data name="Update_Starting" xml:space="preserve"><value>Update auf {0} geprüft, wird jetzt installiert. Der Agent meldet sich danach mit der neuen Version.</value></data>
   <data name="Uninstall_Done" xml:space="preserve"><value>Dienst und Anmeldedaten entfernt. Den Ordner „{0}“ kann man jetzt löschen.</value></data>
   <data name="Uninstall_Failed" xml:space="preserve"><value>Der Dienst konnte nicht entfernt werden: {0}</value></data>
 </root>

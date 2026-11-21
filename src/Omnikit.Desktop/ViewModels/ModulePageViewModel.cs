@@ -47,7 +47,7 @@ public partial class ModulePageViewModel : ViewModelBase
     public ObservableCollection<ActionViewModel> Actions { get; } = [];
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(RefreshCommand), nameof(ExportCommand))]
+    [NotifyCanExecuteChangedFor(nameof(RefreshCommand), nameof(ExportCommand), nameof(CopyTextCommand))]
     public partial bool IsBusy { get; set; }
 
     [ObservableProperty]
@@ -117,6 +117,19 @@ public partial class ModulePageViewModel : ViewModelBase
             _logger.LogError(ex, "Bericht konnte nicht gespeichert werden");
             StatusMessage = Strings.ModulePage_ExportFailed;
         }
+    }
+
+    /// <summary>Der Bericht als kurzer Text in der Zwischenablage, z. B. für ein Helpdesk-Ticket (ohne Seriennummer).</summary>
+    [RelayCommand(CanExecute = nameof(CanExport))]
+    private async Task CopyTextAsync()
+    {
+        if (_report is null)
+        {
+            return;
+        }
+
+        var text = ReportText.Create(ReportExporter.Create(_context, [_report], _time.GetLocalNow()), Title);
+        StatusMessage = await _dialogs.CopyToClipboardAsync(text) ? Strings.ModulePage_CopyDone : Strings.ModulePage_CopyFailed;
     }
 
     /// <summary>

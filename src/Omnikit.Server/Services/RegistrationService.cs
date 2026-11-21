@@ -25,7 +25,7 @@ public sealed class RegistrationService(ServerDbContext db, AuditLog audit, Time
             GroupId = groupId,
             CreatedBy = createdBy,
         });
-        audit.Add(createdBy, "code.create", groupId is null ? ServerTexts.Audit_CodeWithoutGroup : string.Format(CultureInfo.CurrentCulture, ServerTexts.Audit_CodeForGroup, groupId));
+        audit.Add(AuditActor.User(createdBy), AuditEvents.CodeCreate, ("group", groupId));
         await db.SaveChangesAsync(cancellationToken);
         return code;
     }
@@ -74,7 +74,7 @@ public sealed class RegistrationService(ServerDbContext db, AuditLog audit, Time
         }
 
         // Die Geräte-Nummer für den Audit-Eintrag gibt es erst nach dem Speichern
-        audit.Add(AuditLog.DeviceActor(device), "device.register", string.Format(CultureInfo.CurrentCulture, ServerTexts.Audit_CodeBy, code.CreatedBy));
+        audit.Add(AuditActor.Device(device), AuditEvents.DeviceRegister, ("codeBy", code.CreatedBy), ("group", code.GroupId));
         await db.SaveChangesAsync(cancellationToken);
         await transaction.CommitAsync(cancellationToken);
         return new RegisterResponse(device.Id, token);

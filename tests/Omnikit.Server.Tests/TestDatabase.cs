@@ -14,7 +14,7 @@ internal sealed class TestDatabase : IDisposable
     {
         _connection.Open();
         using var db = CreateContext();
-        db.Database.EnsureCreated();
+        db.Database.Migrate();   // wie der echte Server: über die Migrationen, nicht EnsureCreated
     }
 
     public FakeTime Time { get; } = new();

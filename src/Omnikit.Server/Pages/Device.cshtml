@@ -9,6 +9,7 @@
     <span class="@Display.SeverityClass(device.LastSeverity)"></span>@Display.Severity(device.LastSeverity)
     · @ServerTexts.Col_LastSeen: @Display.Time(device.LastSeenAt)
     · @ServerTexts.Device_Registered: @Display.Time(device.RegisteredAt)
+    · @ServerTexts.Device_AgentVersion: @(device.AgentVersion ?? ServerTexts.Device_AgentVersionUnknown)
 </p>
 <p class="muted">@device.OsName · @device.Model@(device.IsVirtualMachine ? " · VM" : "")</p>
 
@@ -59,6 +60,14 @@ else
         <button type="submit" class="primary">@ServerTexts.Task_Create</button>
         <span class="hint">@ServerTexts.Task_CreateHint</span>
     </form>
+    @if (device.Supports(AgentTaskKind.SelfUpdate))
+    {
+        <form method="post" asp-page-handler="Task" class="card row">
+            <input type="hidden" name="kind" value="@AgentTaskKind.SelfUpdate" />
+            <button type="submit">@ServerTexts.Task_SelfUpdate</button>
+            <span class="hint">@ServerTexts.Task_SelfUpdateHint</span>
+        </form>
+    }
 }
 
 <h2>@ServerTexts.Device_Report</h2>

@@ -5,3 +5,5 @@ artifacts
 .git
 **/.env
 deploy/.env
+
+**/omnikit.db*

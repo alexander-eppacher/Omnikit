@@ -32,8 +32,10 @@ public partial class MainViewModel : ViewModelBase
         Func<SystemContext, PerformancePageViewModel> createPerformancePage,
         Func<SystemContext, AppsPageViewModel> createAppsPage,
         Func<SystemContext, StickBuilderPageViewModel> createStickPage,
+        UpdateViewModel update,
         ILoggerFactory loggerFactory)
     {
+        Update = update;
         _createStickPage = createStickPage;
         _createPerformancePage = createPerformancePage;
         _createAppsPage = createAppsPage;
@@ -45,6 +47,9 @@ public partial class MainViewModel : ViewModelBase
         _loggerFactory = loggerFactory;
         _logger = loggerFactory.CreateLogger<MainViewModel>();
     }
+
+    /// <summary>Hinweis auf neue Versionen und der Schalter „Nach Updates suchen“.</summary>
+    public UpdateViewModel Update { get; }
 
     /// <summary>Schalter "Einfach / Experte" unten in der Navigationsleiste.</summary>
     public ViewModeState ViewMode { get; }
@@ -91,6 +96,23 @@ public partial class MainViewModel : ViewModelBase
         finally
         {
             IsLoading = false;
+        }
+
+        await CheckForUpdateAsync();
+    }
+
+    /// <summary>Nach dem Start im Hintergrund nach einer neuen Version fragen; ein Fehler dabei stört die App nie.</summary>
+    private async Task CheckForUpdateAsync()
+    {
+        try
+        {
+            await Update.CheckIfDueAsync();
+        }
+#pragma warning disable CA1031 // Die Update-Prüfung ist Nebensache: jeder Fehler nur ins Log.
+        catch (Exception ex)
+#pragma warning restore CA1031
+        {
+            _logger.LogWarning(ex, "Update-Prüfung fehlgeschlagen");
         }
     }
 

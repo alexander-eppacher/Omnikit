@@ -24,6 +24,7 @@
 
             <WrapPanel Orientation="Horizontal">
                 <Button Content="{x:Static res:Strings.ModulePage_Refresh}" Command="{Binding RefreshCommand}" Margin="0,0,8,8" />
+                <Button Content="{x:Static res:Strings.ModulePage_CopyText}" Command="{Binding CopyTextCommand}" Margin="0,0,8,8" />
                 <Button Content="{x:Static res:Strings.ModulePage_Export}" Command="{Binding ExportCommand}" Margin="0,0,8,8" />
                 <ItemsControl ItemsSource="{Binding Actions}">
                     <ItemsControl.ItemsPanel>

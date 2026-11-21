@@ -34,15 +34,15 @@ public sealed class LoginModel(UserService users, AuditLog audit, ServerDbContex
             var address = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "?";
             logger.LogWarning("Anmeldung fehlgeschlagen von {Address}", address);
             var attempted = UserName.Trim();
-            audit.Add(ServerTexts.Audit_Unknown, "user.login.failed", string.Format(
-                CultureInfo.CurrentCulture, ServerTexts.Audit_LoginFailed, attempted[..Math.Min(attempted.Length, UserService.MaxUserNameLength)], address));
+            audit.Add(AuditActor.Anonymous, AuditEvents.UserLoginFailed,
+                ("user", attempted[..Math.Min(attempted.Length, UserService.MaxUserNameLength)]), ("address", address));
             await db.SaveChangesAsync(cancellationToken);
             Error = ServerTexts.Login_Failed;
             return Page();
         }
 
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, SessionStamp.Principal(user));
-        audit.Add(user.UserName, "user.login", ServerTexts.Audit_LoggedIn);
+        audit.Add(AuditActor.User(user.UserName), AuditEvents.UserLogin);
         await db.SaveChangesAsync(cancellationToken);
 
         // Nur auf Seiten dieses Servers zurückleiten (keine fremden Adressen)

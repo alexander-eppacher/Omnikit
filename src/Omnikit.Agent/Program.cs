@@ -247,6 +247,7 @@ static IHost BuildHost(AgentConfig config, string token, bool asService)
         provider.GetRequiredService<IAgentServer>(), provider.GetRequiredService<TaskRunner>(),
         provider.GetRequiredService<ILogger<TaskLoop>>(), TimeSpan.FromSeconds(20)));
     services.AddSingleton<ReportBuilder>();
+    services.AddSingleton<IAgentUpdater, AgentUpdater>();
     services.AddSingleton<TaskRunner>();
     services.AddSingleton<AgentCycle>();
     return builder.Build();

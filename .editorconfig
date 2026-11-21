@@ -397,3 +397,7 @@ dotnet_diagnostic.CA1848.severity = none
 dotnet_diagnostic.CA1873.severity = none
 # CA1863: CompositeFormat-Caching lohnt sich nur bei sehr häufigem Formatieren, nicht für ein paar UI-Texte.
 dotnet_diagnostic.CA1863.severity = none
+
+# Von „dotnet ef migrations add“ erzeugt: nicht von Hand ändern, Analyzer prüfen ihn nicht
+[src/Omnikit.Server/Data/Migrations/*.cs]
+generated_code = true

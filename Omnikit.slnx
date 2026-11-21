@@ -3,14 +3,19 @@
     <Project Path="src/Omnikit.Agent/Omnikit.Agent.csproj" />
     <Project Path="src/Omnikit.Core/Omnikit.Core.csproj" />
     <Project Path="src/Omnikit.Desktop/Omnikit.Desktop.csproj" />
+    <Project Path="src/Omnikit.Helper/Omnikit.Helper.csproj" />
     <Project Path="src/Omnikit.Modules.Apps/Omnikit.Modules.Apps.csproj" />
     <Project Path="src/Omnikit.Modules.Bios/Omnikit.Modules.Bios.csproj" />
     <Project Path="src/Omnikit.Modules.Drivers/Omnikit.Modules.Drivers.csproj" />
     <Project Path="src/Omnikit.Modules.Health/Omnikit.Modules.Health.csproj" />
     <Project Path="src/Omnikit.Modules.Performance/Omnikit.Modules.Performance.csproj" />
     <Project Path="src/Omnikit.Modules.StickBuilder/Omnikit.Modules.StickBuilder.csproj" />
+    <Project Path="src/Omnikit.Operations/Omnikit.Operations.csproj" />
     <Project Path="src/Omnikit.Server/Omnikit.Server.csproj" />
     <Project Path="src/Omnikit.Shared/Omnikit.Shared.csproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/ReleaseSign/ReleaseSign.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Omnikit.Agent.Tests/Omnikit.Agent.Tests.csproj" />

@@ -1,0 +1,57 @@
+# Release-Entwurf aus einem Tag (z. B. v4.0.0 oder v4.1.0-rc.1). Veröffentlicht wird nichts automatisch:
+# Der Entwickler prüft den Entwurf, signiert die Update-Manifeste offline (docs/Release.md) und veröffentlicht von Hand.
+# Kein Signierschlüssel in der CI.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  draft:
+    name: Setups bauen und Release-Entwurf anlegen
+    runs-on: windows-2025
+    permissions:
+      contents: write   # nur dieser Job darf den Entwurf anlegen
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
+        with:
+          global-json-file: global.json
+      - name: Version aus dem Tag
+        id: version
+        shell: pwsh
+        run: |
+          $tag = '${{ github.ref_name }}'
+          if ($tag -notmatch '^v(\d+\.\d+\.\d+)(-([0-9A-Za-z.]+))?$') { throw "Tag $tag passt nicht zum Schema vX.Y.Z[-vorab]." }
+          "prefix=$($Matches[1])" >> $env:GITHUB_OUTPUT
+          "suffix=$($Matches[3])" >> $env:GITHUB_OUTPUT
+      - run: dotnet test --solution Omnikit.slnx -c Release
+      - name: Veröffentlichen
+        shell: pwsh
+        run: ./scripts/publish-all.ps1 -VersionPrefix '${{ steps.version.outputs.prefix }}' -VersionSuffix '${{ steps.version.outputs.suffix }}'
+      - name: Inno Setup bereitstellen
+        shell: pwsh
+        run: ./scripts/install-inno.ps1
+      - name: Setups bauen
+        shell: pwsh
+        run: ./scripts/build-installers.ps1 -Version '${{ steps.version.outputs.prefix }}'
+      - name: Prüfsummen
+        shell: pwsh
+        run: |
+          $files = Get-ChildItem artifacts/installer/*.exe, artifacts/win-x64/*.zip
+          $files | ForEach-Object { "{0}  {1}" -f (Get-FileHash $_ -Algorithm SHA256).Hash.ToLower(), $_.Name } | Set-Content -Encoding ascii artifacts/SHA256SUMS
+          Get-Content artifacts/SHA256SUMS
+      - name: Release-Entwurf
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $pre = if ('${{ steps.version.outputs.suffix }}') { '--prerelease' } else { $null }
+          gh release create '${{ github.ref_name }}' --draft --verify-tag $pre --title 'Omnikit ${{ github.ref_name }}' --notes 'Siehe CHANGELOG.md.' `
+            (Get-ChildItem artifacts/installer/*.exe).FullName (Get-ChildItem artifacts/win-x64/*.zip).FullName artifacts/SHA256SUMS

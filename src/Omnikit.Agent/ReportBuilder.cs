@@ -32,7 +32,9 @@ public sealed class ReportBuilder(
             }
         }
 
-        return new ReportRequest(Environment.MachineName, ReportExporter.Create(context, reports, time.GetLocalNow()), await ReadInstalledAsync(cancellationToken));
+        return new ReportRequest(
+            Environment.MachineName, ReportExporter.Create(context, reports, time.GetLocalNow()), await ReadInstalledAsync(cancellationToken),
+            new AgentInfo(AgentVersion.Current, TaskRunner.Supported));
     }
 
     private async Task<IReadOnlyList<InstalledProgram>?> ReadInstalledAsync(CancellationToken cancellationToken)

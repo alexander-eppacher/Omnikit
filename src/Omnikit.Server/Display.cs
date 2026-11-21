@@ -38,7 +38,12 @@ public static class Display
         _ => state.ToString(),
     };
 
-    public static string Kind(AgentTaskKind kind) => kind == AgentTaskKind.Upgrade ? ServerTexts.Kind_Upgrade : ServerTexts.Kind_Install;
+    public static string Kind(AgentTaskKind kind) => kind switch
+    {
+        AgentTaskKind.Upgrade => ServerTexts.Kind_Upgrade,
+        AgentTaskKind.SelfUpdate => ServerTexts.Kind_SelfUpdate,
+        _ => ServerTexts.Kind_Install,
+    };
 
     /// <summary>Letzter Bericht eines Geräts; <c>null</c>, wenn es noch keinen gibt oder er nicht lesbar ist.</summary>
     public static SystemReport? Report(Device device)

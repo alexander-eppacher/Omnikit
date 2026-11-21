@@ -44,5 +44,6 @@
     <ProjectReference Include="..\Omnikit.Modules.StickBuilder\Omnikit.Modules.StickBuilder.csproj" />
     <ProjectReference Include="..\Omnikit.Modules.Health\Omnikit.Modules.Health.csproj" />
     <ProjectReference Include="..\Omnikit.Modules.Performance\Omnikit.Modules.Performance.csproj" />
+    <ProjectReference Include="..\Omnikit.Operations\Omnikit.Operations.csproj" />
   </ItemGroup>
 </Project>

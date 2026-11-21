@@ -24,6 +24,12 @@
                            FontSize="20" FontWeight="SemiBold"
                            Margin="12,8,12,16" />
 
+                <!-- Update-Prüfung ein/aus (höchstens einmal am Tag, ohne Kennung) -->
+                <CheckBox DockPanel.Dock="Bottom" Margin="12,0,12,4" IsChecked="{Binding Update.CheckForUpdates}"
+                          ToolTip.Tip="{x:Static res:Strings.Update_CheckTooltip}">
+                    <TextBlock Text="{x:Static res:Strings.Update_CheckLabel}" Opacity="0.7" TextWrapping="Wrap" />
+                </CheckBox>
+
                 <!-- Schalter "Einfach / Experte" für die ganze App -->
                 <StackPanel DockPanel.Dock="Bottom" Margin="12,8" Spacing="2"
                             ToolTip.Tip="{x:Static res:Strings.ViewMode_Tooltip}">
@@ -45,13 +51,28 @@
         </Border>
 
         <!-- Inhalt rechts: die ausgewählte Seite. Welche View zu welchem ViewModel gehört, entscheidet der ViewLocator. -->
-        <Panel Grid.Column="1" Margin="24">
-            <TextBlock IsVisible="{Binding IsLoading}"
-                       Text="{x:Static res:Strings.Main_Loading}" />
-            <TextBlock IsVisible="{Binding ErrorMessage, Converter={x:Static ObjectConverters.IsNotNull}}"
-                       Text="{Binding ErrorMessage}"
-                       TextWrapping="Wrap" />
-            <ContentControl Content="{Binding SelectedItem.Page}" />
-        </Panel>
+        <DockPanel Grid.Column="1" Margin="24">
+            <!-- Neue Version verfügbar -->
+            <Border DockPanel.Dock="Top" IsVisible="{Binding Update.HasOffer}" Margin="0,0,0,16" Padding="12,8" CornerRadius="4"
+                    Background="{DynamicResource SystemControlBackgroundBaseLowBrush}">
+                <StackPanel Spacing="4">
+                    <WrapPanel>
+                        <TextBlock Text="{Binding Update.OfferText}" VerticalAlignment="Center" Margin="0,0,12,0" />
+                        <Button Content="{Binding Update.InstallButtonText}" Command="{Binding Update.InstallCommand}" />
+                    </WrapPanel>
+                    <TextBlock Text="{Binding Update.Status}" TextWrapping="Wrap"
+                               IsVisible="{Binding Update.Status, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                </StackPanel>
+            </Border>
+
+            <Panel>
+                <TextBlock IsVisible="{Binding IsLoading}"
+                           Text="{x:Static res:Strings.Main_Loading}" />
+                <TextBlock IsVisible="{Binding ErrorMessage, Converter={x:Static ObjectConverters.IsNotNull}}"
+                           Text="{Binding ErrorMessage}"
+                           TextWrapping="Wrap" />
+                <ContentControl Content="{Binding SelectedItem.Page}" />
+            </Panel>
+        </DockPanel>
     </Grid>
 </Window>

@@ -23,7 +23,7 @@ public sealed class GroupService(ServerDbContext db, AuditLog audit)
         }
 
         db.Groups.Add(new DeviceGroup { Name = name });
-        audit.Add(user, "group.create", name);
+        audit.Add(AuditActor.User(user), AuditEvents.GroupCreate, ("group", name));
         await db.SaveChangesAsync(cancellationToken);
         return ServiceResult.Ok;
     }
@@ -38,7 +38,7 @@ public sealed class GroupService(ServerDbContext db, AuditLog audit)
 
         db.GroupPackages.RemoveRange(group.RequiredPackages);
         db.Groups.Remove(group);
-        audit.Add(user, "group.delete", group.Name);
+        audit.Add(AuditActor.User(user), AuditEvents.GroupDelete, ("group", group.Name), ("groupId", group.Id));
         await db.SaveChangesAsync(cancellationToken);
         return ServiceResult.Ok;
     }
@@ -60,7 +60,7 @@ public sealed class GroupService(ServerDbContext db, AuditLog audit)
         if (!group.RequiredPackages.Any(p => string.Equals(p.PackageId, packageId, StringComparison.OrdinalIgnoreCase)))
         {
             group.RequiredPackages.Add(new GroupPackage { PackageId = packageId });
-            audit.Add(user, "group.package.add", $"{group.Name}: {packageId}");
+            audit.Add(AuditActor.User(user), AuditEvents.GroupPackageAdd, ("group", group.Name), ("groupId", group.Id), ("package", packageId));
             await db.SaveChangesAsync(cancellationToken);
         }
 
@@ -76,7 +76,7 @@ public sealed class GroupService(ServerDbContext db, AuditLog audit)
         }
 
         db.GroupPackages.Remove(entry);
-        audit.Add(user, "group.package.remove", string.Format(CultureInfo.CurrentCulture, ServerTexts.Audit_GroupPackage, entry.GroupId, entry.PackageId));
+        audit.Add(AuditActor.User(user), AuditEvents.GroupPackageRemove, ("groupId", entry.GroupId), ("package", entry.PackageId));
         await db.SaveChangesAsync(cancellationToken);
         return ServiceResult.Ok;
     }
@@ -91,7 +91,7 @@ public sealed class GroupService(ServerDbContext db, AuditLog audit)
         }
 
         device.GroupId = groupId;
-        audit.Add(user, "device.group", string.Format(CultureInfo.CurrentCulture, ServerTexts.Audit_DeviceToGroup, AuditLog.DeviceActor(device), groupId?.ToString(CultureInfo.InvariantCulture) ?? ServerTexts.Audit_NoGroup));
+        audit.Add(AuditActor.User(user), AuditEvents.DeviceGroup, ("device", device.Id), ("deviceName", device.Name), ("group", groupId));
         await db.SaveChangesAsync(cancellationToken);
         return ServiceResult.Ok;
     }
@@ -106,7 +106,7 @@ public sealed class GroupService(ServerDbContext db, AuditLog audit)
         }
 
         db.Devices.Remove(device);
-        audit.Add(user, "device.delete", AuditLog.DeviceActor(device));
+        audit.Add(AuditActor.User(user), AuditEvents.DeviceDelete, ("device", device.Id), ("deviceName", device.Name));
         await db.SaveChangesAsync(cancellationToken);
         return ServiceResult.Ok;
     }

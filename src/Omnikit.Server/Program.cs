@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -19,18 +18,8 @@ CultureInfo.DefaultThreadCurrentCulture = CultureInfo.DefaultThreadCurrentUICult
 var builder = WebApplication.CreateBuilder(args);
 var settings = ServerSettings.From(builder.Configuration);
 
-// Datenbank: PostgreSQL im Betrieb (docker compose), SQLite zum Ausprobieren und in Tests
-builder.Services.AddDbContext<ServerDbContext>(options =>
-{
-    if (settings.UseSqlite)
-    {
-        options.UseSqlite(settings.ConnectionString);
-    }
-    else
-    {
-        options.UseNpgsql(settings.ConnectionString);
-    }
-});
+// Datenbank: eine SQLite-Datei (0017), im Betrieb im Volume des Containers
+builder.Services.AddDbContext<ServerDbContext>(options => options.UseSqlite(settings.ConnectionString));
 
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<AuditLog>();
@@ -42,11 +31,7 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddHostedService<LostTaskSweeper>();
 
 // Gleiche JSON-Einstellungen wie der Agent (Aufzählungen als Text)
-builder.Services.ConfigureHttpJsonOptions(options =>
-{
-    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
-    options.SerializerOptions.Encoder = AgentApi.JsonOptions.Encoder;
-});
+builder.Services.ConfigureHttpJsonOptions(options => AgentApi.Configure(options.SerializerOptions));
 builder.WebHost.ConfigureKestrel(kestrel => kestrel.Limits.MaxRequestBodySize = AgentApi.MaxReportBytes);
 
 // Anmeldung an der Verwaltung: Cookie nur über HTTPS, nicht von fremden Seiten mitgeschickt
@@ -149,8 +134,19 @@ app.MapGet("/health", () => "ok");
 app.MapAgentEndpoints();
 app.MapRazorPages();
 
-await Startup.PrepareDatabaseAsync(app.Services, settings, app.Logger);
+try
+{
+    await Startup.PrepareDatabaseAsync(app.Services, settings, app.Logger);
+}
+catch (DatabaseVersionException ex)
+{
+    // Klare Meldung statt Stacktrace; der Container startet dann nicht und zeigt den Grund im Log
+    app.Logger.LogCritical("{Reason}", ex.Message);
+    return 1;
+}
+
 await app.RunAsync();
+return 0;
 
 /// <summary>Für die Tests (WebApplicationFactory).</summary>
 public partial class Program;

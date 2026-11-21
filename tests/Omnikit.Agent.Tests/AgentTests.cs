@@ -78,7 +78,7 @@ public class TaskRunnerTests
     public async Task InstallAndUpgradeGoToWinget()
     {
         var winget = new FakeWinget();
-        var runner = new TaskRunner(winget, NullLogger<TaskRunner>.Instance);
+        var runner = new TaskRunner(winget, new FakeUpdater(), NullLogger<TaskRunner>.Instance);
 
         var installed = await runner.RunAsync(new AgentTask(1, AgentTaskKind.Install, "7zip.7zip"), TestContext.Current.CancellationToken);
         var upgraded = await runner.RunAsync(new AgentTask(2, AgentTaskKind.Upgrade, "VideoLAN.VLC"), TestContext.Current.CancellationToken);
@@ -96,7 +96,7 @@ public class TaskRunnerTests
     {
         var winget = new FakeWinget();
 
-        var result = await new TaskRunner(winget, NullLogger<TaskRunner>.Instance)
+        var result = await new TaskRunner(winget, new FakeUpdater(), NullLogger<TaskRunner>.Instance)
             .RunAsync(new AgentTask(1, AgentTaskKind.Install, packageId), TestContext.Current.CancellationToken);
 
         Assert.False(result.Success);
@@ -108,11 +108,34 @@ public class TaskRunnerTests
     {
         var winget = new FakeWinget();
 
-        var result = await new TaskRunner(winget, NullLogger<TaskRunner>.Instance)
+        var result = await new TaskRunner(winget, new FakeUpdater(), NullLogger<TaskRunner>.Instance)
             .RunAsync(new AgentTask(1, (AgentTaskKind)99, "7zip.7zip"), TestContext.Current.CancellationToken);
 
         Assert.False(result.Success);
         Assert.Empty(winget.Calls);
+    }
+
+    [Fact]
+    public async Task TaskTypesFromANewerServerBecomeUnknownAndAreNotExecuted()
+    {
+        // Ein neuerer Server kennt Typen, die dieser Agent nicht kennt, und schickt Felder, die es hier noch nicht gibt
+        const string json = """[{"id":1,"kind":"Reboot","packageId":"7zip.7zip","priority":5},{"id":2,"kind":"Install","packageId":"7zip.7zip"},{"id":3,"kind":0,"packageId":"7zip.7zip"}]""";
+
+        var tasks = System.Text.Json.JsonSerializer.Deserialize<List<AgentTask>>(json, AgentApi.JsonOptions)!;
+
+        Assert.Equal([AgentTaskKind.Unknown, AgentTaskKind.Install, AgentTaskKind.Unknown], tasks.Select(task => task.Kind));
+        var winget = new FakeWinget();
+        var result = await new TaskRunner(winget, new FakeUpdater(), NullLogger<TaskRunner>.Instance).RunAsync(tasks[0], TestContext.Current.CancellationToken);
+        Assert.False(result.Success);
+        Assert.Empty(winget.Calls);
+    }
+
+    [Fact]
+    public void TheAgentReportsWhatItCanDo()
+    {
+        Assert.DoesNotContain(AgentTaskKind.Unknown, TaskRunner.Supported);
+        Assert.Equal("4.0.0-dev", AgentVersion.Clean("4.0.0-dev+abc123"));
+        Assert.Equal("?", AgentVersion.Clean(null));
     }
 }
 
@@ -270,6 +293,72 @@ public class CertificateTests
     }
 }
 
+/// <summary>Selbst-Update ohne Netz und ohne Setup: merkt sich nur, was wann aufgerufen wurde.</summary>
+internal sealed class FakeUpdater(string? setup = "setup.exe", List<string>? log = null) : IAgentUpdater
+{
+    public List<string> Log { get; } = log ?? [];
+
+    public Task<AgentUpdatePlan> PrepareAsync(CancellationToken cancellationToken)
+    {
+        Log.Add("prepare");
+        return Task.FromResult(new AgentUpdatePlan(new TaskResultRequest(setup is not null, 0, "test"), setup));
+    }
+
+    public void Start(AgentUpdatePlan plan) => Log.Add("start " + plan.Setup);
+}
+
+public class SelfUpdateTests
+{
+    [Fact]
+    public async Task SelfUpdateIsPreparedButOnlyStartedOnRequest()
+    {
+        var updater = new FakeUpdater();
+        var runner = new TaskRunner(new NoWinget(), updater, NullLogger<TaskRunner>.Instance);
+
+        var result = await runner.RunAsync(new AgentTask(1, AgentTaskKind.SelfUpdate, ""), TestContext.Current.CancellationToken);
+
+        Assert.True(result.Success);
+        Assert.Equal(["prepare"], updater.Log);          // noch nicht gestartet
+        Assert.True(runner.StartPendingUpdate());
+        Assert.Equal(["prepare", "start setup.exe"], updater.Log);
+        Assert.False(runner.StartPendingUpdate());       // nur einmal
+    }
+
+    [Fact]
+    public async Task NothingToInstallStartsNothing()
+    {
+        var updater = new FakeUpdater(setup: null);
+        var runner = new TaskRunner(new NoWinget(), updater, NullLogger<TaskRunner>.Instance);
+
+        await runner.RunAsync(new AgentTask(1, AgentTaskKind.SelfUpdate, ""), TestContext.Current.CancellationToken);
+
+        Assert.False(runner.StartPendingUpdate());
+        Assert.Equal(["prepare"], updater.Log);
+    }
+
+    [Fact]
+    public async Task WithoutBuiltInKeysTheAgentRefusesToUpdate()
+    {
+        // Vor dem ersten Release sind keine Schlüssel eingebaut: kein Netz, keine Installation, verständliche Meldung
+        var plan = await new AgentUpdater(NullLogger<AgentUpdater>.Instance).PrepareAsync(TestContext.Current.CancellationToken);
+
+        Assert.False(plan.Result.Success);
+        Assert.Null(plan.Setup);
+    }
+
+    private sealed class NoWinget : IWingetClient
+    {
+        public Task<IReadOnlyList<InstalledPackage>> GetInstalledAsync(CancellationToken cancellationToken) => throw new InvalidOperationException();
+
+        public Task<IReadOnlyList<AvailableUpgrade>> GetUpgradesAsync(IReadOnlyList<InstalledPackage> installed, CancellationToken cancellationToken) =>
+            throw new InvalidOperationException();
+
+        public Task<PackageResult> InstallAsync(string packageId, CancellationToken cancellationToken) => throw new InvalidOperationException();
+
+        public Task<PackageResult> UpgradeAsync(string packageId, CancellationToken cancellationToken) => throw new InvalidOperationException();
+    }
+}
+
 public class TaskLoopTests
 {
     /// <summary>Server im Speicher: gibt Aufgaben einzeln heraus und kann beim Melden absichtlich ausfallen.</summary>
@@ -320,7 +409,37 @@ public class TaskLoopTests
     }
 
     private static TaskLoop Loop(IAgentServer server, IWingetClient winget) =>
-        new(server, new TaskRunner(winget, NullLogger<TaskRunner>.Instance), NullLogger<TaskLoop>.Instance, TimeSpan.Zero);
+        new(server, new TaskRunner(winget, new FakeUpdater(), NullLogger<TaskRunner>.Instance), NullLogger<TaskLoop>.Instance, TimeSpan.Zero);
+
+    [Fact]
+    public async Task SelfUpdateStartsOnlyAfterTheServerHasTheResultAndStopsTheLoop()
+    {
+        var log = new List<string>();
+        var server = new LoggingServer(log, new AgentTask(1, AgentTaskKind.SelfUpdate, ""), new AgentTask(2, AgentTaskKind.Install, "7zip.7zip"));
+        var updater = new FakeUpdater(log: log);
+        var loop = new TaskLoop(server, new TaskRunner(new CountingWinget(), updater, NullLogger<TaskRunner>.Instance), NullLogger<TaskLoop>.Instance, TimeSpan.Zero);
+
+        var done = await loop.RunAsync(TestContext.Current.CancellationToken);
+
+        Assert.Equal(1, done);   // danach nichts mehr: Das Setup beendet gleich den Dienst
+        Assert.Equal(["prepare", "result 1", "start setup.exe"], log);
+    }
+
+    private sealed class LoggingServer(List<string> log, params AgentTask[] tasks) : IAgentServer
+    {
+        private readonly Queue<AgentTask> _open = new(tasks);
+
+        public Task SendReportAsync(ReportRequest report, CancellationToken cancellationToken) => Task.CompletedTask;
+
+        public Task<IReadOnlyList<AgentTask>> GetTasksAsync(CancellationToken cancellationToken) =>
+            Task.FromResult<IReadOnlyList<AgentTask>>(_open.TryDequeue(out var task) ? [task] : []);
+
+        public Task<bool> SendResultAsync(int taskId, TaskResultRequest result, CancellationToken cancellationToken)
+        {
+            log.Add("result " + taskId);
+            return Task.FromResult(true);
+        }
+    }
 
     [Fact]
     public async Task TasksAreFetchedOneAfterAnother()
@@ -412,5 +531,32 @@ public sealed class AgentStoreTests : IDisposable
         store.Save(new AgentConfig(new Uri("https://omnikit.local/"), 7, true), "geheim", store.CaFile);
 
         Assert.Equal("zertifikat", File.ReadAllText(store.CaFile));
+    }
+}
+
+public sealed class ServiceInstallerTests : IDisposable
+{
+    private readonly string _root = Directory.CreateTempSubdirectory("omnikit-agent-copy-").FullName;
+
+    public void Dispose() => Directory.Delete(_root, recursive: true);
+
+    [Fact]
+    public void WholeProgramFolderIsCopiedButSettingsAndUpdatesInTheTargetStay()
+    {
+        var source = Directory.CreateDirectory(Path.Combine(_root, "entpackt")).FullName;
+        var target = Directory.CreateDirectory(Path.Combine(_root, "Omnikit Agent")).FullName;
+        File.WriteAllText(Path.Combine(source, "Omnikit.Agent.exe"), "neu");
+        File.WriteAllText(Path.Combine(source, "coreclr.dll"), "laufzeit");
+        Directory.CreateDirectory(Path.Combine(source, "config"));
+        File.WriteAllText(Path.Combine(source, "config", "token"), "fremd");             // nie aus der Quelle übernehmen
+        Directory.CreateDirectory(Path.Combine(target, "config"));
+        File.WriteAllText(Path.Combine(target, "config", "token"), "geheim");
+        File.WriteAllText(Path.Combine(target, "Omnikit.Agent.exe"), "alt");
+
+        ServiceInstaller.CopyProgramFiles(source, target);
+
+        Assert.Equal("neu", File.ReadAllText(Path.Combine(target, "Omnikit.Agent.exe")));
+        Assert.Equal("laufzeit", File.ReadAllText(Path.Combine(target, "coreclr.dll")));
+        Assert.Equal("geheim", File.ReadAllText(Path.Combine(target, "config", "token")));
     }
 }

@@ -31,7 +31,7 @@ public sealed class UserService(ServerDbContext db, AuditLog audit, TimeProvider
         }
 
         Add(InitialAdminName, password, UserRole.Admin);
-        audit.Add(AuditLog.SystemActor, "user.create", string.Format(CultureInfo.CurrentCulture, ServerTexts.Audit_FirstAdmin, InitialAdminName));
+        audit.Add(AuditActor.System, AuditEvents.UserCreate, ("user", InitialAdminName), ("role", UserRole.Admin));
         await db.SaveChangesAsync(cancellationToken);
         return true;
     }
@@ -90,7 +90,7 @@ public sealed class UserService(ServerDbContext db, AuditLog audit, TimeProvider
         }
 
         Add(userName, password!, role);
-        audit.Add(by, "user.create", $"{userName} ({role})");
+        audit.Add(AuditActor.User(by), AuditEvents.UserCreate, ("user", userName), ("role", role));
         await db.SaveChangesAsync(cancellationToken);
         return ServiceResult.Ok;
     }
@@ -111,7 +111,7 @@ public sealed class UserService(ServerDbContext db, AuditLog audit, TimeProvider
         }
 
         db.Users.Remove(user);
-        audit.Add(by, "user.delete", user.UserName);
+        audit.Add(AuditActor.User(by), AuditEvents.UserDelete, ("user", user.UserName));
         await db.SaveChangesAsync(cancellationToken);
         return ServiceResult.Ok;
     }
@@ -130,7 +130,7 @@ public sealed class UserService(ServerDbContext db, AuditLog audit, TimeProvider
         }
 
         user.PasswordHash = Hasher.HashPassword(user, next!);
-        audit.Add(userName, "user.password", ServerTexts.Audit_OwnPassword);
+        audit.Add(AuditActor.User(userName), AuditEvents.UserPassword);
         await db.SaveChangesAsync(cancellationToken);
         return ServiceResult.Ok;
     }

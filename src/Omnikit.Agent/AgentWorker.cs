@@ -98,6 +98,12 @@ public sealed class TaskLoop(IAgentServer server, TaskRunner runner, ILogger<Tas
                 {
                     logger.LogWarning("Aufgabe {Id}: Der Server kennt sie nicht mehr (zu spät gemeldet?)", task.Id);
                 }
+
+                // Selbst-Update: Erst jetzt, mit gemeldetem Ergebnis, starten – das Setup beendet gleich den Dienst
+                if (runner.StartPendingUpdate())
+                {
+                    return done;
+                }
             }
         }
 

@@ -9,6 +9,6 @@
     <tr><th>@ServerTexts.Audit_When</th><th>@ServerTexts.Audit_Who</th><th>@ServerTexts.Audit_What</th><th>@ServerTexts.Audit_Details</th></tr>
     @foreach (var entry in Model.Entries)
     {
-        <tr><td>@Display.Time(entry.At)</td><td>@entry.Actor</td><td>@entry.Action</td><td>@entry.Details</td></tr>
+        <tr><td>@Display.Time(entry.At)</td><td>@AuditText.Actor(entry)</td><td>@entry.Action</td><td>@AuditText.Describe(entry)</td></tr>
     }
 </table>

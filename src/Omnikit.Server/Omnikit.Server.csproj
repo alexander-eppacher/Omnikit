@@ -13,10 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Datenbank im Betrieb (PostgreSQL-Lizenz, BSD-ähnlich) -->
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
-    <!-- Datenbank für Tests und lokales Ausprobieren (MIT) -->
+    <!-- Datenbank: SQLite-Datei (MIT, von Microsoft) -->
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.13" />
+    <!-- Nur zum Erzeugen von Migrationen (dotnet ef, MIT, von Microsoft); landet nicht im fertigen Server -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.13" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>

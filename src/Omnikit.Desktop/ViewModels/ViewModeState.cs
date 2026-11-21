@@ -35,9 +35,10 @@ public partial class ViewModeState : ObservableObject
             return;
         }
 
-        _settings = _settings with { ViewMode = Mode };
         try
         {
+            // Frisch laden statt einer alten Kopie: sonst gingen andere Einstellungen verloren (z. B. die letzte Update-Prüfung)
+            _settings = _store.Load() with { ViewMode = Mode };
             _store.Save(_settings);
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)

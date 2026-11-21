@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Meldungen der Aktionen mit Adminrechten, die nicht zu einem Modul gehören (z. B. Updates). -->
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="Update_WindowsOnly" xml:space="preserve"><value>Updates lassen sich nur unter Windows installieren.</value></data>
+  <data name="Update_BadArguments" xml:space="preserve"><value>Die Update-Dateien fehlen oder sind ungültig.</value></data>
+  <data name="Update_NotInstalled" xml:space="preserve"><value>Diese Kopie von Omnikit ist nicht installiert (portable Version). Bitte die neue Version von der Release-Seite laden.</value></data>
+  <data name="Update_NotGenuine" xml:space="preserve"><value>Das Update ist nicht echt oder wurde verändert und wird nicht installiert. Es wurde nichts geändert.</value></data>
+  <data name="Update_FolderUntrusted" xml:space="preserve"><value>Der Ordner für Updates ist nicht geschützt. Aus Sicherheitsgründen wird nichts installiert.</value></data>
+  <data name="Update_StartFailed" xml:space="preserve"><value>Das Setup konnte nicht gestartet werden.</value></data>
+</root>

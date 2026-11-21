@@ -57,6 +57,26 @@
   <data name="ModulePage_Overall" xml:space="preserve"><value>Gesamtzustand:</value></data>
   <data name="ModulePage_CheckFailed" xml:space="preserve"><value>Die Prüfung ist fehlgeschlagen. Technische Details stehen in der Log-Datei.</value></data>
   <data name="ModulePage_ActionFailed" xml:space="preserve"><value>Die Aktion ist fehlgeschlagen. Technische Details stehen in der Log-Datei.</value></data>
+  <data name="Update_CheckLabel" xml:space="preserve"><value>Nach Updates suchen</value></data>
+  <data name="Update_CheckTooltip" xml:space="preserve"><value>Höchstens einmal am Tag fragt Omnikit auf der Release-Seite (GitHub) nach einer neuen Version – ohne Kennung deines Geräts.</value></data>
+  <data name="Update_Available" xml:space="preserve"><value>Omnikit {0} ist verfügbar.</value></data>
+  <data name="Update_Install" xml:space="preserve"><value>Jetzt aktualisieren</value></data>
+  <data name="Update_OpenReleases" xml:space="preserve"><value>Zur Release-Seite</value></data>
+  <data name="Update_ConfirmTitle" xml:space="preserve"><value>Omnikit aktualisieren</value></data>
+  <data name="Update_Confirm" xml:space="preserve"><value>Omnikit {0} wird geladen, auf Echtheit geprüft und installiert. Windows fragt dafür nach Adminrechten.
+
+Danach schließt sich Omnikit. Starte es anschließend einfach wieder.</value></data>
+  <data name="Update_Downloading" xml:space="preserve"><value>Update wird geladen …</value></data>
+  <data name="Update_DownloadingPercent" xml:space="preserve"><value>Update wird geladen … {0:0} %</value></data>
+  <data name="Update_Installing" xml:space="preserve"><value>Update wird geprüft und installiert …</value></data>
+  <data name="Update_StartedTitle" xml:space="preserve"><value>Update wird installiert</value></data>
+  <data name="Update_Started" xml:space="preserve"><value>Das Update ist echt und wird jetzt im Hintergrund installiert. Omnikit schließt sich dafür. Starte Omnikit in etwa einer Minute wieder.</value></data>
+  <data name="Update_Cancelled" xml:space="preserve"><value>Abgebrochen: Die Abfrage nach Adminrechten wurde abgelehnt. Es wurde nichts geändert.</value></data>
+  <data name="Update_Failed" xml:space="preserve"><value>Das Update konnte nicht installiert werden. Details stehen in der Log-Datei.</value></data>
+  <data name="Update_DownloadFailed" xml:space="preserve"><value>Das Update konnte nicht geladen werden. Bitte später noch einmal versuchen.</value></data>
+  <data name="ModulePage_CopyText" xml:space="preserve"><value>Als Text kopieren</value></data>
+  <data name="ModulePage_CopyDone" xml:space="preserve"><value>Kopiert. Du kannst den Text jetzt z. B. in eine E-Mail oder ein Ticket einfügen.</value></data>
+  <data name="ModulePage_CopyFailed" xml:space="preserve"><value>Der Text konnte nicht in die Zwischenablage gelegt werden.</value></data>
   <data name="ModulePage_ExportDone" xml:space="preserve"><value>Der Bericht wurde gespeichert.</value></data>
   <data name="ModulePage_ExportFailed" xml:space="preserve"><value>Der Bericht konnte nicht gespeichert werden. Technische Details stehen in der Log-Datei.</value></data>
 

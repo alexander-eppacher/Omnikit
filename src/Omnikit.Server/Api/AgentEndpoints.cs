@@ -18,7 +18,7 @@ public static class AgentEndpoints
         app.MapPost(AgentApi.Register, RegisterAsync).RequireRateLimiting(RegisterRateLimit);
         app.MapPost(AgentApi.Report, ReportAsync);
         app.MapGet(AgentApi.Tasks, TasksAsync);
-        app.MapPost("/api/agent/tasks/{taskId:int}/result", ResultAsync);
+        app.MapPost(AgentApi.TaskResultPattern, ResultAsync);
     }
 
     private static async Task<Results<Ok<RegisterResponse>, UnauthorizedHttpResult>> RegisterAsync(

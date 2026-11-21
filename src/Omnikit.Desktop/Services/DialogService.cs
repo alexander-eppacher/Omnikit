@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Input.Platform;
 using Avalonia.Platform.Storage;
 using Omnikit.Desktop.Views;
 
@@ -81,6 +82,28 @@ public sealed class DialogService : IDialogService
 
         return files.Count == 0 ? null : files[0].TryGetLocalPath();
     }
+
+    public async Task<bool> CopyToClipboardAsync(string text)
+    {
+        if (GetMainWindow()?.Clipboard is not { } clipboard)
+        {
+            return false;
+        }
+
+        await clipboard.SetTextAsync(text);
+        return true;
+    }
+
+    public async Task OpenWebPageAsync(Uri address)
+    {
+        if (GetMainWindow()?.Launcher is { } launcher)
+        {
+            await launcher.LaunchUriAsync(address);
+        }
+    }
+
+    public void CloseApp() =>
+        (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.Shutdown();
 
     private static Window? GetMainWindow() =>
         (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow;

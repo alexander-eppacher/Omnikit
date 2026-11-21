@@ -12,24 +12,30 @@
   <data name="Account_Title" xml:space="preserve"><value>Eigenes Konto</value></data>
   <data name="Audit_Details" xml:space="preserve"><value>Details</value></data>
   <data name="Audit_Hint" xml:space="preserve"><value>Jede Änderung wird hier festgehalten und lässt sich nicht löschen. Angezeigt werden die letzten 300 Einträge.</value></data>
-  <data name="Audit_TaskNoAnswer" xml:space="preserve"><value>Aufgabe {0} ({1} {2}): keine Rückmeldung vom Gerät</value></data>
-  <data name="Audit_LoginFailed" xml:space="preserve"><value>Anmeldung als „{0}“ fehlgeschlagen (von {1})</value></data>
   <data name="Audit_Unknown" xml:space="preserve"><value>Unbekannt</value></data>
-  <data name="Audit_TaskResult" xml:space="preserve"><value>Aufgabe {0} ({1} {2}): {3}</value></data>
-  <data name="Audit_FirstAdmin" xml:space="preserve"><value>{0} (Admin, erster Start)</value></data>
-  <data name="Audit_OwnPassword" xml:space="preserve"><value>eigenes Passwort geändert</value></data>
-  <data name="Audit_LoggedIn" xml:space="preserve"><value>angemeldet</value></data>
-  <data name="Audit_GroupPackage" xml:space="preserve"><value>Gruppe {0}: {1}</value></data>
-  <data name="Audit_DeviceToGroup" xml:space="preserve"><value>{0} → Gruppe {1}</value></data>
-  <data name="Audit_NoGroup" xml:space="preserve"><value>keine</value></data>
   <data name="Audit_Device" xml:space="preserve"><value>Gerät {0} ({1})</value></data>
-  <data name="Audit_TaskCreate" xml:space="preserve"><value>{0} {1} für {2}</value></data>
-  <data name="Audit_TaskDecision" xml:space="preserve"><value>Aufgabe {0}: {1} {2} für Gerät {3} ({4})</value></data>
-  <data name="Audit_CodeWithoutGroup" xml:space="preserve"><value>ohne Gruppe</value></data>
-  <data name="Audit_CodeForGroup" xml:space="preserve"><value>Gruppe {0}</value></data>
   <data name="Audit_What" xml:space="preserve"><value>Aktion</value></data>
   <data name="Audit_When" xml:space="preserve"><value>Zeit</value></data>
   <data name="Audit_Who" xml:space="preserve"><value>Wer</value></data>
+  <data name="Audit_System" xml:space="preserve"><value>System</value></data>
+  <data name="AuditEvent_user_create" xml:space="preserve"><value>Benutzer „{user}“ angelegt ({role})</value></data>
+  <data name="AuditEvent_user_delete" xml:space="preserve"><value>Benutzer „{user}“ gelöscht</value></data>
+  <data name="AuditEvent_user_password" xml:space="preserve"><value>Eigenes Passwort geändert</value></data>
+  <data name="AuditEvent_user_login" xml:space="preserve"><value>Angemeldet</value></data>
+  <data name="AuditEvent_user_login_failed" xml:space="preserve"><value>Anmeldung als „{user}“ fehlgeschlagen (von {address})</value></data>
+  <data name="AuditEvent_code_create" xml:space="preserve"><value>Einmal-Code erstellt (Gruppe: {group})</value></data>
+  <data name="AuditEvent_device_register" xml:space="preserve"><value>Registriert mit einem Code von {codeBy} (Gruppe: {group})</value></data>
+  <data name="AuditEvent_device_group" xml:space="preserve"><value>Gerät {device} ({deviceName}) → Gruppe {group}</value></data>
+  <data name="AuditEvent_device_delete" xml:space="preserve"><value>Gerät {device} ({deviceName}) gelöscht</value></data>
+  <data name="AuditEvent_group_create" xml:space="preserve"><value>Gruppe „{group}“ angelegt</value></data>
+  <data name="AuditEvent_group_delete" xml:space="preserve"><value>Gruppe „{group}“ ({groupId}) gelöscht</value></data>
+  <data name="AuditEvent_group_package_add" xml:space="preserve"><value>Gruppe „{group}“ ({groupId}): Pflichtprogramm {package} hinzugefügt</value></data>
+  <data name="AuditEvent_group_package_remove" xml:space="preserve"><value>Gruppe {groupId}: Pflichtprogramm {package} entfernt</value></data>
+  <data name="AuditEvent_task_create" xml:space="preserve"><value>{kind} {package} für Gerät {device} ({deviceName})</value></data>
+  <data name="AuditEvent_task_approve" xml:space="preserve"><value>Aufgabe {task} freigegeben: {kind} {package} für Gerät {device} ({deviceName})</value></data>
+  <data name="AuditEvent_task_reject" xml:space="preserve"><value>Aufgabe {task} abgelehnt: {kind} {package} für Gerät {device} ({deviceName})</value></data>
+  <data name="AuditEvent_task_result" xml:space="preserve"><value>Aufgabe {task} ({kind} {package}): {state}, Rückgabewert {exitCode}</value></data>
+  <data name="AuditEvent_task_timeout" xml:space="preserve"><value>Aufgabe {task} ({kind} {package}): keine Rückmeldung vom Gerät</value></data>
   <data name="Button_Save" xml:space="preserve"><value>Speichern</value></data>
   <data name="Codes_Create" xml:space="preserve"><value>Neuen Code erstellen</value></data>
   <data name="Codes_Expires" xml:space="preserve"><value>Gültig bis</value></data>
@@ -67,8 +73,10 @@
   <data name="Error_GroupExists" xml:space="preserve"><value>Eine Gruppe mit diesem Namen gibt es schon.</value></data>
   <data name="Error_GroupName" xml:space="preserve"><value>Der Gruppenname braucht 1 bis 64 Zeichen.</value></data>
   <data name="Error_NotConfirmed" xml:space="preserve"><value>Bitte zuerst das Häkchen zur Bestätigung setzen.</value></data>
-  <data name="Audit_CodeBy" xml:space="preserve"><value>Code von {0}</value></data>
   <data name="Error_HttpsOnly" xml:space="preserve"><value>Nur HTTPS.</value></data>
+  <data name="Error_AgentTooOld" xml:space="preserve"><value>Der Agent auf diesem Gerät ist zu alt für diese Aufgabe. Bitte zuerst den Agent aktualisieren.</value></data>
+  <data name="Device_AgentVersion" xml:space="preserve"><value>Agent</value></data>
+  <data name="Device_AgentVersionUnknown" xml:space="preserve"><value>vor 4.0</value></data>
   <data name="Error_NotFound" xml:space="preserve"><value>Nicht gefunden – vielleicht wurde es inzwischen gelöscht.</value></data>
   <data name="Error_PackageId" xml:space="preserve"><value>Bitte ein Programm aus dem Katalog wählen oder eine gültige winget-ID eingeben (z. B. „7zip.7zip“).</value></data>
   <data name="Error_PasswordShort" xml:space="preserve"><value>Das Passwort braucht mindestens 12 Zeichen.</value></data>
@@ -91,6 +99,9 @@
   <data name="Groups_TasksCreated" xml:space="preserve"><value>{0} Aufgaben angelegt. Sie warten auf Freigabe.</value></data>
   <data name="Kind_Install" xml:space="preserve"><value>Installieren</value></data>
   <data name="Kind_Upgrade" xml:space="preserve"><value>Aktualisieren</value></data>
+  <data name="Kind_SelfUpdate" xml:space="preserve"><value>Omnikit-Agent aktualisieren</value></data>
+  <data name="Task_SelfUpdate" xml:space="preserve"><value>Agent aktualisieren</value></data>
+  <data name="Task_SelfUpdateHint" xml:space="preserve"><value>Der Agent lädt die neueste Version selbst von der Release-Seite und installiert sie nur, wenn sie echt signiert ist. Tipp: erst an einem Gerät ausprobieren.</value></data>
   <data name="Label_Password" xml:space="preserve"><value>Passwort</value></data>
   <data name="Label_UserName" xml:space="preserve"><value>Benutzername</value></data>
   <data name="Login_Button" xml:space="preserve"><value>Anmelden</value></data>

@@ -37,6 +37,11 @@ public sealed partial class LoginTests : IDisposable
 
         Assert.Equal(HttpStatusCode.Redirect, (await LoginAsync(browser, AdminPassword)).StatusCode);
         Assert.Equal(HttpStatusCode.OK, (await browser.GetAsync("/Codes", Ct)).StatusCode);
+
+        // Das Audit-Log zeigt Sätze, obwohl nur Codes und Werte gespeichert sind (erster Start + diese Anmeldung)
+        var audit = WebUtility.HtmlDecode(await browser.GetStringAsync("/Audit", Ct));
+        Assert.Contains("Benutzer „admin“ angelegt (Admin)", audit, StringComparison.Ordinal);
+        Assert.Contains("Angemeldet", audit, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -49,7 +54,7 @@ public sealed partial class LoginTests : IDisposable
 
         using var scope = _factory.Services.CreateScope();
         var entry = Assert.Single(scope.ServiceProvider.GetRequiredService<Omnikit.Server.Data.ServerDbContext>().Audit, e => e.Action == "user.login.failed");
-        Assert.Contains("admin", entry.Details, StringComparison.Ordinal);
+        Assert.Equal("admin", Omnikit.Server.Services.AuditText.Deserialize(entry.Values)["user"]);
     }
 
     [Fact]

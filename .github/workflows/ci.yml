@@ -1,0 +1,57 @@
+# Bauen und Testen bei jedem Push auf main und jedem Pull Request.
+# Actions sind per Commit-Hash angeheftet (ein umgehängtes Tag kann so keinen fremden Code einschleusen);
+# der Kommentar dahinter nennt die Version. Der Workflow darf nur lesen und bekommt keine Geheimnisse.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    name: Linux – bauen, testen, Pakete prüfen
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
+        with:
+          global-json-file: global.json
+      - run: dotnet restore Omnikit.slnx
+      - run: dotnet build Omnikit.slnx --no-restore -c Release
+      - run: dotnet test --solution Omnikit.slnx --no-build -c Release
+      - name: Bekannte Schwachstellen in Paketen (auch indirekten)
+        run: |
+          dotnet list Omnikit.slnx package --vulnerable --include-transitive | tee vulnerable.txt
+          if grep -q "has the following vulnerable packages" vulnerable.txt; then exit 1; fi
+
+  windows:
+    name: Windows – bauen, testen, Setups bauen
+    runs-on: windows-2025
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
+        with:
+          global-json-file: global.json
+      - run: dotnet test --solution Omnikit.slnx -c Release
+      - name: App, Hilfsprozess und Agent veröffentlichen
+        shell: pwsh
+        run: ./scripts/publish-all.ps1
+      - name: Inno Setup bereitstellen
+        shell: pwsh
+        run: ./scripts/install-inno.ps1
+      - name: Setups bauen
+        shell: pwsh
+        run: ./scripts/build-installers.ps1 -Version ((dotnet msbuild src/Omnikit.Desktop -getProperty:VersionPrefix).Trim())
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: setups
+          path: artifacts/installer/*.exe
+          retention-days: 7

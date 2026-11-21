@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Hilfsprozess mit Adminrechten (0005, 0017): eine kleine .exe ohne Oberfläche und ohne Avalonia. Die App startet sie über
+       die Benutzerkontensteuerung aus ihrem eigenen Ordner; sie führt genau eine Aktion aus der festen Liste aus und beendet sich.
+       Ohne Oberflächen-Bibliotheken muss beim Start nichts entpackt oder aus Benutzerordnern nachgeladen werden. -->
+
+  <PropertyGroup>
+    <!-- WinExe: kein Konsolenfenster -->
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>Omnikit.Helper</AssemblyName>
+    <NeutralLanguage>de</NeutralLanguage>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Omnikit.Operations\Omnikit.Operations.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.13" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.13" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="10.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+  </ItemGroup>
+</Project>
