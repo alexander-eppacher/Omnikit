@@ -2,13 +2,13 @@
 
 Ein modulares Tool, das Windows-PCs, Laptops und virtuelle Maschinen **einrichtet, aktuell hält und auf ihren Zustand prüft** – mit einer einfachen Oberfläche, ohne IT-Abteilung.
 
-> **Status:** Version 1 veröffentlicht (`v1.0.0`). Version 4 ist in Arbeit: Installer, signierte Updates, Hilfsprozess als eigene Datei. Gebaut sind auch Windows-Stick, Treiber, Server und Agent sowie BIOS; sie warten noch auf ihre Abnahmetests. Die App liest nur. Ändern tut sie nur nach Bestätigung (Programme installieren, USB-Stick erstellen), der Agent nur nach Freigabe im Server.
+> **Status:** Version 4.0.0 ist veröffentlicht, mit Installer, signierten Updates und dem Hilfsprozess als eigener Datei. Dazu gehören Gerätezustand, Leistung, Apps, Treiber, BIOS, Windows-Stick sowie Server und Agent. Für den Windows-Stick (vollständig automatische Installation) und den Server mit mehreren Geräten stehen die letzten Abnahmetests noch aus. Die App liest nur. Ändern tut sie nur nach Bestätigung (Programme installieren, USB-Stick erstellen), der Agent nur nach Freigabe im Server.
 
 *English:* Omnikit sets up, updates and checks Windows 11 PCs, laptops and VMs with a simple interface – for schools, small businesses and clubs without IT staff. It reads by default and changes things only after confirmation; an optional self-hosted server manages many PCs. The interface is German for now (English is planned). Security issues: see [SECURITY.md](SECURITY.md).
 
 ## Installieren
 
-- **Setup (empfohlen):** `Omnikit-<Version>-setup.exe` von der [Release-Seite](https://github.com/alexander-eppacher/Omnikit/releases) starten. Omnikit wird nach `C:\Program Files\Omnikit` installiert. Nur dort können ausschließlich Administratoren die Dateien austauschen, und nur dort aktualisiert sich Omnikit selbst.
+- **Setup (empfohlen):** `Omnikit-<Version>-setup.exe` von der [Release-Seite](https://github.com/alexander-eppacher/Omnikit/releases/latest) starten. Omnikit wird nach `C:\Program Files\Omnikit` installiert. Nur dort können ausschließlich Administratoren die Dateien austauschen, und nur dort aktualisiert sich Omnikit selbst.
 - **Portabel:** `Omnikit-<Version>-portabel.zip` entpacken und `Omnikit.exe` starten. Kann alles, was die installierte Version kann, aktualisiert sich aber nicht selbst. Die App zeigt dann nur einen Hinweis mit Link zur Release-Seite.
 - **Prüfsummen:** Zu jedem Release gehört eine Datei `SHA256SUMS`. In PowerShell vergleichen: `Get-FileHash .\Omnikit-<Version>-setup.exe`.
 
@@ -105,7 +105,7 @@ Die Setups baut `scripts/build-installers.ps1` mit [Inno Setup 6](https://jrsoft
 
 ### Windows-Warnung beim ersten Start
 
-Die App ist (noch) nicht mit einem Code-Signing-Zertifikat signiert. Ein kostenloses Zertifikat für Open-Source-Projekte ist beantragt. Windows SmartScreen zeigt deshalb „Der Computer wurde durch Windows geschützt“. Über **Weitere Informationen → Trotzdem ausführen** lässt sie sich starten. Wer sichergehen will, vergleicht vorher die Prüfsumme mit `SHA256SUMS` aus dem Release. Manche Virenscanner melden Systemtools außerdem fälschlich, weil sie Hardwaredaten auslesen.
+Die App ist (noch) nicht mit einem Code-Signing-Zertifikat signiert. Ein kostenloses Zertifikat für Open-Source-Projekte ist geplant. Windows SmartScreen zeigt deshalb „Der Computer wurde durch Windows geschützt“. Über **Weitere Informationen → Trotzdem ausführen** lässt sie sich starten. Wer sichergehen will, vergleicht vorher die Prüfsumme mit `SHA256SUMS` aus dem Release. Manche Virenscanner melden Systemtools außerdem fälschlich, weil sie Hardwaredaten auslesen.
 
 ## Wo die App Dateien ablegt
 
