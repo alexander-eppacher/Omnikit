@@ -8,6 +8,10 @@ Ein modulares Tool, das Windows-PCs, Laptops und virtuelle Maschinen **einrichte
 
 Unten in der Navigationsleiste lässt sich die Ansicht umschalten. **Einfach** zeigt Ampel, verständliche Sätze und das Wichtigste. **Experte** zeigt zusätzlich Fachwerte und Rohdaten, z. B. Firmware und Fehlerzähler der Laufwerke, Taktfrequenz, Caches, Prozesse/Threads/Handles, Verlauf je Prozessorkern oder IP-Adressen. Beide Ansichten zeigen dieselben Messwerte und dieselbe Ampel. Die Wahl wird gespeichert.
 
+## Seite „Treiber“
+
+Zeigt Geräte, die Windows mit einem Fehler meldet (im Geräte-Manager mit gelbem Ausrufezeichen), mit einer verständlichen Abhilfe – z. B. „kein Treiber installiert“. Erkennt auch, wenn die Grafik nur mit dem Notfalltreiber von Windows läuft. Ausgeschaltete Geräte erscheinen nur als Hinweis. Die Expertenansicht listet die Treiber von Grafik, Netzwerk, Audio, Bluetooth und Kamera mit Hersteller, Version und Datum. Omnikit installiert keine Treiber; die Knöpfe „Optionale Updates öffnen“ und „Geräte-Manager öffnen“ führen zu den passenden Stellen in Windows.
+
 ## Seite „Leistung“
 
 Zeigt jede Sekunde die Auslastung wie der Task-Manager, mit Verlauf der letzten Minute. Gemessen wird nur, solange die Seite geöffnet ist. Bewertet wird der Durchschnitt über 30 Sekunden: Erst wenn Prozessor, Arbeitsspeicher oder ein Laufwerk eine halbe Minute lang zu mindestens 90 % ausgelastet sind, erscheint ein Hinweis. Kurze Spitzen lösen keinen Hinweis aus. Grafik und Netzwerk werden nur angezeigt, nicht bewertet. IP-Adressen werden nur angezeigt, nie gespeichert, geloggt oder exportiert.
@@ -79,12 +83,14 @@ Omnikit startet immer **ohne** Adminrechte. Für Installationen auf der Seite �
 |---|---|
 | `src/Omnikit.Core` | Modul-Schnittstelle, Systemerkennung, Einstellungen (keine UI) |
 | `src/Omnikit.Modules.Health` | Modul „Gerätezustand“: Laufwerke, Speicherplatz, Akku, Windows |
+| `src/Omnikit.Modules.Drivers` | Modul „Treiber“: Geräte mit Fehlern, Notfall-Grafiktreiber, Treiberliste |
 | `src/Omnikit.Modules.Performance` | Seite „Leistung“: Live-Messung von CPU, RAM, Laufwerken, Netzwerk und Grafik |
 | `src/Omnikit.Modules.Apps` | Seite „Apps“: winget-Anbindung, Katalog, Vorlagen |
 | `src/Omnikit.Modules.StickBuilder` | Seite „Windows-Stick“: Antwortdatei, Skripte, Stick erstellen, Windows-Download |
 | `src/Omnikit.Desktop` | Avalonia-Oberfläche |
 | `tests/Omnikit.Core.Tests` | Unit-Tests für den Kern |
 | `tests/Omnikit.Modules.Health.Tests` | Unit-Tests für das Health-Modul (u. a. Ampel-Grenzwerte) |
+| `tests/Omnikit.Modules.Drivers.Tests` | Unit-Tests für das Treiber-Modul (Fehlercodes, Filter) |
 | `tests/Omnikit.Modules.Performance.Tests` | Unit-Tests für die Leistungsseite (Bewertung, Verlauf, Instanznamen) |
 | `tests/Omnikit.Modules.Apps.Tests` | Unit-Tests für die Apps-Seite (winget-Ausgaben, Fehlercodes, Vorlagen) |
 | `tests/Omnikit.Modules.StickBuilder.Tests` | Unit-Tests für den Stick-Builder (Antwortdatei, Prüfungen, Katalog) |

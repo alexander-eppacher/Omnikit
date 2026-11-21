@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Treiber-Modul: findet Geräte mit Treiberproblemen. Ändert nichts am System. -->
+
+  <PropertyGroup>
+    <NeutralLanguage>de</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Omnikit.Core\Omnikit.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Texte: aus DriverTexts.resx wird beim Bauen die Klasse Omnikit.Modules.Drivers.Resources.DriverTexts erzeugt -->
+    <EmbeddedResource Update="Resources\DriverTexts.resx">
+      <StronglyTypedFileName>$(IntermediateOutputPath)DriverTexts.Designer.cs</StronglyTypedFileName>
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedNamespace>Omnikit.Modules.Drivers.Resources</StronglyTypedNamespace>
+      <StronglyTypedClassName>DriverTexts</StronglyTypedClassName>
+      <PublicClass>true</PublicClass>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Omnikit.Modules.Drivers.Tests" />
+  </ItemGroup>
+</Project>

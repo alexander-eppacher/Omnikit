@@ -8,6 +8,8 @@ using Omnikit.Core.SystemInfo;
 using Omnikit.Desktop.Services;
 using Omnikit.Desktop.ViewModels;
 using Omnikit.Modules.Apps.Winget;
+using Omnikit.Modules.Drivers;
+using Omnikit.Modules.Drivers.Sources;
 using Omnikit.Modules.StickBuilder.Creation;
 using Omnikit.Modules.StickBuilder.Download;
 using Omnikit.Modules.Health;
@@ -55,6 +57,9 @@ internal static class ServiceSetup
         services.AddSingleton<IWindowsStateSource, WindowsStateSource>();
         services.AddSingleton<IUpdateSource, WindowsUpdateSource>();
 
+        // Treiber-Modul: liest nur (Geräte-Manager-Daten über WMI)
+        services.AddSingleton<IDeviceSource, WindowsDeviceSource>();
+
         // Seite "Leistung": Messquellen und die Seite selbst (braucht den SystemContext, der erst beim Start ermittelt wird)
         services.AddSingleton<IPerformanceSource, WindowsPerformanceSource>();
         services.AddSingleton<IHardwareInventorySource, WindowsHardwareInventorySource>();
@@ -88,6 +93,7 @@ internal static class ServiceSetup
 
         // Module: Reihenfolge = Reihenfolge in der Navigationsleiste
         services.AddSingleton<IModule, HealthModule>();
+        services.AddSingleton<IModule, DriversModule>();
         services.AddSingleton<ModuleRegistry>();
 
         services.AddSingleton<IDialogService, DialogService>();

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Alle Texte des Treiber-Moduls. {0}, {1} ... werden durch Werte ersetzt. -->
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <!-- Allgemein -->
+  <data name="ModuleName" xml:space="preserve"><value>Treiber</value></data>
+  <data name="Category_Problems" xml:space="preserve"><value>Geräte mit Problemen</value></data>
+  <data name="Category_Disabled" xml:space="preserve"><value>Ausgeschaltete Geräte</value></data>
+  <data name="Category_Drivers" xml:space="preserve"><value>Treiber wichtiger Geräte</value></data>
+  <data name="Common_NotWindows" xml:space="preserve"><value>Nur unter Windows verfügbar.</value></data>
+  <data name="Common_NotAvailableTitle" xml:space="preserve"><value>Nicht verfügbar</value></data>
+  <data name="Common_ReadFailed" xml:space="preserve"><value>Die Geräteliste konnte nicht gelesen werden. Details stehen in der Log-Datei.</value></data>
+
+  <!-- Ergebnis -->
+  <data name="NoProblems_Title" xml:space="preserve"><value>Keine Gerätefehler</value></data>
+  <data name="NoProblems_Text" xml:space="preserve"><value>Windows meldet bei keinem der {0} Geräte einen Fehler.</value></data>
+  <data name="Problem_NoDriver" xml:space="preserve"><value>Für dieses Gerät ist kein Treiber installiert, deshalb funktioniert es nicht. Abhilfe: In den Windows-Einstellungen unter „Windows Update › Erweiterte Optionen › Optionale Updates“ nach einem Treiber schauen, sonst den Treiber von der Webseite des PC- oder Geräteherstellers laden.</value></data>
+  <data name="Problem_NoDriverVm" xml:space="preserve"><value>In einer virtuellen Maschine sind das meist die Gasttreiber (z. B. VirtIO bei Proxmox).</value></data>
+  <data name="Problem_DriverBroken" xml:space="preserve"><value>Der Treiber ist beschädigt, unvollständig oder passt nicht zum Gerät. Abhilfe: PC neu starten; hilft das nicht, den Treiber über „Optionale Updates“ oder vom Hersteller neu installieren.</value></data>
+  <data name="Problem_DriverBlocked" xml:space="preserve"><value>Windows lässt diesen Treiber nicht laden – er hat bekannte Probleme oder keine gültige Signatur. Abhilfe: eine neuere Version vom Hersteller installieren.</value></data>
+  <data name="Problem_NotStarting" xml:space="preserve"><value>Das Gerät startet nicht oder hat selbst einen Fehler gemeldet. Abhilfe: PC neu starten, bei USB-Geräten ab- und wieder anstecken, Treiber aktualisieren. Bleibt der Fehler, kann das Gerät defekt sein.</value></data>
+  <data name="Problem_Resources" xml:space="preserve"><value>Das Gerät bekommt nicht die Ressourcen, die es braucht – meist wegen einer BIOS-Einstellung oder eines anderen Geräts. Abhilfe: BIOS-Update und BIOS-Einstellungen prüfen, testweise andere Geräte entfernen.</value></data>
+  <data name="Problem_RestartNeeded" xml:space="preserve"><value>Das Gerät ist nach einem Neustart wieder bereit (bei USB-Geräten reicht oft ab- und wieder anstecken).</value></data>
+  <data name="Problem_Disabled" xml:space="preserve"><value>Dieses Gerät wurde ausgeschaltet (im Geräte-Manager „Gerät deaktivieren“). Das ist meist Absicht und kein Fehler.</value></data>
+  <data name="Problem_Other" xml:space="preserve"><value>Windows meldet einen Fehler mit diesem Gerät (Code {0}). Abhilfe: PC neu starten und den Treiber aktualisieren; bei Code-Fragen hilft die Suche nach „Geräte-Manager Code {0}“.</value></data>
+  <data name="BasicDisplay_Title" xml:space="preserve"><value>Grafik nur mit Standardtreiber</value></data>
+  <data name="BasicDisplay_Text" xml:space="preserve"><value>Die Grafik läuft mit dem Notfalltreiber von Windows („Microsoft Basic Display Adapter“): oft falsche Auflösung, ruckelige Videos, keine Spiele. Abhilfe: Grafiktreiber über „Optionale Updates“ oder von der Webseite des PC-Herstellers bzw. von Intel, AMD oder NVIDIA installieren.</value></data>
+  <data name="BasicDisplay_Vm" xml:space="preserve"><value>Die Grafik läuft mit dem Standardtreiber von Windows. In einer virtuellen Maschine ist das normal.</value></data>
+  <data name="Driver_Text" xml:space="preserve"><value>{0} · Version {1} · vom {2}</value></data>
+  <data name="Details_Problem" xml:space="preserve"><value>Code {0} · Klasse: {1} · ID: {2}</value></data>
+  <data name="Details_Driver" xml:space="preserve"><value>INF: {0} · ID: {1}</value></data>
+
+  <!-- Aktion -->
+  <data name="Action_OpenOptionalUpdates" xml:space="preserve"><value>Optionale Updates öffnen</value></data>
+  <data name="Action_ConfirmOptionalUpdates" xml:space="preserve"><value>Omnikit öffnet in den Windows-Einstellungen die Seite „Optionale Updates“. Dort zeigt Windows passende Treiber an, und du entscheidest selbst, was installiert wird. Omnikit installiert nichts.</value></data>
+  <data name="Action_OpenedOptionalUpdates" xml:space="preserve"><value>Die Windows-Einstellungen sind geöffnet. Findest du dort keinen Treiber, hilft die Webseite des PC-Herstellers.</value></data>
+  <data name="Action_OpenDeviceManager" xml:space="preserve"><value>Geräte-Manager öffnen</value></data>
+  <data name="Action_ConfirmDeviceManager" xml:space="preserve"><value>Omnikit öffnet den Geräte-Manager von Windows. Dort siehst du alle Geräte; Änderungen dort fragen Windows-typisch nach Adminrechten. Omnikit ändert nichts.</value></data>
+  <data name="Action_OpenedDeviceManager" xml:space="preserve"><value>Der Geräte-Manager ist geöffnet.</value></data>
+  <data name="Action_Failed" xml:space="preserve"><value>Das Fenster konnte nicht geöffnet werden. Details stehen in der Log-Datei.</value></data>
+  <data name="Action_Unknown" xml:space="preserve"><value>Unbekannte Aktion.</value></data>
+</root>
