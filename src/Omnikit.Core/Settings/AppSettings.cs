@@ -9,7 +9,7 @@ public sealed record AppSettings
     /// <summary>Version des Dateiformats, damit spätere Versionen alte Dateien erkennen können.</summary>
     public int SchemaVersion { get; init; } = 1;
 
-    /// <summary>Einfache oder Expertenansicht (Schalter unten in der Navigationsleiste).</summary>
+    /// <summary>Einfache oder Expertenansicht (Schalter auf der Seite „Einstellungen“).</summary>
     public ViewMode ViewMode { get; init; } = ViewMode.Simple;
 
     /// <summary>Bei jedem Start auf der Release-Seite nach einer neuen Version fragen (ohne Kennung des Geräts). Abschaltbar.</summary>

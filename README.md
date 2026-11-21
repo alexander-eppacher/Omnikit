@@ -12,11 +12,11 @@ Ein modulares Tool, das Windows-PCs, Laptops und virtuelle Maschinen **einrichte
 - **Portabel:** `Omnikit-<Version>-portabel.zip` entpacken und `Omnikit.exe` starten. Kann alles, was die installierte Version kann, aktualisiert sich aber nicht selbst. Die App zeigt dann nur einen Hinweis mit Link zur Release-Seite.
 - **Prüfsummen:** Zu jedem Release gehört eine Datei `SHA256SUMS`. In PowerShell vergleichen: `Get-FileHash .\Omnikit-<Version>-setup.exe`.
 
-**Updates:** Bei jedem Start fragt Omnikit auf der Release-Seite nach einer neuen Version, ohne Kennung des Geräts. Das lässt sich unten links mit „Nach Updates suchen“ abschalten. Daneben stehen die installierte Version und der Knopf „Jetzt suchen“. Installiert wird ein Update nur, wenn es mit dem Schlüssel des Projekts signiert ist. Die Prüfung macht der Hilfsprozess mit Adminrechten, an einem Ort, den kein anderes Programm verändern kann (Ablauf: [docs/Release.md](docs/Release.md)).
+**Updates:** Bei jedem Start fragt Omnikit auf der Release-Seite nach einer neuen Version, ohne Kennung des Geräts. Das lässt sich auf der Seite **Einstellungen** abschalten. Dort stehen auch die installierte Version und der Knopf „Jetzt suchen“. Installiert wird ein Update nur, wenn es mit dem Schlüssel des Projekts signiert ist. Die Prüfung macht der Hilfsprozess mit Adminrechten, an einem Ort, den kein anderes Programm verändern kann (Ablauf: [docs/Release.md](docs/Release.md)).
 
 ## Ansichten „Einfach“ und „Experte“
 
-Unten in der Navigationsleiste lässt sich die Ansicht umschalten. **Einfach** zeigt Ampel, verständliche Sätze und das Wichtigste. **Experte** zeigt zusätzlich Fachwerte und Rohdaten, z. B. Firmware und Fehlerzähler der Laufwerke, Taktfrequenz, Caches, Prozesse/Threads/Handles, Verlauf je Prozessorkern oder IP-Adressen. Beide Ansichten zeigen dieselben Messwerte und dieselbe Ampel. Die Wahl wird gespeichert.
+Auf der Seite **Einstellungen** lässt sich die Ansicht umschalten. **Einfach** zeigt Ampel, verständliche Sätze und das Wichtigste. **Experte** zeigt zusätzlich Fachwerte und Rohdaten, z. B. Firmware und Fehlerzähler der Laufwerke, Taktfrequenz, Caches, Prozesse/Threads/Handles, Verlauf je Prozessorkern oder IP-Adressen. Beide Ansichten zeigen dieselben Messwerte und dieselbe Ampel. Die Wahl wird gespeichert.
 
 ## Seite „Treiber“
 

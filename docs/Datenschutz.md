@@ -15,7 +15,7 @@ Gespeichert wird nur auf diesem PC:
 
 Die App spricht nur mit diesen Diensten, und nur wenn es nötig ist:
 
-- **GitHub** (Release-Seite des Projekts): bei jedem Start der App (und bei „Jetzt suchen“) die Frage nach einer neuen Version. Ohne Kennung des Geräts, abschaltbar („Nach Updates suchen“). GitHub sieht dabei wie bei jedem Webseitenaufruf die IP-Adresse.
+- **GitHub** (Release-Seite des Projekts): bei jedem Start der App (und bei „Jetzt suchen“) die Frage nach einer neuen Version. Ohne Kennung des Geräts, abschaltbar (Seite „Einstellungen“ → „Beim Start nach Updates suchen“). GitHub sieht dabei wie bei jedem Webseitenaufruf die IP-Adresse.
 - **Microsoft:** wenn ein Windows-Stick mit Download erstellt wird. Dabei werden Katalog und Windows-Dateien geladen.
 - **winget-Quellen** (Microsoft bzw. die Hersteller): wenn Programme gesucht, installiert oder aktualisiert werden.
 

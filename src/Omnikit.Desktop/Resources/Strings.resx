@@ -20,6 +20,10 @@
   <data name="ViewMode_Simple" xml:space="preserve"><value>Einfach</value></data>
   <data name="ViewMode_Expert" xml:space="preserve"><value>Experte</value></data>
   <data name="ViewMode_Tooltip" xml:space="preserve"><value>Die Expertenansicht zeigt zusätzlich Fachwerte und Rohdaten, z. B. Firmware, Fehlerzähler oder Betriebsstunden.</value></data>
+  <data name="Nav_Settings" xml:space="preserve"><value>Einstellungen</value></data>
+  <data name="Settings_Title" xml:space="preserve"><value>Einstellungen</value></data>
+  <data name="Settings_Subtitle" xml:space="preserve"><value>Gelten für die ganze App und werden in deinem Benutzerprofil gespeichert.</value></data>
+  <data name="Settings_Updates" xml:space="preserve"><value>Updates</value></data>
   <data name="Nav_Performance" xml:space="preserve"><value>Leistung</value></data>
   <data name="Main_Loading" xml:space="preserve"><value>Systeminformationen werden ermittelt …</value></data>
   <data name="Main_LoadError" xml:space="preserve"><value>Die Systeminformationen konnten nicht ermittelt werden. Technische Details stehen in der Log-Datei.</value></data>
@@ -57,7 +61,7 @@
   <data name="ModulePage_Overall" xml:space="preserve"><value>Gesamtzustand:</value></data>
   <data name="ModulePage_CheckFailed" xml:space="preserve"><value>Die Prüfung ist fehlgeschlagen. Technische Details stehen in der Log-Datei.</value></data>
   <data name="ModulePage_ActionFailed" xml:space="preserve"><value>Die Aktion ist fehlgeschlagen. Technische Details stehen in der Log-Datei.</value></data>
-  <data name="Update_CheckLabel" xml:space="preserve"><value>Nach Updates suchen</value></data>
+  <data name="Update_CheckLabel" xml:space="preserve"><value>Beim Start nach Updates suchen</value></data>
   <data name="Update_CheckTooltip" xml:space="preserve"><value>Bei jedem Start fragt Omnikit auf der Release-Seite (GitHub) nach einer neuen Version – ohne Kennung deines Geräts.</value></data>
   <data name="Update_Version" xml:space="preserve"><value>Version {0}</value></data>
   <data name="Update_CheckNow" xml:space="preserve"><value>Jetzt suchen</value></data>

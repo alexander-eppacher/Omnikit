@@ -41,7 +41,7 @@ public partial class UpdateViewModel : ObservableObject
     /// <summary>Installierte Version (aus dem Build), z. B. 4.0.0.</summary>
     public static Version Installed { get; } = UpdateVerifier.InstalledVersion(BuildVersion);
 
-    /// <summary>Für unten links, z. B. „Version 4.0.1“ (ohne den Commit hinter dem „+“).</summary>
+    /// <summary>Für die Seite „Einstellungen“, z. B. „Version 4.0.1“ (ohne den Commit hinter dem „+“).</summary>
 #pragma warning disable CA1822 // Die Oberfläche bindet an Eigenschaften des Objekts, nicht an statische
     public string VersionText => string.Format(CultureInfo.CurrentCulture, Strings.Update_Version, BuildVersion?.Split('+')[0] ?? Installed.ToString());
 #pragma warning restore CA1822

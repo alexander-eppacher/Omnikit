@@ -6,7 +6,7 @@ Neueste Version oben. Versionsnummern: Haupt.Neben.Patch, eine Nummer für App, 
 
 ### Geändert
 - Omnikit fragt **bei jedem Start** nach einer neuen Version statt höchstens einmal am Tag (weiterhin ohne Kennung, abschaltbar). Vorher sah man ein neues Release oft erst am nächsten Tag.
-- Unten links stehen jetzt die **installierte Version** und der Knopf **„Jetzt suchen“**.
+- Neue Seite **Einstellungen**: Ansicht (Einfach/Experte), Update-Suche ein/aus, die **installierte Version** und der Knopf **„Jetzt suchen“**. Die Schalter unten in der Navigationsleiste sind dorthin umgezogen.
 
 ## 4.0.1 – 21.11.2026
 

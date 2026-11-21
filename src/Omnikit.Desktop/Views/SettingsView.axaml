@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Omnikit.Desktop.ViewModels"
+             xmlns:res="using:Omnikit.Desktop.Resources"
+             x:Class="Omnikit.Desktop.Views.SettingsView"
+             x:DataType="vm:SettingsViewModel">
+
+    <ScrollViewer>
+        <StackPanel Spacing="24" MaxWidth="720" HorizontalAlignment="Left">
+            <StackPanel Spacing="4">
+                <TextBlock Text="{x:Static res:Strings.Settings_Title}" FontSize="24" FontWeight="SemiBold" />
+                <TextBlock Text="{x:Static res:Strings.Settings_Subtitle}" Opacity="0.7" />
+            </StackPanel>
+
+            <!-- Ansicht: Einfach / Experte für die ganze App -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="{x:Static res:Strings.ViewMode_Label}" FontSize="16" FontWeight="SemiBold" />
+                <ToggleSwitch IsChecked="{Binding ViewMode.IsExpert}"
+                              OnContent="{x:Static res:Strings.ViewMode_Expert}"
+                              OffContent="{x:Static res:Strings.ViewMode_Simple}" />
+                <TextBlock Text="{x:Static res:Strings.ViewMode_Tooltip}" TextWrapping="Wrap" FontSize="12" Opacity="0.7" />
+            </StackPanel>
+
+            <!-- Updates: Suche beim Start ein/aus, installierte Version, sofort suchen -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="{x:Static res:Strings.Settings_Updates}" FontSize="16" FontWeight="SemiBold" />
+                <CheckBox IsChecked="{Binding Update.CheckForUpdates}">
+                    <TextBlock Text="{x:Static res:Strings.Update_CheckLabel}" TextWrapping="Wrap" />
+                </CheckBox>
+                <TextBlock Text="{x:Static res:Strings.Update_CheckTooltip}" TextWrapping="Wrap" FontSize="12" Opacity="0.7" />
+                <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,8,0,0">
+                    <TextBlock Text="{Binding Update.VersionText}" VerticalAlignment="Center" />
+                    <Button Content="{x:Static res:Strings.Update_CheckNow}" Command="{Binding Update.CheckNowCommand}"
+                            ToolTip.Tip="{x:Static res:Strings.Update_CheckNowTooltip}" />
+                </StackPanel>
+                <TextBlock Text="{Binding Update.CheckResult}" TextWrapping="Wrap" Opacity="0.7"
+                           IsVisible="{Binding Update.CheckResult, Converter={x:Static ObjectConverters.IsNotNull}}" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

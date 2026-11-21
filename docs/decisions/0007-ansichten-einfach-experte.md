@@ -2,7 +2,7 @@
 
 **Datum:** 26.10.2026
 
-**Entscheidung:** Ein Schalter unten in der Navigationsleiste wechselt für die ganze App zwischen „Einfach“ und „Experte“. Die Wahl wird sofort in den Einstellungen gespeichert (`AppSettings.ViewMode`, in der Datei als Text `"Simple"` bzw. `"Expert"`). Fehlt der Wert, z. B. in einer alten Datei, startet die App in der einfachen Ansicht.
+**Entscheidung:** Ein Schalter (seit 4.0.2 auf der Seite „Einstellungen“, vorher unten in der Navigationsleiste) wechselt für die ganze App zwischen „Einfach“ und „Experte“. Die Wahl wird sofort in den Einstellungen gespeichert (`AppSettings.ViewMode`, in der Datei als Text `"Simple"` bzw. `"Expert"`). Fehlt der Wert, z. B. in einer alten Datei, startet die App in der einfachen Ansicht.
 
 - Die Expertenansicht zeigt **mehr, nicht andere** Werte: Ampel, Erklärungen und Messwerte sind in beiden Ansichten gleich.
 - Ein Befund (`Finding`) kann zusätzlich **Rohwerte** (`Details`) haben, z. B. „Anschluss: NVMe · Typ: SSD · Firmware: …“. Sie erscheinen nur in der Expertenansicht.

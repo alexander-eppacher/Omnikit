@@ -48,10 +48,10 @@ public partial class MainViewModel : ViewModelBase
         _logger = loggerFactory.CreateLogger<MainViewModel>();
     }
 
-    /// <summary>Hinweis auf neue Versionen und der Schalter „Nach Updates suchen“.</summary>
+    /// <summary>Hinweis auf neue Versionen (oben); Schalter und „Jetzt suchen“ stehen auf der Seite „Einstellungen“.</summary>
     public UpdateViewModel Update { get; }
 
-    /// <summary>Schalter "Einfach / Experte" unten in der Navigationsleiste.</summary>
+    /// <summary>Ansicht „Einfach / Experte“ (Schalter auf der Seite „Einstellungen“).</summary>
     public ViewModeState ViewMode { get; }
 
     public ObservableCollection<NavigationItem> NavigationItems { get; } = [];
@@ -83,6 +83,7 @@ public partial class MainViewModel : ViewModelBase
             NavigationItems.Add(new NavigationItem(Strings.Nav_Performance, _createPerformancePage(context)));
             NavigationItems.Add(new NavigationItem(Omnikit.Modules.Apps.Resources.AppsTexts.PageTitle, _createAppsPage(context)));
             NavigationItems.Add(new NavigationItem(Omnikit.Modules.StickBuilder.Resources.StickTexts.Page_Title, _createStickPage(context)));
+            NavigationItems.Add(new NavigationItem(Strings.Nav_Settings, new SettingsViewModel(ViewMode, Update)));
 
             SelectedItem = NavigationItems[0];
         }

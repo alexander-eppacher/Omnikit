@@ -24,32 +24,6 @@
                            FontSize="20" FontWeight="SemiBold"
                            Margin="12,8,12,16" />
 
-                <!-- Ganz unten: installierte Version und sofortige Suche nach Updates -->
-                <StackPanel DockPanel.Dock="Bottom" Margin="12,4,12,4" Spacing="4">
-                    <StackPanel Orientation="Horizontal" Spacing="8">
-                        <TextBlock Text="{Binding Update.VersionText}" Opacity="0.7" VerticalAlignment="Center" />
-                        <Button Content="{x:Static res:Strings.Update_CheckNow}" Command="{Binding Update.CheckNowCommand}"
-                                ToolTip.Tip="{x:Static res:Strings.Update_CheckNowTooltip}" Padding="8,2" FontSize="12" />
-                    </StackPanel>
-                    <TextBlock Text="{Binding Update.CheckResult}" Opacity="0.7" FontSize="12" TextWrapping="Wrap"
-                               IsVisible="{Binding Update.CheckResult, Converter={x:Static ObjectConverters.IsNotNull}}" />
-                </StackPanel>
-
-                <!-- Update-Prüfung ein/aus (bei jedem Start, ohne Kennung) -->
-                <CheckBox DockPanel.Dock="Bottom" Margin="12,0,12,4" IsChecked="{Binding Update.CheckForUpdates}"
-                          ToolTip.Tip="{x:Static res:Strings.Update_CheckTooltip}">
-                    <TextBlock Text="{x:Static res:Strings.Update_CheckLabel}" Opacity="0.7" TextWrapping="Wrap" />
-                </CheckBox>
-
-                <!-- Schalter "Einfach / Experte" für die ganze App -->
-                <StackPanel DockPanel.Dock="Bottom" Margin="12,8" Spacing="2"
-                            ToolTip.Tip="{x:Static res:Strings.ViewMode_Tooltip}">
-                    <TextBlock Text="{x:Static res:Strings.ViewMode_Label}" Opacity="0.7" />
-                    <ToggleSwitch IsChecked="{Binding ViewMode.IsExpert}"
-                                  OnContent="{x:Static res:Strings.ViewMode_Expert}"
-                                  OffContent="{x:Static res:Strings.ViewMode_Simple}" />
-                </StackPanel>
-
                 <ListBox ItemsSource="{Binding NavigationItems}"
                          SelectedItem="{Binding SelectedItem}">
                     <ListBox.ItemTemplate>
