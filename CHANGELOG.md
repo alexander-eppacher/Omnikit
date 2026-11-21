@@ -2,6 +2,11 @@
 
 Neueste Version oben. Versionsnummern: Haupt.Neben.Patch, eine Nummer für App, Agent und Server.
 
+## 4.0.1 – in Arbeit
+
+### Behoben
+- Treiber: Die Seite zeigt ohne Geräteprobleme wieder Grün statt „Hinweis“ (die Treiberliste der Expertenansicht färbte die Gesamtampel).
+
 ## 4.0.0 – 21.11.2026
 
 ### Neu

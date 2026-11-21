@@ -114,7 +114,8 @@ public class DriverEvaluatorTests
 
         var drivers = findings.Where(finding => finding.Category == DriverTexts.Category_Drivers).ToList();
         Assert.Equal(["AMD Radeon(TM) 680M", "Intel(R) Wi-Fi 6 AX201"], drivers.Select(driver => driver.Title));
-        Assert.All(drivers, driver => Assert.True(driver.IsExpertOnly && driver.Severity == Severity.Info));
+        Assert.All(drivers, driver => Assert.True(driver.IsExpertOnly && driver.Severity == Severity.Ok));
+        Assert.Equal(Severity.Ok, new ModuleReport("drivers", findings).OverallSeverity);   // ohne Geräteprobleme grün, die Liste färbt nichts
         Assert.Contains("23.60.1.2", drivers[1].Explanation, StringComparison.Ordinal);
     }
 

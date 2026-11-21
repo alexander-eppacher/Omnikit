@@ -79,6 +79,7 @@ public static class DriverEvaluator
     }
 
     /// <summary>Treiber von Grafik, Netzwerk, Audio usw. – nur in der Expertenansicht.</summary>
+    // Nur eine Auflistung, keine Bewertung: „Ok“, damit sie die Gesamtampel nicht färbt (die einfache Ansicht zeigt sie gar nicht)
     private static IEnumerable<Finding> ImportantDrivers(IReadOnlyList<DriverInfo> drivers) =>
         drivers
             .Where(driver => IsHardware(driver.DeviceId) && ClassOrder(driver) >= 0)
@@ -90,7 +91,7 @@ public static class DriverEvaluator
                     driver.Provider ?? "?",
                     driver.Version ?? "?",
                     driver.Date?.ToString("d", CultureInfo.CurrentCulture) ?? "?"),
-                Severity.Info,
+                Severity.Ok,
                 DriverTexts.Category_Drivers,
                 Format(DriverTexts.Details_Driver, driver.InfName ?? "?", driver.DeviceId),
                 IsExpertOnly: true));
