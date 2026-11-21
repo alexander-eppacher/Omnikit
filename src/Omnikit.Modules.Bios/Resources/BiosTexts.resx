@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Alle Texte des BIOS-Moduls. {0}, {1} ... werden durch Werte ersetzt. -->
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <!-- Allgemein -->
+  <data name="ModuleName" xml:space="preserve"><value>BIOS</value></data>
+  <data name="Category_Firmware" xml:space="preserve"><value>BIOS/UEFI</value></data>
+  <data name="Category_Updates" xml:space="preserve"><value>Updates</value></data>
+  <data name="Common_NotWindows" xml:space="preserve"><value>Nur unter Windows verfügbar.</value></data>
+  <data name="Common_NotAvailableTitle" xml:space="preserve"><value>Nicht verfügbar</value></data>
+  <data name="Common_ReadFailed" xml:space="preserve"><value>Die BIOS-Daten konnten nicht gelesen werden. Details stehen in der Log-Datei.</value></data>
+
+  <!-- Befunde -->
+  <data name="Version_Title" xml:space="preserve"><value>BIOS-Version</value></data>
+  <data name="Version_Text" xml:space="preserve"><value>Version {0} vom {1} ({2}).</value></data>
+  <data name="Version_Vm" xml:space="preserve"><value>In einer virtuellen Maschine stammt das BIOS vom Virtualisierer (z. B. Proxmox oder Hyper-V) und wird mit dessen Updates aktualisiert.</value></data>
+  <data name="Details_Board" xml:space="preserve"><value>Hauptplatine: {0} {1}</value></data>
+  <data name="Old_Title" xml:space="preserve"><value>BIOS älter als 3 Jahre</value></data>
+  <data name="Old_Text" xml:space="preserve"><value>Die BIOS-Version ist vom {0}. Schau auf der Support-Seite des Herstellers, ob es eine neuere gibt – dort steht auch, was sie behebt (z. B. Sicherheitslücken). Ein Datum allein ist kein Fehler.</value></data>
+  <data name="Mode_Title" xml:space="preserve"><value>Startmodus</value></data>
+  <data name="Mode_Uefi" xml:space="preserve"><value>Der PC startet im modernen UEFI-Modus, wie Windows 11 es vorsieht.</value></data>
+  <data name="Mode_Legacy" xml:space="preserve"><value>Der PC startet im alten BIOS-Modus („Legacy“). Windows 11 sieht UEFI vor, und Secure Boot gibt es nur damit. Umstellen ist ein Eingriff an Festplatte und BIOS – nur mit Fachwissen oder Hilfe.</value></data>
+  <data name="Mode_LegacyVm" xml:space="preserve"><value>Die virtuelle Maschine startet mit einem alten BIOS (z. B. SeaBIOS). Für Windows-11-Sticks und Secure Boot braucht sie UEFI (bei Proxmox: „OVMF“).</value></data>
+  <data name="Mode_Unknown" xml:space="preserve"><value>Der Startmodus konnte nicht bestimmt werden.</value></data>
+  <data name="SecureBoot_Title" xml:space="preserve"><value>Secure Boot</value></data>
+  <data name="SecureBoot_On" xml:space="preserve"><value>Secure Boot ist an: Beim Start läuft nur Software mit gültiger Signatur.</value></data>
+  <data name="SecureBoot_Off" xml:space="preserve"><value>Secure Boot ist aus. Es verhindert, dass sich Schadsoftware schon vor Windows einnistet. Einschalten im BIOS-Setup (meist unter „Security“ oder „Boot“). Ausnahme: Manche Linux-Systeme auf demselben PC brauchen es aus.</value></data>
+  <data name="Updates_Title" xml:space="preserve"><value>BIOS-Updates</value></data>
+  <data name="Updates_Known" xml:space="preserve"><value>Omnikit aktualisiert das BIOS nie selbst. Updates gibt es auf der Support-Seite von {0} (oft auch über Windows Update oder das Programm des Herstellers). Beim Update das Netzteil anstecken und den PC auf keinen Fall ausschalten.</value></data>
+  <data name="Updates_Unknown" xml:space="preserve"><value>Omnikit aktualisiert das BIOS nie selbst. Updates gibt es auf der Webseite des PC- bzw. Mainboard-Herstellers (oft auch über Windows Update). Beim Update das Netzteil anstecken und den PC auf keinen Fall ausschalten.</value></data>
+
+  <!-- Aktion -->
+  <data name="Action_OpenSupport" xml:space="preserve"><value>Support-Seite von {0} öffnen</value></data>
+  <data name="Action_Confirm" xml:space="preserve"><value>Omnikit öffnet die offizielle Support-Seite von {0} im Browser ({1}). Dort findest du dein Modell und die passenden BIOS-Updates. Omnikit lädt und installiert nichts.</value></data>
+  <data name="Action_Opened" xml:space="preserve"><value>Die Support-Seite ist im Browser geöffnet.</value></data>
+  <data name="Action_Failed" xml:space="preserve"><value>Der Browser konnte nicht geöffnet werden. Details stehen in der Log-Datei.</value></data>
+  <data name="Action_Unknown" xml:space="preserve"><value>Unbekannte Aktion.</value></data>
+</root>

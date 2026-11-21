@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- BIOS-Modul: liest Version, Startmodus und Secure Boot. Ändert nichts, flasht nie. -->
+
+  <PropertyGroup>
+    <NeutralLanguage>de</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Omnikit.Core\Omnikit.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Texte: aus BiosTexts.resx wird beim Bauen die Klasse Omnikit.Modules.Bios.Resources.BiosTexts erzeugt -->
+    <EmbeddedResource Update="Resources\BiosTexts.resx">
+      <StronglyTypedFileName>$(IntermediateOutputPath)BiosTexts.Designer.cs</StronglyTypedFileName>
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedNamespace>Omnikit.Modules.Bios.Resources</StronglyTypedNamespace>
+      <StronglyTypedClassName>BiosTexts</StronglyTypedClassName>
+      <PublicClass>true</PublicClass>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Omnikit.Modules.Bios.Tests" />
+  </ItemGroup>
+</Project>

@@ -8,6 +8,8 @@ using Omnikit.Core.SystemInfo;
 using Omnikit.Desktop.Services;
 using Omnikit.Desktop.ViewModels;
 using Omnikit.Modules.Apps.Winget;
+using Omnikit.Modules.Bios;
+using Omnikit.Modules.Bios.Sources;
 using Omnikit.Modules.Drivers;
 using Omnikit.Modules.Drivers.Sources;
 using Omnikit.Modules.StickBuilder.Creation;
@@ -60,6 +62,9 @@ internal static class ServiceSetup
         // Treiber-Modul: liest nur (Geräte-Manager-Daten über WMI)
         services.AddSingleton<IDeviceSource, WindowsDeviceSource>();
 
+        // BIOS-Modul: liest nur, flasht nie
+        services.AddSingleton<IFirmwareSource, WindowsFirmwareSource>();
+
         // Seite "Leistung": Messquellen und die Seite selbst (braucht den SystemContext, der erst beim Start ermittelt wird)
         services.AddSingleton<IPerformanceSource, WindowsPerformanceSource>();
         services.AddSingleton<IHardwareInventorySource, WindowsHardwareInventorySource>();
@@ -94,6 +99,7 @@ internal static class ServiceSetup
         // Module: Reihenfolge = Reihenfolge in der Navigationsleiste
         services.AddSingleton<IModule, HealthModule>();
         services.AddSingleton<IModule, DriversModule>();
+        services.AddSingleton<IModule, BiosModule>();
         services.AddSingleton<ModuleRegistry>();
 
         services.AddSingleton<IDialogService, DialogService>();

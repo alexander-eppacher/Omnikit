@@ -12,6 +12,10 @@ Unten in der Navigationsleiste lässt sich die Ansicht umschalten. **Einfach** z
 
 Zeigt Geräte, die Windows mit einem Fehler meldet (im Geräte-Manager mit gelbem Ausrufezeichen), mit einer verständlichen Abhilfe – z. B. „kein Treiber installiert“. Erkennt auch, wenn die Grafik nur mit dem Notfalltreiber von Windows läuft. Ausgeschaltete Geräte erscheinen nur als Hinweis. Die Expertenansicht listet die Treiber von Grafik, Netzwerk, Audio, Bluetooth und Kamera mit Hersteller, Version und Datum. Omnikit installiert keine Treiber; die Knöpfe „Optionale Updates öffnen“ und „Geräte-Manager öffnen“ führen zu den passenden Stellen in Windows.
 
+## Seite „BIOS“
+
+Zeigt BIOS-Version und -Datum, ob der PC im UEFI-Modus startet und ob Secure Boot an ist. Für bekannte Hersteller gibt es einen Knopf zur offiziellen Support-Seite, wo die BIOS-Updates liegen. **Omnikit flasht nie ein BIOS** und vergleicht keine Versionen (dafür gibt es keine zuverlässige offizielle Quelle).
+
 ## Seite „Leistung“
 
 Zeigt jede Sekunde die Auslastung wie der Task-Manager, mit Verlauf der letzten Minute. Gemessen wird nur, solange die Seite geöffnet ist. Bewertet wird der Durchschnitt über 30 Sekunden: Erst wenn Prozessor, Arbeitsspeicher oder ein Laufwerk eine halbe Minute lang zu mindestens 90 % ausgelastet sind, erscheint ein Hinweis. Kurze Spitzen lösen keinen Hinweis aus. Grafik und Netzwerk werden nur angezeigt, nicht bewertet. IP-Adressen werden nur angezeigt, nie gespeichert, geloggt oder exportiert.
@@ -84,6 +88,7 @@ Omnikit startet immer **ohne** Adminrechte. Für Installationen auf der Seite �
 | `src/Omnikit.Core` | Modul-Schnittstelle, Systemerkennung, Einstellungen (keine UI) |
 | `src/Omnikit.Modules.Health` | Modul „Gerätezustand“: Laufwerke, Speicherplatz, Akku, Windows |
 | `src/Omnikit.Modules.Drivers` | Modul „Treiber“: Geräte mit Fehlern, Notfall-Grafiktreiber, Treiberliste |
+| `src/Omnikit.Modules.Bios` | Modul „BIOS“: Version, Startmodus, Secure Boot, Support-Seite |
 | `src/Omnikit.Modules.Performance` | Seite „Leistung“: Live-Messung von CPU, RAM, Laufwerken, Netzwerk und Grafik |
 | `src/Omnikit.Modules.Apps` | Seite „Apps“: winget-Anbindung, Katalog, Vorlagen |
 | `src/Omnikit.Modules.StickBuilder` | Seite „Windows-Stick“: Antwortdatei, Skripte, Stick erstellen, Windows-Download |
@@ -91,6 +96,7 @@ Omnikit startet immer **ohne** Adminrechte. Für Installationen auf der Seite �
 | `tests/Omnikit.Core.Tests` | Unit-Tests für den Kern |
 | `tests/Omnikit.Modules.Health.Tests` | Unit-Tests für das Health-Modul (u. a. Ampel-Grenzwerte) |
 | `tests/Omnikit.Modules.Drivers.Tests` | Unit-Tests für das Treiber-Modul (Fehlercodes, Filter) |
+| `tests/Omnikit.Modules.Bios.Tests` | Unit-Tests für das BIOS-Modul (Bewertung, Hersteller-Links) |
 | `tests/Omnikit.Modules.Performance.Tests` | Unit-Tests für die Leistungsseite (Bewertung, Verlauf, Instanznamen) |
 | `tests/Omnikit.Modules.Apps.Tests` | Unit-Tests für die Apps-Seite (winget-Ausgaben, Fehlercodes, Vorlagen) |
 | `tests/Omnikit.Modules.StickBuilder.Tests` | Unit-Tests für den Stick-Builder (Antwortdatei, Prüfungen, Katalog) |
