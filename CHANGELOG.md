@@ -2,6 +2,11 @@
 
 Neueste Version oben. Versionsnummern: Haupt.Neben.Patch, eine Nummer für App, Agent und Server.
 
+## 4.0.3 – 21.11.2026
+
+### Behoben
+- Der Knopf **„Jetzt aktualisieren“** blieb grau und ließ sich nicht anklicken. **Wer 4.0.0 bis 4.0.2 installiert hat, aktualisiert deshalb einmal von Hand:** `Omnikit-4.0.3-setup.exe` von der Release-Seite starten (Einstellungen bleiben erhalten). Ab 4.0.3 geht es per Knopf.
+
 ## 4.0.2 – 21.11.2026
 
 ### Geändert

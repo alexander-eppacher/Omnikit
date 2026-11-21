@@ -12,7 +12,7 @@
 
     <!-- Eine Versionsnummer für App, Hilfsprozess, Agent und Server. Ein Release setzt VersionSuffix leer
          (dotnet build -p:VersionSuffix=), Entwicklungsstände heißen „4.0.0-dev“. -->
-    <VersionPrefix>4.0.2</VersionPrefix>
+    <VersionPrefix>4.0.3</VersionPrefix>
     <VersionSuffix>dev</VersionSuffix>
 
     <!-- Nachvollziehbare Builds: gleiche Quellen ergeben gleiche Dateien (Paketversionen sind in den .csproj exakt festgelegt) -->

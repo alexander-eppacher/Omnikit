@@ -53,8 +53,10 @@ public partial class UpdateViewModel : ObservableObject
     [ObservableProperty]
     public partial bool CheckForUpdates { get; set; }
 
+    // Das Angebot kommt erst nach dem Start an: Der Knopf muss dann neu prüfen, ob er klickbar ist (fehlte bis 4.0.2)
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasOffer), nameof(OfferText))]
+    [NotifyCanExecuteChangedFor(nameof(InstallCommand))]
     public partial UpdateOffer? Offer { get; set; }
 
     [ObservableProperty]
