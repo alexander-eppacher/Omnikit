@@ -2,7 +2,7 @@
 
 Neueste Version oben. Versionsnummern: Haupt.Neben.Patch, eine Nummer für App, Agent und Server.
 
-## 4.0.0 – in Arbeit
+## 4.0.0 – 21.11.2026
 
 ### Neu
 - **Installer** für App und Agent. Die App wird nach `C:\Program Files\Omnikit` installiert, der Agent nach `C:\Program Files\Omnikit Agent`; das Agent-Setup lässt sich still mit Server-Adresse und Code einrichten.
