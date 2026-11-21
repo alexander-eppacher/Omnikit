@@ -1,0 +1,7 @@
+# Überall dieselben Zeilenenden (LF), auch beim Auschecken unter Windows.
+# Sonst enthalten Skripte und Texte im Code je nach Build-Rechner andere Zeichen.
+* text=auto eol=lf
+*.ico binary
+*.png binary
+# Echte Ausgaben von winget bleiben genau so, wie sie aufgenommen wurden
+tests/**/TestData/** -text
