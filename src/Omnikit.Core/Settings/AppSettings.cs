@@ -12,9 +12,7 @@ public sealed record AppSettings
     /// <summary>Einfache oder Expertenansicht (Schalter unten in der Navigationsleiste).</summary>
     public ViewMode ViewMode { get; init; } = ViewMode.Simple;
 
-    /// <summary>Höchstens einmal am Tag auf der Release-Seite nach einer neuen Version fragen (ohne Kennung des Geräts). Abschaltbar.</summary>
+    /// <summary>Bei jedem Start auf der Release-Seite nach einer neuen Version fragen (ohne Kennung des Geräts). Abschaltbar.</summary>
     public bool CheckForUpdates { get; init; } = true;
 
-    /// <summary>Wann zuletzt nach Updates gefragt wurde (damit es höchstens einmal am Tag passiert).</summary>
-    public DateTimeOffset? LastUpdateCheck { get; init; }
 }

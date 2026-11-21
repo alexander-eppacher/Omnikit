@@ -2,6 +2,12 @@
 
 Neueste Version oben. Versionsnummern: Haupt.Neben.Patch, eine Nummer für App, Agent und Server.
 
+## 4.0.2 – 21.11.2026
+
+### Geändert
+- Omnikit fragt **bei jedem Start** nach einer neuen Version statt höchstens einmal am Tag (weiterhin ohne Kennung, abschaltbar). Vorher sah man ein neues Release oft erst am nächsten Tag.
+- Unten links stehen jetzt die **installierte Version** und der Knopf **„Jetzt suchen“**.
+
 ## 4.0.1 – 21.11.2026
 
 ### Behoben

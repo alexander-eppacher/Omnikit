@@ -7,7 +7,7 @@
 1. **Nur noch SQLite.** PostgreSQL wird nicht mehr unterstützt. Die Datenbank ist eine Datei im Volume des Servers, das Schema wird über EF-Core-Migrationen gepflegt (statt `EnsureCreated`).
 2. **Kein React-Dashboard.** Die Verwaltung bleibt bei den Razor-Seiten des Servers.
 3. **Code-Signing nur kostenlos.** Releases sind zunächst unsigniert; Updates werden über ein eigenes signiertes Manifest geprüft. Eine kostenlose Open-Source-Signatur wird beantragt, ein Zertifikat wird nicht gekauft.
-4. **Update-Prüfung** ist als Vorgabe eingeschaltet: höchstens einmal täglich eine Anfrage an die Release-Seite, ohne Gerätekennung, abschaltbar. Das ist der einzige Kontakt nach außen, den Omnikit von sich aus aufnimmt.
+4. **Update-Prüfung** ist als Vorgabe eingeschaltet: eine Anfrage an die Release-Seite bei jedem Start, ohne Gerätekennung, abschaltbar (21.11.2026 geändert: vorher höchstens einmal täglich, dann sah man ein neues Release erst am nächsten Tag). Das ist der einzige Kontakt nach außen, den Omnikit von sich aus aufnimmt.
 5. **Portable und installierte Version** dürfen beide ändern. Der Hilfsprozess mit Adminrechten wird dafür eine eigene kleine Datei ohne Oberflächen-Bibliotheken.
 6. **Stick-Builder:** Die Hardware-Prüfung von Windows 11 (TPM, Secure Boot, Prozessor) lässt sich als Option überspringen. Vorgabe aus, mit Warnung.
 7. **Gestrichen:** Treiber oder Programme von Drittseiten, Fernwartung/Fernsteuerung, Bezahlmodell, Systemreinigung, Netzwerk-Tools, macOS.

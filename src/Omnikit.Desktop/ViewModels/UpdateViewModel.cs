@@ -14,34 +14,37 @@ using Omnikit.Operations;
 namespace Omnikit.Desktop.ViewModels;
 
 /// <summary>
-/// Hinweis auf eine neue Version (höchstens eine Anfrage am Tag, abschaltbar) und Installation per Knopf.
+/// Hinweis auf eine neue Version (eine Anfrage bei jedem Start, abschaltbar; dazu „Jetzt suchen“) und Installation per Knopf.
 /// Geladen wird ohne Adminrechte; die entscheidende Prüfung macht der Hilfsprozess im geschützten Ordner (0017).
 /// </summary>
 public partial class UpdateViewModel : ObservableObject
 {
-    private static readonly TimeSpan CheckInterval = TimeSpan.FromDays(1);
-
     private readonly ISettingsStore _store;
     private readonly IElevationRunner _elevation;
     private readonly IDialogService _dialogs;
-    private readonly TimeProvider _time;
     private readonly ILogger<UpdateViewModel> _logger;
     private readonly bool _loaded;
 
-    public UpdateViewModel(ISettingsStore store, IElevationRunner elevation, IDialogService dialogs, TimeProvider time, ILogger<UpdateViewModel> logger)
+    public UpdateViewModel(ISettingsStore store, IElevationRunner elevation, IDialogService dialogs, ILogger<UpdateViewModel> logger)
     {
         _store = store;
         _elevation = elevation;
         _dialogs = dialogs;
-        _time = time;
         _logger = logger;
         CheckForUpdates = store.Load().CheckForUpdates;
         _loaded = true;
     }
 
+    private static readonly string? BuildVersion =
+        typeof(UpdateViewModel).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+
     /// <summary>Installierte Version (aus dem Build), z. B. 4.0.0.</summary>
-    public static Version Installed { get; } = UpdateVerifier.InstalledVersion(
-        typeof(UpdateViewModel).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion);
+    public static Version Installed { get; } = UpdateVerifier.InstalledVersion(BuildVersion);
+
+    /// <summary>Für unten links, z. B. „Version 4.0.1“ (ohne den Commit hinter dem „+“).</summary>
+#pragma warning disable CA1822 // Die Oberfläche bindet an Eigenschaften des Objekts, nicht an statische
+    public string VersionText => string.Format(CultureInfo.CurrentCulture, Strings.Update_Version, BuildVersion?.Split('+')[0] ?? Installed.ToString());
+#pragma warning restore CA1822
 
     /// <summary>Läuft die installierte Version unter „Programme“? Nur sie aktualisiert sich selbst; portabel gibt es den Link.</summary>
     public static bool IsInstalled { get; } =
@@ -61,6 +64,14 @@ public partial class UpdateViewModel : ObservableObject
     [ObservableProperty]
     public partial string? Status { get; set; }
 
+    /// <summary>Ergebnis von „Jetzt suchen“, wenn es nichts Neues gibt (sonst erscheint der Hinweis oben).</summary>
+    [ObservableProperty]
+    public partial string? CheckResult { get; set; }
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(CheckNowCommand))]
+    public partial bool IsChecking { get; set; }
+
     public bool HasOffer => Offer is not null;
 
     public string? OfferText => Offer is null ? null : string.Format(CultureInfo.CurrentCulture, Strings.Update_Available, Offer.Manifest.Version);
@@ -78,18 +89,46 @@ public partial class UpdateViewModel : ObservableObject
         }
     }
 
-    /// <summary>Beim Start: fragt nur, wenn eingeschaltet, Schlüssel eingebaut sind und die letzte Anfrage über einen Tag her ist.</summary>
-    public async Task CheckIfDueAsync()
+    /// <summary>Beim Start: fragt, wenn eingeschaltet und Schlüssel eingebaut sind. So sieht man eine neue Version beim nächsten Öffnen.</summary>
+    public async Task CheckOnStartAsync()
     {
-        var settings = _store.Load();
-        var now = _time.GetUtcNow();
-        if (!settings.CheckForUpdates || UpdateSource.TrustedKeys.Count == 0
-            || (settings.LastUpdateCheck is { } last && now - last < CheckInterval && last <= now))
+        if (!_store.Load().CheckForUpdates || UpdateSource.TrustedKeys.Count == 0)
         {
             return;
         }
 
-        Save(current => current with { LastUpdateCheck = now });
+        await FindAsync();
+    }
+
+    /// <summary>Knopf „Jetzt suchen“: fragt sofort, auch wenn die tägliche Prüfung ausgeschaltet ist (der Nutzer will es ja gerade).</summary>
+    [RelayCommand(CanExecute = nameof(CanCheckNow))]
+    private async Task CheckNowAsync()
+    {
+        IsChecking = true;
+        CheckResult = Strings.Update_Checking;
+        try
+        {
+            await FindAsync();
+            CheckResult = Offer is null ? Strings.Update_NoneFound : null;
+        }
+#pragma warning disable CA1031 // Ein Fehler bei der Suche soll als Meldung erscheinen, nicht die App beenden.
+        catch (Exception ex)
+#pragma warning restore CA1031
+        {
+            _logger.LogWarning(ex, "Update-Suche fehlgeschlagen");
+            CheckResult = Strings.Update_CheckFailed;
+        }
+        finally
+        {
+            IsChecking = false;
+        }
+    }
+
+    private bool CanCheckNow => !IsChecking && UpdateSource.TrustedKeys.Count > 0;
+
+    // Liefert null bei „schon aktuell“ und bei Netzwerkfehlern; beides heißt für den Nutzer: nichts Neues gefunden
+    private async Task FindAsync()
+    {
         using var http = UpdateChecker.CreateHttpClient();
         Offer = await new UpdateChecker(http, UpdateSource.TrustedKeys).FindAsync(UpdateProduct.App, Installed, CancellationToken.None);
         _logger.LogInformation("Update-Prüfung: {Result}", Offer?.Manifest.Version ?? "keine neuere Version");

@@ -106,7 +106,7 @@ public partial class MainViewModel : ViewModelBase
     {
         try
         {
-            await Update.CheckIfDueAsync();
+            await Update.CheckOnStartAsync();
         }
 #pragma warning disable CA1031 // Die Update-Prüfung ist Nebensache: jeder Fehler nur ins Log.
         catch (Exception ex)

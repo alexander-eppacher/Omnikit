@@ -58,7 +58,13 @@
   <data name="ModulePage_CheckFailed" xml:space="preserve"><value>Die Prüfung ist fehlgeschlagen. Technische Details stehen in der Log-Datei.</value></data>
   <data name="ModulePage_ActionFailed" xml:space="preserve"><value>Die Aktion ist fehlgeschlagen. Technische Details stehen in der Log-Datei.</value></data>
   <data name="Update_CheckLabel" xml:space="preserve"><value>Nach Updates suchen</value></data>
-  <data name="Update_CheckTooltip" xml:space="preserve"><value>Höchstens einmal am Tag fragt Omnikit auf der Release-Seite (GitHub) nach einer neuen Version – ohne Kennung deines Geräts.</value></data>
+  <data name="Update_CheckTooltip" xml:space="preserve"><value>Bei jedem Start fragt Omnikit auf der Release-Seite (GitHub) nach einer neuen Version – ohne Kennung deines Geräts.</value></data>
+  <data name="Update_Version" xml:space="preserve"><value>Version {0}</value></data>
+  <data name="Update_CheckNow" xml:space="preserve"><value>Jetzt suchen</value></data>
+  <data name="Update_CheckNowTooltip" xml:space="preserve"><value>Fragt sofort auf der Release-Seite (GitHub) nach einer neuen Version.</value></data>
+  <data name="Update_Checking" xml:space="preserve"><value>Suche läuft …</value></data>
+  <data name="Update_CheckFailed" xml:space="preserve"><value>Die Suche hat nicht geklappt. Bitte später noch einmal versuchen.</value></data>
+  <data name="Update_NoneFound" xml:space="preserve"><value>Keine neuere Version gefunden.</value></data>
   <data name="Update_Available" xml:space="preserve"><value>Omnikit {0} ist verfügbar.</value></data>
   <data name="Update_Install" xml:space="preserve"><value>Jetzt aktualisieren</value></data>
   <data name="Update_OpenReleases" xml:space="preserve"><value>Zur Release-Seite</value></data>
